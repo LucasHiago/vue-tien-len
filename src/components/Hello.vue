@@ -8,7 +8,7 @@
 <script>
 
 import Card from './Card.vue';
-
+import Deck from '../Classes/deck';
 
 export default {
 
@@ -34,8 +34,12 @@ export default {
 
   methods: {
     play() {
-      console.log('play');
-      this.players[1].cards.push(1111);
+      this.inittializeGame();
+    },
+    inittializeGame() {
+      // generate deck
+      const deck = new Deck();
+      console.log(deck);
     }
   },
 
