@@ -1,7 +1,42 @@
 <template>
   <div class="hello">
-    <button @click="play()">Play</button>
-      <card :cardMapKey="11"></card>
+    <div>
+      <button @click="play()">Play</button>
+    </div>
+    <div>
+  
+      <template v-if="gameStart">
+        <h3>Player 1</h3>
+        <div class="hand">
+          <div v-for="card in player1.cards" :key="card" class="card-container">
+            <card :cardMapKey="parseInt(card.cardKey)"></card>
+          </div>
+        </div>
+  
+        <h3>Player 2</h3>
+        <div class="hand">
+          <div v-for="card in player2.cards" :key="card" class="card-container">
+            <card :cardMapKey="parseInt(card.cardKey)"></card>
+          </div>
+        </div>
+  
+        <h3>Player 3</h3>
+        <div class="hand">
+          <div v-for="card in player3.cards" :key="card" class="card-container">
+            <card :cardMapKey="parseInt(card.cardKey)"></card>
+          </div>
+        </div>
+  
+        <h3>Player 4</h3>
+        <div class="hand">
+          <div v-for="card in player4.cards" :key="card" class="card-container">
+            <card :cardMapKey="parseInt(card.cardKey)"></card>
+          </div>
+        </div>
+  
+      </template>
+  
+    </div>
   </div>
 </template>
 
@@ -14,32 +49,40 @@ export default {
 
   data() {
     return {
-      players: {
-        1: {
-          cards: []
-        },
-        2: {
-          cards: []
-        },
-        3: {
-          cards: []
-        },
-        4: {
-          cards: []
-        }
+      player1: {
+        cards: []
       },
-      name: ''
+      player2: {
+        cards: []
+      },
+      player3: {
+        cards: []
+      },
+      player4: {
+        cards: []
+      },
+      gameStart: false
     };
   },
 
   methods: {
     play() {
-      this.inittializeGame();
+      this.initializeGame();
     },
-    inittializeGame() {
+    initializeGame() {
+      this.gameStart = true;
+
       // generate deck
       const deck = new Deck();
-      console.log(deck);
+
+      // deal cards to players
+      this.dealCards(deck);
+    },
+    dealCards(deck) {
+      this.player1.cards = deck.deck.slice(0, 13);
+      this.player2.cards = deck.deck.slice(13, 26);
+      this.player3.cards = deck.deck.slice(26, 39);
+      this.player4.cards = deck.deck.slice(39, 52);
     }
   },
 
@@ -51,5 +94,24 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+h3 {
+  text-align: left;
+  margin-left: 137px;
+}
 
+.hand {
+  width: 1000px;
+  height: 182px;
+  margin-left: 200px;
+  -ms-transform: rotate(180deg);
+  /* IE 9 */
+  -webkit-transform: rotate(180deg);
+  /* Safari */
+  transform: rotate(180deg);
+}
+
+.card-container {
+  float: right;
+  width: 6%;
+}
 </style>
