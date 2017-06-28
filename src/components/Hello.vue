@@ -7,7 +7,7 @@
     <div>
 
       <template v-if="gameStart">
-        <h3>Player 1 <button @click="sort('player1')">Sort</button></h3>
+        <h3>Player 1 <button @click="sortByRank('player1')">Sort by rank</button></h3>
         <div class="hand">
           <div v-for="card in player1.cards" :key="card" class="card-container">
             <div @click="cardClickHandler(1, card.cardKey)">
@@ -16,21 +16,21 @@
           </div>
         </div>
   
-        <h3>Player 2</h3>
+        <h3>Player 2 <button @click="sortByRank('player2')">Sort by rank</button></h3>
         <div class="hand">
           <div v-for="card in player2.cards" :key="card" class="card-container">
             <card :cardMapKey="parseInt(card.cardKey)"></card>
           </div>
         </div>
   
-        <h3>Player 3</h3>
+        <h3>Player 3 <button @click="sortByRank('player3')">Sort by rank</button></h3>
         <div class="hand">
           <div v-for="card in player3.cards" :key="card" class="card-container">
             <card :cardMapKey="parseInt(card.cardKey)"></card>
           </div>
         </div>
   
-        <h3>Player 4</h3>
+        <h3>Player 4 <button @click="sortByRank('player4')">Sort by rank</button></h3>
         <div class="hand">
           <div v-for="card in player4.cards" :key="card" class="card-container">
             <card :cardMapKey="parseInt(card.cardKey)"></card>
@@ -88,7 +88,7 @@ export default {
       this.player3.cards = deck.deck.slice(26, 39);
       this.player4.cards = deck.deck.slice(39, 52);
     },
-    sort(player) {
+    sortByRank(player) {
       // sort the player's hand
       let hand = this[player].cards;
       // sort by rank number
