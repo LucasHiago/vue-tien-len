@@ -2,14 +2,17 @@
   <div class="hello">
     <div>
       <button @click="play()">Play</button>
+      <!--<card :cardMapKey="41"></card>-->
     </div>
     <div>
-  
+
       <template v-if="gameStart">
-        <h3>Player 1</h3>
+        <h3>Player 1 <button @click="sort('player1')">Sort</button></h3>
         <div class="hand">
           <div v-for="card in player1.cards" :key="card" class="card-container">
-            <card :cardMapKey="parseInt(card.cardKey)"></card>
+            <div @click="cardClickHandler(1, card.cardKey)">
+              <card :cardMapKey="parseInt(card.cardKey)"></card>
+            </div>
           </div>
         </div>
   
@@ -42,6 +45,7 @@
 
 <script>
 
+import _ from 'lodash';
 import Card from './Card.vue';
 import Deck from '../Classes/deck';
 
@@ -83,6 +87,18 @@ export default {
       this.player2.cards = deck.deck.slice(13, 26);
       this.player3.cards = deck.deck.slice(26, 39);
       this.player4.cards = deck.deck.slice(39, 52);
+    },
+    sort(player) {
+      // sort the player's hand
+      let hand = this[player].cards;
+      // sort by rank number
+      hand = _.sortBy(hand, card => parseInt(card.rank, 10));
+      console.log(hand);
+      this[player].cards = hand;
+    },
+    cardClickHandler(player, cardKey) {
+      console.log(player);
+      console.log(cardKey);
     }
   },
 

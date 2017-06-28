@@ -2,215 +2,214 @@ const CardMap = {
   // Spades
   0: {
     name: '3S',
-    left: -125,
-    top: 0
+    rank: 1
   },
   1: {
     name: '4S',
-    image: ''
+    rank: 5
   },
   2: {
     name: '5S',
-    image: ''
+    rank: 9
   },
   3: {
     name: '6S',
-    image: ''
+    rank: 13
   },
   4: {
     name: '7S',
-    image: ''
+    rank: 17
   },
   5: {
     name: '8S',
-    image: ''
+    rank: 21
   },
   6: {
     name: '9S',
-    image: ''
+    rank: 25
   },
   7: {
     name: '10S',
-    image: ''
+    rank: 29
   },
   8: {
     name: 'JS',
-    image: ''
+    rank: 33
   },
   9: {
     name: 'QS',
-    image: ''
+    rank: 37
   },
   10: {
     name: 'KS',
-    image: ''
+    rank: 41
   },
   11: {
     name: 'AS',
-    image: ''
+    rank: 45
   },
   12: {
     name: '2S',
-    image: ''
+    rank: 49
   },
   // Clubs
   13: {
     name: '3C',
-    image: ''
+    rank: 2
   },
   14: {
     name: '4C',
-    image: ''
+    rank: 6
   },
   15: {
     name: '5C',
-    image: ''
+    rank: 10
   },
   16: {
     name: '6C',
-    image: ''
+    rank: 14
   },
   17: {
     name: '7C',
-    image: ''
+    rank: 18
   },
   18: {
     name: '8C',
-    image: ''
+    rank: 22
   },
   19: {
     name: '9C',
-    image: ''
+    rank: 26
   },
   20: {
     name: '10C',
-    image: ''
+    rank: 30
   },
   21: {
     name: 'JC',
-    image: ''
+    rank: 34
   },
   22: {
     name: 'QC',
-    image: ''
+    rank: 38
   },
   23: {
     name: 'KC',
-    image: ''
+    rank: 42
   },
   24: {
     name: 'AC',
-    image: ''
+    rank: 46
   },
   25: {
     name: '2C',
-    image: ''
+    rank: 50
   },
   // Diamonds
   26: {
     name: '3D',
-    image: ''
+    rank: 3
   },
   27: {
     name: '4D',
-    image: ''
+    rank: 7
   },
   28: {
     name: '5D',
-    image: ''
+    rank: 11
   },
   29: {
     name: '6D',
-    image: ''
+    rank: 15
   },
   30: {
     name: '7D',
-    image: ''
+    rank: 19
   },
   31: {
     name: '8D',
-    image: ''
+    rank: 23
   },
   32: {
     name: '9D',
-    image: ''
+    rank: 27
   },
   33: {
     name: '10D',
-    image: ''
+    rank: 31
   },
   34: {
     name: 'JD',
-    image: ''
+    rank: 35
   },
   35: {
     name: 'QD',
-    image: ''
+    rank: 39
   },
   36: {
     name: 'KD',
-    image: ''
+    rank: 43
   },
   37: {
     name: 'AD',
-    image: ''
+    rank: 47
   },
   38: {
     name: '2D',
-    image: ''
+    rank: 51
   },
   // Hearts
   39: {
     name: '3H',
-    image: ''
+    rank: 4
   },
   40: {
     name: '4H',
-    image: ''
+    rank: 8
   },
   41: {
     name: '5H',
-    image: ''
+    rank: 12
   },
   42: {
     name: '6H',
-    image: ''
+    rank: 16
   },
   43: {
     name: '7H',
-    image: ''
+    rank: 20
   },
   44: {
     name: '8H',
-    image: ''
+    rank: 24
   },
   45: {
     name: '9H',
-    image: ''
+    rank: 28
   },
   46: {
     name: '10H',
-    image: ''
+    rank: 32
   },
   47: {
     name: 'JH',
-    image: ''
+    rank: 36
   },
   48: {
     name: 'QH',
-    image: ''
+    rank: 40
   },
   49: {
     name: 'KH',
-    image: ''
+    rank: 44
   },
   50: {
     name: 'AH',
-    image: ''
+    rank: 48
   },
   51: {
     name: '2H',
-    image: ''
+    rank: 52
   }
 };
 
