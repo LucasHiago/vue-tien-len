@@ -1,5 +1,6 @@
 <template>
-    <div class="card" v-bind:style="styleObject"></div>
+  <div class="card" v-bind:style="styleObject">
+  </div>
 </template>
 
 <script>
@@ -46,15 +47,23 @@ export default {
       // calculate row
       let row = 0;
       if (card >= ROW_3_CUTOFF) {
-        row = 3;
+        row = 1;
       } else if (card >= ROW_2_CUTOFF) {
         row = 2;
       } else if (card >= ROW_1_CUTOFF) {
-        row = 1;
+        row = 3;
       }
 
       const left = col === 0 ? col : -(125 * col);
       const top = 182 * row;
+
+      if (card === 41) {
+        console.log(`row: ${row}`);
+        console.log(`cardKey: ${card}`);
+        console.log(`cardName: ${cardName}`);
+        console.log(`left: ${left}`);
+        console.log(`top: ${top}`);
+      }
 
       return {
         backgroundPosition: `${left}px ${top}px`
@@ -66,7 +75,6 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
 .card {
   width: 125px;
   height: 182px;
@@ -76,5 +84,4 @@ export default {
 .cardPosition {
   background-position: -125px 0px;
 }
-
 </style>
