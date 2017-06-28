@@ -9,9 +9,9 @@
       <template v-if="gameStart">
         <h3>Player 1 <button @click="sortByRank('player1')">Sort by rank</button></h3>
         <div class="hand">
-          <div v-for="card in player1.cards" :key="card" class="card-container">
-            <div @click="cardClickHandler(1, card.cardKey)">
-              <card :cardMapKey="parseInt(card.cardKey)"></card>
+          <div v-for="(card, index) in player1.cards" :key="card" class="card-container">
+            <div @click="cardClickHandler('player1', index)">
+              <card :cardMapKey="parseInt(card.cardKey)" :is-selected="card.isSelected"></card>
             </div>
           </div>
         </div>
@@ -19,21 +19,27 @@
         <h3>Player 2 <button @click="sortByRank('player2')">Sort by rank</button></h3>
         <div class="hand">
           <div v-for="card in player2.cards" :key="card" class="card-container">
-            <card :cardMapKey="parseInt(card.cardKey)"></card>
+            <div @click="cardClickHandler('player2', index)">
+              <card :cardMapKey="parseInt(card.cardKey)" :is-selected="card.isSelected"></card>
+            </div>
           </div>
         </div>
   
         <h3>Player 3 <button @click="sortByRank('player3')">Sort by rank</button></h3>
         <div class="hand">
           <div v-for="card in player3.cards" :key="card" class="card-container">
-            <card :cardMapKey="parseInt(card.cardKey)"></card>
+            <div @click="cardClickHandler('player3', index)">
+              <card :cardMapKey="parseInt(card.cardKey)" :is-selected="card.isSelected"></card>
+            </div>
           </div>
         </div>
   
         <h3>Player 4 <button @click="sortByRank('player4')">Sort by rank</button></h3>
         <div class="hand">
           <div v-for="card in player4.cards" :key="card" class="card-container">
-            <card :cardMapKey="parseInt(card.cardKey)"></card>
+            <div @click="cardClickHandler('player4', index)">
+              <card :cardMapKey="parseInt(card.cardKey)" :is-selected="card.isSelected"></card>
+            </div>
           </div>
         </div>
   
@@ -96,9 +102,9 @@ export default {
       console.log(hand);
       this[player].cards = hand;
     },
-    cardClickHandler(player, cardKey) {
-      console.log(player);
-      console.log(cardKey);
+    cardClickHandler(player, index) {
+      // set isSelected prop on card
+      this[player].cards[index].isSelected = !this[player].cards[index].isSelected;
     }
   },
 

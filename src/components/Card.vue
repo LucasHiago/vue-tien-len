@@ -1,5 +1,5 @@
 <template>
-  <div class="card" v-bind:style="styleObject">
+  <div class="card" v-bind:style="styleObject" :class="{ selected: isSelected }">
   </div>
 </template>
 
@@ -12,6 +12,11 @@ export default {
     cardMapKey: {
       type: Number,
       required: true
+    },
+    isSelected: {
+      type: Boolean,
+      required: true,
+      default: false
     }
   },
 
@@ -27,12 +32,6 @@ export default {
   },
 
   computed: {
-    left() {
-      return CardMap[this.cardMapKey].left;
-    },
-    top() {
-      return CardMap[this.cardMapKey].top;
-    },
     styleObject() {
       const card = this.cardMapKey;
       const cardName = CardMap[this.cardMapKey].name;
@@ -57,14 +56,6 @@ export default {
       const left = col === 0 ? col : -(125 * col);
       const top = 182 * row;
 
-      if (card === 41) {
-        console.log(`row: ${row}`);
-        console.log(`cardKey: ${card}`);
-        console.log(`cardName: ${cardName}`);
-        console.log(`left: ${left}`);
-        console.log(`top: ${top}`);
-      }
-
       return {
         backgroundPosition: `${left}px ${top}px`
       };
@@ -76,6 +67,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .card {
+  position: relative;
   width: 125px;
   height: 182px;
   background: url('../assets/deck.png');
@@ -83,5 +75,9 @@ export default {
 
 .cardPosition {
   background-position: -125px 0px;
+}
+
+.selected {
+  top: 25px;
 }
 </style>
