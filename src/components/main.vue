@@ -2,7 +2,6 @@
   <div class="hello">
     <div>
       <button @click="play()">Play</button>
-      <!--<card :cardMapKey="41"></card>-->
     </div>
     <div>
 
@@ -99,7 +98,6 @@ export default {
       let hand = this[player].cards;
       // sort by rank number
       hand = _.sortBy(hand, card => parseInt(card.rank, 10));
-      console.log(hand);
       this[player].cards = hand;
     },
     cardClickHandler(player, index) {
