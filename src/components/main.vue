@@ -8,7 +8,7 @@
       <template v-if="gameState.gameStart">
         <!-- active hands area -->
   
-        <h3>Player 1
+        <h3><span :class="{activePlayer: isActivePlayer('player1')}">Player 1</span>
           <button @click="submitHand('player1')" :disabled="!gameState.players.player1.isTurn">Play hand</button>
         </h3>
         <div class="hand">
@@ -19,33 +19,33 @@
           </div>
         </div>
   
-        <h3>Player 2
+        <h3><span :class="{activePlayer: isActivePlayer('player2')}">Player 2</span>
           <button @click="submitHand('player2')" :disabled="!gameState.players.player2.isTurn">Play hand</button>
         </h3>
         <div class="hand">
-          <div v-for="card in gameState.players.player2.cards" :key="card" class="card-container">
+          <div v-for="(card, index) in gameState.players.player2.cards" :key="card" class="card-container">
             <div @click="cardClickHandler('player2', index)">
               <card :cardMapKey="parseInt(card.cardKey)" :is-selected="card.isSelected"></card>
             </div>
           </div>
         </div>
   
-        <h3>Player 3
+        <h3><span :class="{activePlayer: isActivePlayer('player3')}">Player 3</span>
           <button @click="submitHand('player3')" :disabled="!gameState.players.player3.isTurn">Play hand</button>
         </h3>
         <div class="hand">
-          <div v-for="card in gameState.players.player3.cards" :key="card" class="card-container">
+          <div v-for="(card, index) in gameState.players.player3.cards" :key="card" class="card-container">
             <div @click="cardClickHandler('player3', index)">
               <card :cardMapKey="parseInt(card.cardKey)" :is-selected="card.isSelected"></card>
             </div>
           </div>
         </div>
   
-        <h3>Player 4
+        <h3><span :class="{activePlayer: isActivePlayer('player4')}">Player 4</span>
           <button @click="submitHand('player4')" :disabled="!gameState.players.player4.isTurn">Play hand</button>
         </h3>
         <div class="hand">
-          <div v-for="card in gameState.players.player4.cards" :key="card" class="card-container">
+          <div v-for="(card, index) in gameState.players.player4.cards" :key="card" class="card-container">
             <div @click="cardClickHandler('player4', index)">
               <card :cardMapKey="parseInt(card.cardKey)" :is-selected="card.isSelected"></card>
             </div>
@@ -151,9 +151,16 @@ export default {
       });
     },
     cardClickHandler(player, index) {
+      console.log(player);
+      console.log(index);
       // set isSelected prop on card
-      // eslint-disable-next-line
-      this.gameState.players[player].cards[index].isSelected = !this.gameState.players[player].cards[index].isSelected;
+      if (this.gameState.players[player].isTurn) {
+        // eslint-disable-next-line
+        this.gameState.players[player].cards[index].isSelected = !this.gameState.players[player].cards[index].isSelected;
+      }
+    },
+    isActivePlayer(player) {
+      return this.gameState.players[player].isTurn || false;
     }
   },
 
@@ -184,5 +191,9 @@ h3 {
 .card-container {
   float: right;
   width: 6%;
+}
+
+.activePlayer {
+  color: blue
 }
 </style>
