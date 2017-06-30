@@ -9,11 +9,10 @@
         <!-- active hands area -->
   
         <h3>Player 1
-          <button @click="sortByRank('player1')">Sort by rank</button>
-          <button @click="submitHand('player1')" :disabled="!gameState.player1.isTurn">Play hand</button>
+          <button @click="submitHand('player1')" :disabled="!gameState.players.player1.isTurn">Play hand</button>
         </h3>
         <div class="hand">
-          <div v-for="(card, index) in gameState.player1.cards" :key="card" class="card-container">
+          <div v-for="(card, index) in gameState.players.player1.cards" :key="card" class="card-container">
             <div @click="cardClickHandler('player1', index)">
               <card :cardMapKey="parseInt(card.cardKey)" :is-selected="card.isSelected"></card>
             </div>
@@ -21,11 +20,10 @@
         </div>
   
         <h3>Player 2
-          <button @click="sortByRank('player2')">Sort by rank</button>
-          <button @click="submitHand('player2')" :disabled="!gameState.player2.isTurn">Play hand</button>
+          <button @click="submitHand('player2')" :disabled="!gameState.players.player2.isTurn">Play hand</button>
         </h3>
         <div class="hand">
-          <div v-for="card in gameState.player2.cards" :key="card" class="card-container">
+          <div v-for="card in gameState.players.player2.cards" :key="card" class="card-container">
             <div @click="cardClickHandler('player2', index)">
               <card :cardMapKey="parseInt(card.cardKey)" :is-selected="card.isSelected"></card>
             </div>
@@ -33,11 +31,10 @@
         </div>
   
         <h3>Player 3
-          <button @click="sortByRank('player3')">Sort by rank</button>
-          <button @click="submitHand('player3')" :disabled="!gameState.player3.isTurn">Play hand</button>
+          <button @click="submitHand('player3')" :disabled="!gameState.players.player3.isTurn">Play hand</button>
         </h3>
         <div class="hand">
-          <div v-for="card in gameState.player3.cards" :key="card" class="card-container">
+          <div v-for="card in gameState.players.player3.cards" :key="card" class="card-container">
             <div @click="cardClickHandler('player3', index)">
               <card :cardMapKey="parseInt(card.cardKey)" :is-selected="card.isSelected"></card>
             </div>
@@ -45,11 +42,10 @@
         </div>
   
         <h3>Player 4
-          <button @click="sortByRank('player4')">Sort by rank</button>
-          <button @click="submitHand('player4')" :disabled="!gameState.player4.isTurn">Play hand</button>
+          <button @click="submitHand('player4')" :disabled="!gameState.players.player4.isTurn">Play hand</button>
         </h3>
         <div class="hand">
-          <div v-for="card in gameState.player4.cards" :key="card" class="card-container">
+          <div v-for="card in gameState.players.player4.cards" :key="card" class="card-container">
             <div @click="cardClickHandler('player4', index)">
               <card :cardMapKey="parseInt(card.cardKey)" :is-selected="card.isSelected"></card>
             </div>
@@ -73,29 +69,31 @@ export default {
   data() {
     return {
       gameState: {
-        player1: {
-          cards: [],
-          isTurn: false,
-          selectedHand: [],
-          canPlayHand: false // result of evaulating selectedHand
-        },
-        player2: {
-          cards: [],
-          isTurn: false,
-          selectedHand: [],
-          canPlayHand: false // result of evaulating selectedHand
-        },
-        player3: {
-          cards: [],
-          isTurn: false,
-          selectedHand: [],
-          canPlayHand: false // result of evaulating selectedHand
-        },
-        player4: {
-          cards: [],
-          isTurn: false,
-          selectedHand: [],
-          canPlayHand: false // result of evaulating selectedHand
+        players: {
+          player1: {
+            cards: [],
+            isTurn: false,
+            selectedHand: [],
+            canPlayHand: false // result of evaulating selectedHand
+          },
+          player2: {
+            cards: [],
+            isTurn: false,
+            selectedHand: [],
+            canPlayHand: false // result of evaulating selectedHand
+          },
+          player3: {
+            cards: [],
+            isTurn: false,
+            selectedHand: [],
+            canPlayHand: false // result of evaulating selectedHand
+          },
+          player4: {
+            cards: [],
+            isTurn: false,
+            selectedHand: [],
+            canPlayHand: false // result of evaulating selectedHand
+          }
         },
         gameStart: false
       }
@@ -115,14 +113,17 @@ export default {
       // deal cards to players
       this.dealCards(deck);
 
+      // sort players cards'
+      this.sortByRank();
+
       // determine who goes first
       this.setFirstTurnPlayer();
     },
     dealCards(deck) {
-      this.gameState.player1.cards = deck.deck.slice(0, 13);
-      this.gameState.player2.cards = deck.deck.slice(13, 26);
-      this.gameState.player3.cards = deck.deck.slice(26, 39);
-      this.gameState.player4.cards = deck.deck.slice(39, 52);
+      this.gameState.players.player1.cards = deck.deck.slice(0, 13);
+      this.gameState.players.player2.cards = deck.deck.slice(13, 26);
+      this.gameState.players.player3.cards = deck.deck.slice(26, 39);
+      this.gameState.players.player4.cards = deck.deck.slice(39, 52);
     },
     setFirstTurnPlayer() {
       // player with 3S goes first
@@ -130,25 +131,29 @@ export default {
 
       let playerFound = null;
 
-      Object.keys(this.gameState).forEach((player) => {
-        if (_.find(this.gameState[player].cards, ['rank', targetRank])) {
+      Object.keys(this.gameState.players).forEach((player) => {
+        if (_.find(this.gameState.players[player].cards, ['rank', targetRank])) {
           playerFound = player;
         }
       });
 
-      this.gameState[playerFound].isTurn = true;
+      this.gameState.players[playerFound].isTurn = true;
     },
-    sortByRank(player) {
-      // sort the player's hand
-      let hand = this.gameState[player].cards;
-      // sort by rank number
-      hand = _.sortBy(hand, card => parseInt(card.rank, 10));
-      this.gameState[player].cards = hand;
+    sortByRank() {
+      // sort all players cards by rank
+      const playersKeys = Object.keys(this.gameState.players);
+      playersKeys.forEach((player) => {
+        // sort the player's hand
+        let hand = this.gameState.players[player].cards;
+        // sort by rank number
+        hand = _.sortBy(hand, card => parseInt(card.rank, 10));
+        this.gameState.players[player].cards = hand;
+      });
     },
     cardClickHandler(player, index) {
       // set isSelected prop on card
       // eslint-disable-next-line
-      this.gameState[player].cards[index].isSelected = !this.gameState[player].cards[index].isSelected;
+      this.gameState.players[player].cards[index].isSelected = !this.gameState.players[player].cards[index].isSelected;
     }
   },
 
