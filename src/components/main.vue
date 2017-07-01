@@ -21,6 +21,7 @@
         <h3>
           <span :class="{activePlayer: isActivePlayer('player1')}">Player 1</span>
           <button @click="submitHand('player1')" :disabled="!gameState.players.player1.isTurn">Play hand</button>
+          <button @click="pass('player1')" :disabled="!gameState.players.player1.isTurn">Pass</button>
         </h3>
         <div class="hand">
           <div v-for="(card, index) in gameState.players.player1.cards" :key="card" class="card-container">
@@ -33,6 +34,7 @@
         <h3>
           <span :class="{activePlayer: isActivePlayer('player2')}">Player 2</span>
           <button @click="submitHand('player2')" :disabled="!gameState.players.player2.isTurn">Play hand</button>
+          <button @click="pass('player2')" :disabled="!gameState.players.player2.isTurn">Pass</button>
         </h3>
         <div class="hand">
           <div v-for="(card, index) in gameState.players.player2.cards" :key="card" class="card-container">
@@ -45,6 +47,7 @@
         <h3>
           <span :class="{activePlayer: isActivePlayer('player3')}">Player 3</span>
           <button @click="submitHand('player3')" :disabled="!gameState.players.player3.isTurn">Play hand</button>
+          <button @click="pass('player3')" :disabled="!gameState.players.player3.isTurn">Pass</button>
         </h3>
         <div class="hand">
           <div v-for="(card, index) in gameState.players.player3.cards" :key="card" class="card-container">
@@ -57,6 +60,7 @@
         <h3>
           <span :class="{activePlayer: isActivePlayer('player4')}">Player 4</span>
           <button @click="submitHand('player4')" :disabled="!gameState.players.player4.isTurn">Play hand</button>
+          <button @click="pass('player4')" :disabled="!gameState.players.player4.isTurn">Pass</button>
         </h3>
         <div class="hand">
           <div v-for="(card, index) in gameState.players.player4.cards" :key="card" class="card-container">
@@ -169,8 +173,6 @@ export default {
       });
     },
     cardClickHandler(player, index) {
-      console.log(player);
-      console.log(index);
       // set isSelected prop on card
       if (this.gameState.players[player].isTurn) {
         // eslint-disable-next-line
@@ -179,6 +181,9 @@ export default {
     },
     isActivePlayer(player) {
       return this.gameState.players[player].isTurn || false;
+    },
+    pass(player) {
+      this.setNextActivePlayer(player);
     },
     submitHand(player) {
       // set player selected hand state
