@@ -194,6 +194,19 @@ export default {
 
       // removed played cards from player
       this.gameState.players[player].cards = _.filter(this.gameState.players[player].cards, ['isSelected', false]);
+
+      // set next active player
+      this.setNextActivePlayer(player);
+    },
+    setNextActivePlayer(curPlayer) {
+      // set current player turn state
+      this.gameState.players[curPlayer].isTurn = false;
+
+      // set next player turn state
+      let nextPlayerId = parseInt(curPlayer[curPlayer.length - 1], 10) + 1;
+      nextPlayerId = nextPlayerId > 4 ? '1' : nextPlayerId.toString();
+      const nextPlayer = `player${nextPlayerId}`;
+      this.gameState.players[nextPlayer].isTurn = true;
     }
   },
 
