@@ -186,9 +186,14 @@ export default {
       this.gameState.players[player].selectedHand = playerSelectedHand;
 
       // TODO: determine player selectedHand can be played or not
-      // if true, then set game state active
+
+      // if true,
+      // then set game state active
       this.gameState.active.hand = playerSelectedHand;
       this.gameState.active.playerId = player;
+
+      // removed played cards from player
+      this.gameState.players[player].cards = _.filter(this.gameState.players[player].cards, ['isSelected', false]);
     }
   },
 
