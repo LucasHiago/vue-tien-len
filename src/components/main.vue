@@ -226,6 +226,7 @@ export default {
 h3 {
   text-align: left;
   margin-left: 137px;
+  margin-bottom: 15px;
 }
 
 .hand {

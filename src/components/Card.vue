@@ -78,6 +78,6 @@ export default {
 }
 
 .selected {
-  top: 25px;
+  top: 12px;
 }
 </style>
