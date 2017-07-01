@@ -22,8 +22,8 @@ export default {
 
   data() {
     return {
-      width: 125, // width of a card
-      height: 182 // height of a card
+      card_width: 76, // width of a card
+      card_height: 110 // height of a card
     };
   },
 
@@ -53,8 +53,8 @@ export default {
         row = 3;
       }
 
-      const left = col === 0 ? col : -(125 * col);
-      const top = 182 * row;
+      const left = col === 0 ? col : -(this.card_width * col);
+      const top = this.card_height * row;
 
       return {
         backgroundPosition: `${left}px ${top}px`
@@ -68,13 +68,13 @@ export default {
 <style scoped>
 .card {
   position: relative;
-  width: 125px;
-  height: 182px;
+  width: 76px;
+  height: 110px;
   background: url('../assets/deck.png');
 }
 
 .cardPosition {
-  background-position: -125px 0px;
+  background-position: -76px 0px;
 }
 
 .selected {

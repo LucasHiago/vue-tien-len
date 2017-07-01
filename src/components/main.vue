@@ -230,8 +230,8 @@ h3 {
 
 .hand {
   width: 1000px;
-  height: 182px;
-  margin-left: 200px;
+  height: 110px;
+  margin-left: 152px;
   -ms-transform: rotate(180deg);
   /* IE 9 */
   -webkit-transform: rotate(180deg);
