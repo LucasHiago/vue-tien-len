@@ -7,8 +7,19 @@
   
       <template v-if="gameState.gameStart">
         <!-- active hands area -->
+        <template v-if="gameState.active.hand.length > 0">
+          <div class="activePlayerContainer">
+            {{ gameState.active.playerId }}
+          </div>
+          <div class="hand">
+            <div v-for="(card, index) in gameState.active.hand" :key="card" class="card-container">
+              <card :cardMapKey="parseInt(card.cardKey)"></card>
+            </div>
+          </div>
+        </template>
   
-        <h3><span :class="{activePlayer: isActivePlayer('player1')}">Player 1</span>
+        <h3>
+          <span :class="{activePlayer: isActivePlayer('player1')}">Player 1</span>
           <button @click="submitHand('player1')" :disabled="!gameState.players.player1.isTurn">Play hand</button>
         </h3>
         <div class="hand">
@@ -19,7 +30,8 @@
           </div>
         </div>
   
-        <h3><span :class="{activePlayer: isActivePlayer('player2')}">Player 2</span>
+        <h3>
+          <span :class="{activePlayer: isActivePlayer('player2')}">Player 2</span>
           <button @click="submitHand('player2')" :disabled="!gameState.players.player2.isTurn">Play hand</button>
         </h3>
         <div class="hand">
@@ -30,7 +42,8 @@
           </div>
         </div>
   
-        <h3><span :class="{activePlayer: isActivePlayer('player3')}">Player 3</span>
+        <h3>
+          <span :class="{activePlayer: isActivePlayer('player3')}">Player 3</span>
           <button @click="submitHand('player3')" :disabled="!gameState.players.player3.isTurn">Play hand</button>
         </h3>
         <div class="hand">
@@ -41,7 +54,8 @@
           </div>
         </div>
   
-        <h3><span :class="{activePlayer: isActivePlayer('player4')}">Player 4</span>
+        <h3>
+          <span :class="{activePlayer: isActivePlayer('player4')}">Player 4</span>
           <button @click="submitHand('player4')" :disabled="!gameState.players.player4.isTurn">Play hand</button>
         </h3>
         <div class="hand">
@@ -95,7 +109,11 @@ export default {
             canPlayHand: false // result of evaulating selectedHand
           }
         },
-        gameStart: false
+        gameStart: false,
+        active: {
+          playerId: null,
+          hand: [] // list of cards
+        }
       }
     };
   },
@@ -161,6 +179,16 @@ export default {
     },
     isActivePlayer(player) {
       return this.gameState.players[player].isTurn || false;
+    },
+    submitHand(player) {
+      // set player selected hand state
+      const playerSelectedHand = _.filter(this.gameState.players[player].cards, 'isSelected');
+      this.gameState.players[player].selectedHand = playerSelectedHand;
+
+      // TODO: determine player selectedHand can be played or not
+      // if true, then set game state active
+      this.gameState.active.hand = playerSelectedHand;
+      this.gameState.active.playerId = player;
     }
   },
 
@@ -195,5 +223,10 @@ h3 {
 
 .activePlayer {
   color: blue
+}
+
+.activePlayerContainer {
+  text-align: left;
+  margin-left: 137px;
 }
 </style>

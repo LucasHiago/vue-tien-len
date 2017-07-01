@@ -15,7 +15,7 @@ export default {
     },
     isSelected: {
       type: Boolean,
-      required: true,
+      required: false,
       default: false
     }
   },
