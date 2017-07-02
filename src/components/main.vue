@@ -113,6 +113,7 @@ export default {
             canPlayHand: false // result of evaulating selectedHand
           }
         },
+        // prob can move to Store
         gameStart: false,
         active: {
           playerId: null,
@@ -162,6 +163,7 @@ export default {
       this.gameState.players[playerFound].isTurn = true;
     },
     sortByRank() {
+      // TODO: move sortByRank to Deck class
       // sort all players cards by rank
       const playersKeys = Object.keys(this.gameState.players);
       playersKeys.forEach((player) => {
