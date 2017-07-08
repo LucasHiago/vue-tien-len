@@ -103,6 +103,81 @@ describe('handUtils', () => {
       expect(handUtils.isSPTF(hand)).to.be.eq(false);
     });
   });
+  describe('isFourOfKind()', () => {
+    it('should return true for four of a kind', () => {
+      const hand = [
+        {
+          name: '4C',
+          rank: 6,
+          isSelected: false
+        },
+        {
+          name: '4H',
+          rank: 8,
+          isSelected: false
+        },
+        {
+          name: '4D',
+          rank: 7,
+          isSelected: false
+        },
+        {
+          name: '4S',
+          rank: 5,
+          isSelected: false
+        }
+      ];
+
+      expect(handUtils.isFourOfKind(hand)).to.be.eq(true);
+    });
+    it('should return false for less than 4 cards', () => {
+      const hand = [
+        {
+          name: '4C',
+          rank: 6,
+          isSelected: false
+        },
+        {
+          name: '4H',
+          rank: 8,
+          isSelected: false
+        },
+        {
+          name: '4D',
+          rank: 7,
+          isSelected: false
+        }
+      ];
+
+      expect(handUtils.isFourOfKind(hand)).to.be.eq(false);
+    });
+    it('should return false for 4 cards but not four of kind', () => {
+      const hand = [
+        {
+          name: '4C',
+          rank: 6,
+          isSelected: false
+        },
+        {
+          name: '4H',
+          rank: 8,
+          isSelected: false
+        },
+        {
+          name: '4D',
+          rank: 7,
+          isSelected: false
+        },
+        {
+          name: '5S',
+          rank: 9,
+          isSelected: false
+        }
+      ];
+
+      expect(handUtils.isFourOfKind(hand)).to.be.eq(false);
+    });
+  });
   describe('isConsecutive()', () => {
     it('should return false for presence of 2', () => {
       const hand = [
@@ -1468,8 +1543,56 @@ describe('handUtils', () => {
       }
     });
   });
-  describe.only('compareConsecutives()', () => {
-    it('should return true if hand has higher numeral than active', () => {
+  describe.only('canBeatHand()', () => {
+    it('should return true if single hand ranks higher than active single', () => {
+      const activeHand = [
+        {
+          name: '3S',
+          rank: 1,
+          isSelected: false
+        }
+      ];
+
+      const hand = [
+        {
+          name: '5S',
+          rank: 9,
+          isSelected: false
+        }
+      ];
+
+      expect(handUtils.canBeatHand(hand, activeHand)).to.be.eq(true);
+    });
+    it('should return true if pairs hand ranks higher than active pairs', () => {
+      const activeHand = [
+        {
+          name: '3S',
+          rank: 1,
+          isSelected: false
+        },
+        {
+          name: '3C',
+          rank: 2,
+          isSelected: false
+        }
+      ];
+
+      const hand = [
+        {
+          name: '5S',
+          rank: 9,
+          isSelected: false
+        },
+        {
+          name: '5H',
+          rank: 12,
+          isSelected: false
+        }
+      ];
+
+      expect(handUtils.canBeatHand(hand, activeHand)).to.be.eq(true);
+    });
+    it('should return true if consecutive hand has higher numeral than active consecutive hand', () => {
       const activeHand = [
         {
           name: '3S',
@@ -1516,9 +1639,9 @@ describe('handUtils', () => {
         }
       ];
 
-      expect(handUtils.compareConsecutives(hand, activeHand)).to.be.eq(true);
+      expect(handUtils.canBeatHand(hand, activeHand)).to.be.eq(true);
     });
-    it('should return true if hand has same numeral, but higher suit than active', () => {
+    it('should return true if consecutive hand has same numeral, but higher suit than active consecutive', () => {
       const activeHand = [
         {
           name: '3S',
@@ -1565,9 +1688,9 @@ describe('handUtils', () => {
         }
       ];
 
-      expect(handUtils.compareConsecutives(hand, activeHand)).to.be.eq(true);
+      expect(handUtils.canBeatHand(hand, activeHand)).to.be.eq(true);
     });
-    it('should return false if hand ranks lower than active', () => {
+    it('should return false if consecutive hand ranks lower than active consecutive', () => {
       const activeHand = [
         {
           name: '3S',
@@ -1614,7 +1737,133 @@ describe('handUtils', () => {
         }
       ];
 
-      expect(handUtils.compareConsecutives(hand, activeHand)).to.be.eq(false);
+      expect(handUtils.canBeatHand(hand, activeHand)).to.be.eq(false);
+    });
+    it('should return false for not same types, and active does not contain 2', () => {
+      const activeHand = [
+        {
+          name: '3S',
+          rank: 1,
+          isSelected: false
+        },
+        {
+          name: '3C',
+          rank: 2,
+          isSelected: false
+        }
+      ];
+
+      const hand = [
+        {
+          name: '5S',
+          rank: 9,
+          isSelected: false
+        }
+      ];
+
+      expect(handUtils.canBeatHand(hand, activeHand)).to.be.eq(false);
+    });
+    it('should return false for not same types, active does contain 2, but selected hand is neither four of kind nor CTP', () => {
+      const activeHand = [
+        {
+          name: '2S',
+          rank: 49,
+          isSelected: false
+        }
+      ];
+
+      const hand = [
+        {
+          name: '4C',
+          rank: 6,
+          isSelected: false
+        },
+        {
+          name: '4H',
+          rank: 8,
+          isSelected: false
+        }
+      ];
+
+      expect(handUtils.canBeatHand(hand, activeHand)).to.be.eq(false);
+    });
+    it('should return true for not same types, and active does contain 2, but selected hand is CTP', () => {
+      const activeHand = [
+        {
+          name: '2S',
+          rank: 49,
+          isSelected: false
+        }
+      ];
+
+      const hand = [
+        {
+          name: '9D',
+          rank: 27,
+          isSelected: false
+        },
+        {
+          name: '9H',
+          rank: 28,
+          isSelected: false
+        },
+        {
+          name: '10H',
+          rank: 32,
+          isSelected: false
+        },
+        {
+          name: '10D',
+          rank: 31,
+          isSelected: false
+        },
+        {
+          name: 'JS',
+          rank: 33,
+          isSelected: false
+        },
+        {
+          name: 'JD',
+          rank: 35,
+          isSelected: false
+        }
+      ];
+
+      expect(handUtils.canBeatHand(hand, activeHand)).to.be.eq(true);
+    });
+    it('should return true for not same types, and active does contain 2, but selected hand is four of kind', () => {
+      const activeHand = [
+        {
+          name: '2S',
+          rank: 49,
+          isSelected: false
+        }
+      ];
+
+      const hand = [
+        {
+          name: '4C',
+          rank: 6,
+          isSelected: false
+        },
+        {
+          name: '4H',
+          rank: 8,
+          isSelected: false
+        },
+        {
+          name: '4D',
+          rank: 7,
+          isSelected: false
+        },
+        {
+          name: '4S',
+          rank: 5,
+          isSelected: false
+        }
+      ];
+
+      expect(handUtils.canBeatHand(hand, activeHand)).to.be.eq(true);
     });
   });
 });

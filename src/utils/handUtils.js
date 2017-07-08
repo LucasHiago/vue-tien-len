@@ -49,6 +49,24 @@ function isSPTF(hand) {
   return isValidSPTF;
 }
 
+// determines if hand is four of a kind
+function isFourOfKind(hand) {
+  if (hand.length !== 4) return false;
+  let numeral = '';
+  let isFourOfaKind = true;
+
+  Object.keys(hand).forEach((card) => {
+    // eslint-disable-next-line max-len
+    const cardNumeral = hand[card].name.length === 3 ? hand[card].name.substring(0, 2) : hand[card].name[0];
+    if (!numeral) {
+      numeral = cardNumeral;
+    }
+    if (cardNumeral !== numeral) isFourOfaKind = false;
+  });
+
+  return isFourOfaKind;
+}
+
 // determines if a hand is a valid consecutive hand
 function isConsecutive(hand) {
   if (isSPTF(hand)) return false;
@@ -143,33 +161,35 @@ function whichType(hand, activeHand) {
   return type;
 }
 
-// determines if selected consecutive hand can beat active consecutive hand
-function compareConsecutives(hand, activeHand) {
-  if (hand.length !== activeHand.length) throw Error('hand and active hand must be same length!');
-  if (!isSameType(hand, activeHand)) throw Error('hand and active hand are not same type!');
+// determines if selected hand can beat active hand
+function canBeatHand(hand, activeHand) {
+  // check type equality
+  if (isSameType(hand, activeHand)) {
+    // sort hands
+    const sortedHand = _.sortBy(hand, card => parseInt(card.rank, 10));
+    const sortedActiveHand = _.sortBy(activeHand, card => parseInt(card.rank, 10));
+    const lastCardIndex = sortedHand.length - 1;
 
-  // sort hands
-  const sortedHand = _.sortBy(hand, card => parseInt(card.rank, 10));
-  const sortedActiveHand = _.sortBy(activeHand, card => parseInt(card.rank, 10));
-  const lastCardIndex = sortedHand.length - 1;
+    return sortedHand[lastCardIndex].rank > sortedActiveHand[lastCardIndex].rank;
+  }
 
-  return sortedHand[lastCardIndex].rank > sortedActiveHand[lastCardIndex].rank;
+  // check for 2
+  const found2Index = _.findIndex(activeHand, card => _.includes(card.name, '2'));
+  if (found2Index > -1) {
+    if (isConsecTriplePairs(hand)) return true;
+    if (isFourOfKind(hand)) return true;
+  }
+
+  return false;
 }
-
-// determines if a hand can beat an active hand
-// function canBeatHand(hand, activeHand) {
-//   // length must be same
-//   if (hand.length !== activeHand.length) return false;
-
-//
-// }
 
 export default {
   isValidHand,
   isSPTF,
+  isFourOfKind,
   isConsecutive,
   isConsecTriplePairs,
   isSameType,
   whichType,
-  compareConsecutives
+  canBeatHand
 };
