@@ -115,4 +115,28 @@ function isValidHand(hand, isFirstHand) {
   return isValid;
 }
 
-export default { isValidHand, isSPTF, isConsecutive, isConsecTriplePairs };
+// determines if both hands are same type
+function isSameType(hand, activeHand) {
+  if (hand.length !== activeHand.length) return false;
+  if (isSPTF(hand) && isSPTF(activeHand)) return true;
+  if (isConsecutive(hand) && isConsecutive(activeHand)) return true;
+  if (isConsecTriplePairs(hand) && isConsecTriplePairs(activeHand)) return true;
+
+  return false;
+}
+
+// // returns the type of both hands
+// function whichType(hand, activeHand) {
+//   console
+//   return
+// }
+
+// determines if a hand can beat an active hand
+// function canBeatHand(hand, activeHand) {
+//   // length must be same
+//   if (hand.length !== activeHand.length) return false;
+
+//
+// }
+
+export default { isValidHand, isSPTF, isConsecutive, isConsecTriplePairs, isSameType };

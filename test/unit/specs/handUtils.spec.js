@@ -318,7 +318,7 @@ describe('handUtils', () => {
       expect(handUtils.isConsecTriplePairs(hand)).to.be.eq(true);
     });
   });
-  describe.only('isValidHand()', () => {
+  describe('isValidHand()', () => {
     it('should return true if first hand contains a 3S and is valid', () => {
       const hand = [
         {
@@ -682,6 +682,413 @@ describe('handUtils', () => {
       ];
 
       expect(handUtils.isValidHand(hand)).to.be.eq(true);
+    });
+  });
+  describe('isSameType()', () => {
+    it('should return true for singles', () => {
+      const hand = [
+        {
+          name: '4S',
+          rank: 5,
+          isSelected: false
+        }
+      ];
+
+      const activeHand = [
+        {
+          name: '4H',
+          rank: 8,
+          isSelected: false
+        }];
+
+      expect(handUtils.isSameType(hand, activeHand)).to.be.eq(true);
+    });
+    it('should return true for pairs', () => {
+      const hand = [
+        {
+          name: '4S',
+          rank: 5,
+          isSelected: false
+        },
+        {
+          name: '4H',
+          rank: 8,
+          isSelected: false
+        }
+      ];
+
+      const activeHand = [
+        {
+          name: '3S',
+          rank: 5,
+          isSelected: false
+        },
+        {
+          name: '3H',
+          rank: 8,
+          isSelected: false
+        }
+      ];
+
+      expect(handUtils.isSameType(hand, activeHand)).to.be.eq(true);
+    });
+    it('should return true for triples', () => {
+      const hand = [
+        {
+          name: '4S',
+          rank: 5,
+          isSelected: false
+        },
+        {
+          name: '4H',
+          rank: 8,
+          isSelected: false
+        },
+        {
+          name: '4D',
+          rank: 8,
+          isSelected: false
+        }
+      ];
+
+      const activeHand = [
+        {
+          name: '3S',
+          rank: 5,
+          isSelected: false
+        },
+        {
+          name: '3H',
+          rank: 8,
+          isSelected: false
+        },
+        {
+          name: '3D',
+          rank: 8,
+          isSelected: false
+        }
+      ];
+
+      expect(handUtils.isSameType(hand, activeHand)).to.be.eq(true);
+    });
+    it('should return true for four of kind', () => {
+      const hand = [
+        {
+          name: '4S',
+          rank: 5,
+          isSelected: false
+        },
+        {
+          name: '4H',
+          rank: 8,
+          isSelected: false
+        },
+        {
+          name: '4D',
+          rank: 8,
+          isSelected: false
+        },
+        {
+          name: '4C',
+          rank: 8,
+          isSelected: false
+        }
+      ];
+
+      const activeHand = [
+        {
+          name: '3S',
+          rank: 5,
+          isSelected: false
+        },
+        {
+          name: '3H',
+          rank: 8,
+          isSelected: false
+        },
+        {
+          name: '3D',
+          rank: 8,
+          isSelected: false
+        },
+        {
+          name: '3C',
+          rank: 8,
+          isSelected: false
+        }
+      ];
+
+      expect(handUtils.isSameType(hand, activeHand)).to.be.eq(true);
+    });
+    it('should return true for consecutives', () => {
+      const hand = [
+        {
+          name: '3S',
+          rank: 5,
+          isSelected: false
+        },
+        {
+          name: '4H',
+          rank: 8,
+          isSelected: false
+        },
+        {
+          name: '5D',
+          rank: 8,
+          isSelected: false
+        },
+        {
+          name: '6C',
+          rank: 8,
+          isSelected: false
+        }
+      ];
+
+      const activeHand = [
+        {
+          name: '5S',
+          rank: 5,
+          isSelected: false
+        },
+        {
+          name: '6H',
+          rank: 8,
+          isSelected: false
+        },
+        {
+          name: '7D',
+          rank: 8,
+          isSelected: false
+        },
+        {
+          name: '8C',
+          rank: 8,
+          isSelected: false
+        }
+      ];
+
+      expect(handUtils.isSameType(hand, activeHand)).to.be.eq(true);
+    });
+    it('should return true for consec triple pairs', () => {
+      const hand = [
+        {
+          name: '4S',
+          rank: 5,
+          isSelected: false
+        },
+        {
+          name: '4H',
+          rank: 8,
+          isSelected: false
+        },
+        {
+          name: '5D',
+          rank: 8,
+          isSelected: false
+        },
+        {
+          name: '5C',
+          rank: 8,
+          isSelected: false
+        },
+        {
+          name: '6D',
+          rank: 8,
+          isSelected: false
+        },
+        {
+          name: '6C',
+          rank: 8,
+          isSelected: false
+        }
+      ];
+
+      const activeHand = [
+        {
+          name: '5S',
+          rank: 5,
+          isSelected: false
+        },
+        {
+          name: '5H',
+          rank: 8,
+          isSelected: false
+        },
+        {
+          name: '6D',
+          rank: 8,
+          isSelected: false
+        },
+        {
+          name: '6C',
+          rank: 8,
+          isSelected: false
+        },
+        {
+          name: '7D',
+          rank: 8,
+          isSelected: false
+        },
+        {
+          name: '7C',
+          rank: 8,
+          isSelected: false
+        }
+      ];
+
+      expect(handUtils.isSameType(hand, activeHand)).to.be.eq(true);
+    });
+    it('should return false for not equal hands lengths', () => {
+      const hand = [
+        {
+          name: '3S',
+          rank: 5,
+          isSelected: false
+        },
+        {
+          name: '4H',
+          rank: 8,
+          isSelected: false
+        },
+        {
+          name: '5D',
+          rank: 8,
+          isSelected: false
+        }
+      ];
+
+      const activeHand = [
+        {
+          name: '5S',
+          rank: 5,
+          isSelected: false
+        },
+        {
+          name: '6H',
+          rank: 8,
+          isSelected: false
+        },
+        {
+          name: '7D',
+          rank: 8,
+          isSelected: false
+        },
+        {
+          name: '8C',
+          rank: 8,
+          isSelected: false
+        }
+      ];
+
+      expect(handUtils.isSameType(hand, activeHand)).to.be.eq(false);
+    });
+    it('should return false for consec 6 and consec triple pairs', () => {
+      const hand = [
+        {
+          name: '3S',
+          rank: 5,
+          isSelected: false
+        },
+        {
+          name: '4H',
+          rank: 8,
+          isSelected: false
+        },
+        {
+          name: '5D',
+          rank: 8,
+          isSelected: false
+        },
+        {
+          name: '6C',
+          rank: 8,
+          isSelected: false
+        },
+        {
+          name: '7D',
+          rank: 8,
+          isSelected: false
+        },
+        {
+          name: '8C',
+          rank: 8,
+          isSelected: false
+        }
+      ];
+
+      const activeHand = [
+        {
+          name: '5S',
+          rank: 5,
+          isSelected: false
+        },
+        {
+          name: '5H',
+          rank: 8,
+          isSelected: false
+        },
+        {
+          name: '6D',
+          rank: 8,
+          isSelected: false
+        },
+        {
+          name: '6C',
+          rank: 8,
+          isSelected: false
+        },
+        {
+          name: '7D',
+          rank: 8,
+          isSelected: false
+        },
+        {
+          name: '7C',
+          rank: 8,
+          isSelected: false
+        }
+      ];
+
+      expect(handUtils.isSameType(hand, activeHand)).to.be.eq(false);
+    });
+    it('should return false for triples and consec 3s', () => {
+      const hand = [
+        {
+          name: '3S',
+          rank: 5,
+          isSelected: false
+        },
+        {
+          name: '3H',
+          rank: 8,
+          isSelected: false
+        },
+        {
+          name: '3D',
+          rank: 8,
+          isSelected: false
+        }
+      ];
+
+      const activeHand = [
+        {
+          name: '5S',
+          rank: 5,
+          isSelected: false
+        },
+        {
+          name: '6H',
+          rank: 8,
+          isSelected: false
+        },
+        {
+          name: '7D',
+          rank: 8,
+          isSelected: false
+        }
+      ];
+
+      expect(handUtils.isSameType(hand, activeHand)).to.be.eq(false);
     });
   });
 });
