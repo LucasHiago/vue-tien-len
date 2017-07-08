@@ -89,12 +89,18 @@ function isConsecTriplePairs(hand) {
 }
 
 // determines if a hand is a valid hand in tien len
-function isValidHand(hand) {
+function isValidHand(hand, isFirstHand) {
   if (!Array.isArray(hand)) throw new Error('hand must be array');
 
   const length = hand.length;
 
   if (length === 0) return false;
+
+  // if first hand played, then hand must contain a 3S
+  if (isFirstHand) {
+    const foundIndex = _.findIndex(hand, c => c.name === '3S');
+    if (foundIndex === -1) return false;
+  }
 
   let isValid = true;
   if (length < 5) {

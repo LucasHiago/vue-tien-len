@@ -92,24 +92,28 @@ export default {
           player1: {
             cards: [],
             isTurn: false,
+            isFirstTurn: false,
             selectedHand: [],
             canPlayHand: false // result of evaulating selectedHand
           },
           player2: {
             cards: [],
             isTurn: false,
+            isFirstTurn: false,
             selectedHand: [],
             canPlayHand: false // result of evaulating selectedHand
           },
           player3: {
             cards: [],
             isTurn: false,
+            isFirstTurn: false,
             selectedHand: [],
             canPlayHand: false // result of evaulating selectedHand
           },
           player4: {
             cards: [],
             isTurn: false,
+            isFirstTurn: false,
             selectedHand: [],
             canPlayHand: false // result of evaulating selectedHand
           }
@@ -162,6 +166,7 @@ export default {
       });
 
       this.gameState.players[playerFound].isTurn = true;
+      this.gameState.players[playerFound].isFirstTurn = true;
       this.gameState.active.playerId = playerFound;
     },
     sortByRank() {
@@ -209,13 +214,14 @@ export default {
     setNextActivePlayer(curPlayer) {
       // set current player turn state
       this.gameState.players[curPlayer].isTurn = false;
+      this.gameState.players[curPlayer].isFirstTurn = false;
 
       // set next player turn state
       let nextPlayerId = parseInt(curPlayer[curPlayer.length - 1], 10) + 1;
       nextPlayerId = nextPlayerId > 4 ? '1' : nextPlayerId.toString();
       const nextPlayer = `player${nextPlayerId}`;
       this.gameState.players[nextPlayer].isTurn = true;
-      this.gamestate.active.playerId = nextPlayer;
+      this.gameState.active.playerId = nextPlayer;
     },
     canPlayHand(player) {
       // if player's turn
@@ -224,8 +230,9 @@ export default {
       }
 
       const playerSelectedHand = this.gameState.players[player].selectedHand;
+      const isFirstHand = this.gameState.players[player].isFirstTurn;
 
-      return handUtils.isValidHand(playerSelectedHand);
+      return handUtils.isValidHand(playerSelectedHand, isFirstHand);
     }
   },
 
