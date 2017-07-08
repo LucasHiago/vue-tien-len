@@ -94,6 +94,8 @@ function isValidHand(hand) {
 
   const length = hand.length;
 
+  if (length === 0) return false;
+
   let isValid = true;
   if (length < 5) {
     if (!isSPTF(hand) && !isConsecutive(hand)) isValid = false;
@@ -107,4 +109,4 @@ function isValidHand(hand) {
   return isValid;
 }
 
-module.exports = { isValidHand, isSPTF, isConsecutive, isConsecTriplePairs };
+export default { isValidHand, isSPTF, isConsecutive, isConsecTriplePairs };

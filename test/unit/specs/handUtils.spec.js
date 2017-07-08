@@ -319,6 +319,11 @@ describe('handUtils', () => {
     });
   });
   describe('isValidHand()', () => {
+    it('should return false for empty hand', () => {
+      const hand = [];
+
+      expect(handUtils.isValidHand(hand)).to.be.eq(false);
+    });
     it('should return true for singles', () => {
       const hand = [
         {
@@ -393,7 +398,7 @@ describe('handUtils', () => {
 
       expect(handUtils.isValidHand(hand)).to.be.eq(true);
     });
-    it('should return false for a single diff numeral', () => {
+    it('should return false for a single diff numeral for consec', () => {
       const hand = [
         {
           name: '4C',
@@ -419,7 +424,7 @@ describe('handUtils', () => {
 
       expect(handUtils.isValidHand(hand)).to.be.eq(false);
     });
-    it('should return false for presence of 2', () => {
+    it('should return false for presence of 2 for consec', () => {
       const hand = [
         {
           name: '4C',
@@ -445,7 +450,7 @@ describe('handUtils', () => {
 
       expect(handUtils.isValidHand(hand)).to.be.eq(false);
     });
-    it('should return false for less than 3 cards', () => {
+    it('should return false for less than 3 cards for consec', () => {
       const hand = [
         {
           name: '4C',
@@ -491,7 +496,7 @@ describe('handUtils', () => {
 
       expect(handUtils.isValidHand(hand)).to.be.eq(true);
     });
-    it('should return false for less than 6 cards', () => {
+    it('should return false for less than 6 cards for consecutve triple pairs', () => {
       const hand = [
         {
           name: '5S',
@@ -522,7 +527,7 @@ describe('handUtils', () => {
 
       expect(handUtils.isValidHand(hand)).to.be.eq(false);
     });
-    it('should return false for non-pairs', () => {
+    it('should return false for non-pairs consecutve triple pairs', () => {
       const hand = [
         {
           name: '5S',
@@ -558,7 +563,7 @@ describe('handUtils', () => {
 
       expect(handUtils.isValidHand(hand)).to.be.eq(false);
     });
-    it('should return false for non-consecutive pairs', () => {
+    it('should return false for non-consecutive pairs consecutve triple pairs', () => {
       const hand = [
         {
           name: '5S',
@@ -594,7 +599,7 @@ describe('handUtils', () => {
 
       expect(handUtils.isValidHand(hand)).to.be.eq(false);
     });
-    it('should return true for consecutive pairs with face cards', () => {
+    it('should return true for consecutve triple pairs with face cards', () => {
       const hand = [
         {
           name: '9D',
