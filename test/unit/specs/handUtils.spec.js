@@ -318,7 +318,55 @@ describe('handUtils', () => {
       expect(handUtils.isConsecTriplePairs(hand)).to.be.eq(true);
     });
   });
-  describe('isValidHand()', () => {
+  describe.only('isValidHand()', () => {
+    it('should return true if first hand contains a 3S and is valid', () => {
+      const hand = [
+        {
+          name: '3S',
+          rank: 1,
+          isSelected: false
+        },
+        {
+          name: '3H',
+          rank: 4,
+          isSelected: false
+        }
+      ];
+
+      expect(handUtils.isValidHand(hand, true)).to.be.eq(true);
+    });
+    it('should return false if first hand does NOT contain a 3S and is valid', () => {
+      const hand = [
+        {
+          name: '4S',
+          rank: 5,
+          isSelected: false
+        },
+        {
+          name: '4H',
+          rank: 8,
+          isSelected: false
+        }
+      ];
+
+      expect(handUtils.isValidHand(hand, true)).to.be.eq(false);
+    });
+    it('should return false if first hand does contain a 3S but is NOT valid', () => {
+      const hand = [
+        {
+          name: '3S',
+          rank: 1,
+          isSelected: false
+        },
+        {
+          name: '4H',
+          rank: 8,
+          isSelected: false
+        }
+      ];
+
+      expect(handUtils.isValidHand(hand, true)).to.be.eq(false);
+    });
     it('should return false for empty hand', () => {
       const hand = [];
 
