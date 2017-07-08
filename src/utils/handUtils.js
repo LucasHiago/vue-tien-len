@@ -125,11 +125,23 @@ function isSameType(hand, activeHand) {
   return false;
 }
 
-// // returns the type of both hands
-// function whichType(hand, activeHand) {
-//   console
-//   return
-// }
+// returns the type of both hands (assumes that both hands are same type)
+function whichType(hand, activeHand) {
+  if (hand.length !== activeHand.length) throw Error('hand and active hand must be same length!');
+  if (!isSameType(hand, activeHand)) throw Error('hand and active hand are not same type!');
+
+  let type = '';
+
+  if (isSPTF(hand) && isSPTF(activeHand)) {
+    type = 'SPTF';
+  } else if (isConsecutive(hand) && isConsecutive(activeHand)) {
+    type = 'CONSECUTIVE';
+  } else {
+    type = 'CTP';
+  }
+
+  return type;
+}
 
 // determines if a hand can beat an active hand
 // function canBeatHand(hand, activeHand) {
@@ -139,4 +151,4 @@ function isSameType(hand, activeHand) {
 //
 // }
 
-export default { isValidHand, isSPTF, isConsecutive, isConsecTriplePairs, isSameType };
+export default { isValidHand, isSPTF, isConsecutive, isConsecTriplePairs, isSameType, whichType };

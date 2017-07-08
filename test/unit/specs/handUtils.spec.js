@@ -1091,4 +1091,379 @@ describe('handUtils', () => {
       expect(handUtils.isSameType(hand, activeHand)).to.be.eq(false);
     });
   });
+  describe.only('whichType()', () => {
+    it('should return SPTF for singles', () => {
+      const hand = [
+        {
+          name: '4S',
+          rank: 5,
+          isSelected: false
+        }
+      ];
+
+      const activeHand = [
+        {
+          name: '4H',
+          rank: 8,
+          isSelected: false
+        }];
+
+      expect(handUtils.whichType(hand, activeHand)).to.be.eq('SPTF');
+    });
+    it('should return SPTF for pairs', () => {
+      const hand = [
+        {
+          name: '4S',
+          rank: 5,
+          isSelected: false
+        },
+        {
+          name: '4H',
+          rank: 8,
+          isSelected: false
+        }
+      ];
+
+      const activeHand = [
+        {
+          name: '3S',
+          rank: 5,
+          isSelected: false
+        },
+        {
+          name: '3H',
+          rank: 8,
+          isSelected: false
+        }
+      ];
+
+      expect(handUtils.whichType(hand, activeHand)).to.be.eq('SPTF');
+    });
+    it('should return SPTF for triples', () => {
+      const hand = [
+        {
+          name: '4S',
+          rank: 5,
+          isSelected: false
+        },
+        {
+          name: '4H',
+          rank: 8,
+          isSelected: false
+        },
+        {
+          name: '4D',
+          rank: 8,
+          isSelected: false
+        }
+      ];
+
+      const activeHand = [
+        {
+          name: '3S',
+          rank: 5,
+          isSelected: false
+        },
+        {
+          name: '3H',
+          rank: 8,
+          isSelected: false
+        },
+        {
+          name: '3D',
+          rank: 8,
+          isSelected: false
+        }
+      ];
+
+      expect(handUtils.whichType(hand, activeHand)).to.be.eq('SPTF');
+    });
+    it('should return SPTF for four of kind', () => {
+      const hand = [
+        {
+          name: '4S',
+          rank: 5,
+          isSelected: false
+        },
+        {
+          name: '4H',
+          rank: 8,
+          isSelected: false
+        },
+        {
+          name: '4D',
+          rank: 8,
+          isSelected: false
+        },
+        {
+          name: '4C',
+          rank: 8,
+          isSelected: false
+        }
+      ];
+
+      const activeHand = [
+        {
+          name: '3S',
+          rank: 5,
+          isSelected: false
+        },
+        {
+          name: '3H',
+          rank: 8,
+          isSelected: false
+        },
+        {
+          name: '3D',
+          rank: 8,
+          isSelected: false
+        },
+        {
+          name: '3C',
+          rank: 8,
+          isSelected: false
+        }
+      ];
+
+      expect(handUtils.whichType(hand, activeHand)).to.be.eq('SPTF');
+    });
+    it('should return CONSECUTIVE for consecutives', () => {
+      const hand = [
+        {
+          name: '3S',
+          rank: 5,
+          isSelected: false
+        },
+        {
+          name: '4H',
+          rank: 8,
+          isSelected: false
+        },
+        {
+          name: '5D',
+          rank: 8,
+          isSelected: false
+        },
+        {
+          name: '6C',
+          rank: 8,
+          isSelected: false
+        }
+      ];
+
+      const activeHand = [
+        {
+          name: '5S',
+          rank: 5,
+          isSelected: false
+        },
+        {
+          name: '6H',
+          rank: 8,
+          isSelected: false
+        },
+        {
+          name: '7D',
+          rank: 8,
+          isSelected: false
+        },
+        {
+          name: '8C',
+          rank: 8,
+          isSelected: false
+        }
+      ];
+
+      expect(handUtils.whichType(hand, activeHand)).to.be.eq('CONSECUTIVE');
+    });
+    it('should return CTP for consec triple pairs', () => {
+      const hand = [
+        {
+          name: '4S',
+          rank: 5,
+          isSelected: false
+        },
+        {
+          name: '4H',
+          rank: 8,
+          isSelected: false
+        },
+        {
+          name: '5D',
+          rank: 8,
+          isSelected: false
+        },
+        {
+          name: '5C',
+          rank: 8,
+          isSelected: false
+        },
+        {
+          name: '6D',
+          rank: 8,
+          isSelected: false
+        },
+        {
+          name: '6C',
+          rank: 8,
+          isSelected: false
+        }
+      ];
+
+      const activeHand = [
+        {
+          name: '5S',
+          rank: 5,
+          isSelected: false
+        },
+        {
+          name: '5H',
+          rank: 8,
+          isSelected: false
+        },
+        {
+          name: '6D',
+          rank: 8,
+          isSelected: false
+        },
+        {
+          name: '6C',
+          rank: 8,
+          isSelected: false
+        },
+        {
+          name: '7D',
+          rank: 8,
+          isSelected: false
+        },
+        {
+          name: '7C',
+          rank: 8,
+          isSelected: false
+        }
+      ];
+
+      expect(handUtils.whichType(hand, activeHand)).to.be.eq('CTP');
+    });
+    it('should throw error for not equal hands lengths', () => {
+      const hand = [
+        {
+          name: '3S',
+          rank: 5,
+          isSelected: false
+        },
+        {
+          name: '4H',
+          rank: 8,
+          isSelected: false
+        },
+        {
+          name: '5D',
+          rank: 8,
+          isSelected: false
+        }
+      ];
+
+      const activeHand = [
+        {
+          name: '5S',
+          rank: 5,
+          isSelected: false
+        },
+        {
+          name: '6H',
+          rank: 8,
+          isSelected: false
+        },
+        {
+          name: '7D',
+          rank: 8,
+          isSelected: false
+        },
+        {
+          name: '8C',
+          rank: 8,
+          isSelected: false
+        }
+      ];
+      try {
+        handUtils.whichType(hand, activeHand);
+      } catch (error) {
+        expect(error.message).to.be.eq('hand and active hand must be same length!');
+      }
+    });
+    it('should throw error if both hands are not same type', () => {
+      const hand = [
+        {
+          name: '3S',
+          rank: 5,
+          isSelected: false
+        },
+        {
+          name: '4H',
+          rank: 8,
+          isSelected: false
+        },
+        {
+          name: '5D',
+          rank: 8,
+          isSelected: false
+        },
+        {
+          name: '6C',
+          rank: 8,
+          isSelected: false
+        },
+        {
+          name: '7D',
+          rank: 8,
+          isSelected: false
+        },
+        {
+          name: '8C',
+          rank: 8,
+          isSelected: false
+        }
+      ];
+
+      const activeHand = [
+        {
+          name: '5S',
+          rank: 5,
+          isSelected: false
+        },
+        {
+          name: '5H',
+          rank: 8,
+          isSelected: false
+        },
+        {
+          name: '6D',
+          rank: 8,
+          isSelected: false
+        },
+        {
+          name: '6C',
+          rank: 8,
+          isSelected: false
+        },
+        {
+          name: '7D',
+          rank: 8,
+          isSelected: false
+        },
+        {
+          name: '7C',
+          rank: 8,
+          isSelected: false
+        }
+      ];
+
+      try {
+        handUtils.whichType(hand, activeHand);
+      } catch (error) {
+        expect(error.message).to.be.eq('hand and active hand are not same type!');
+      }
+    });
+  });
 });
