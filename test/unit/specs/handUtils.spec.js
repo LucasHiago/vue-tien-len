@@ -1543,7 +1543,7 @@ describe('handUtils', () => {
       }
     });
   });
-  describe.only('canBeatHand()', () => {
+  describe('canBeatHand()', () => {
     it('should return true if single hand ranks higher than active single', () => {
       const activeHand = [
         {
