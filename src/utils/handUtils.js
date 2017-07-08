@@ -143,6 +143,19 @@ function whichType(hand, activeHand) {
   return type;
 }
 
+// determines if selected consecutive hand can beat active consecutive hand
+function compareConsecutives(hand, activeHand) {
+  if (hand.length !== activeHand.length) throw Error('hand and active hand must be same length!');
+  if (!isSameType(hand, activeHand)) throw Error('hand and active hand are not same type!');
+
+  // sort hands
+  const sortedHand = _.sortBy(hand, card => parseInt(card.rank, 10));
+  const sortedActiveHand = _.sortBy(activeHand, card => parseInt(card.rank, 10));
+  const lastCardIndex = sortedHand.length - 1;
+
+  return sortedHand[lastCardIndex].rank > sortedActiveHand[lastCardIndex].rank;
+}
+
 // determines if a hand can beat an active hand
 // function canBeatHand(hand, activeHand) {
 //   // length must be same
@@ -151,4 +164,12 @@ function whichType(hand, activeHand) {
 //
 // }
 
-export default { isValidHand, isSPTF, isConsecutive, isConsecTriplePairs, isSameType, whichType };
+export default {
+  isValidHand,
+  isSPTF,
+  isConsecutive,
+  isConsecTriplePairs,
+  isSameType,
+  whichType,
+  compareConsecutives
+};

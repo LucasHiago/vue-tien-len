@@ -685,6 +685,7 @@ describe('handUtils', () => {
     });
   });
   describe('isSameType()', () => {
+    // ranks are not precise, but shouldn't matter
     it('should return true for singles', () => {
       const hand = [
         {
@@ -1091,7 +1092,8 @@ describe('handUtils', () => {
       expect(handUtils.isSameType(hand, activeHand)).to.be.eq(false);
     });
   });
-  describe.only('whichType()', () => {
+  describe('whichType()', () => {
+    // ranks are not precise, but shouldn't matter
     it('should return SPTF for singles', () => {
       const hand = [
         {
@@ -1464,6 +1466,155 @@ describe('handUtils', () => {
       } catch (error) {
         expect(error.message).to.be.eq('hand and active hand are not same type!');
       }
+    });
+  });
+  describe.only('compareConsecutives()', () => {
+    it('should return true if hand has higher numeral than active', () => {
+      const activeHand = [
+        {
+          name: '3S',
+          rank: 1,
+          isSelected: false
+        },
+        {
+          name: '4S',
+          rank: 5,
+          isSelected: false
+        },
+        {
+          name: '5S',
+          rank: 9,
+          isSelected: false
+        },
+        {
+          name: '6S',
+          rank: 13,
+          isSelected: false
+        }
+      ];
+
+      const hand = [
+        {
+          name: '5S',
+          rank: 9,
+          isSelected: false
+        },
+        {
+          name: '6H',
+          rank: 16,
+          isSelected: false
+        },
+        {
+          name: '7D',
+          rank: 19,
+          isSelected: false
+        },
+        {
+          name: '8C',
+          rank: 22,
+          isSelected: false
+        }
+      ];
+
+      expect(handUtils.compareConsecutives(hand, activeHand)).to.be.eq(true);
+    });
+    it('should return true if hand has same numeral, but higher suit than active', () => {
+      const activeHand = [
+        {
+          name: '3S',
+          rank: 1,
+          isSelected: false
+        },
+        {
+          name: '4S',
+          rank: 5,
+          isSelected: false
+        },
+        {
+          name: '5S',
+          rank: 9,
+          isSelected: false
+        },
+        {
+          name: '6S',
+          rank: 13,
+          isSelected: false
+        }
+      ];
+
+      const hand = [
+        {
+          name: '3C',
+          rank: 2,
+          isSelected: false
+        },
+        {
+          name: '4D',
+          rank: 7,
+          isSelected: false
+        },
+        {
+          name: '5H',
+          rank: 12,
+          isSelected: false
+        },
+        {
+          name: '6C',
+          rank: 14,
+          isSelected: false
+        }
+      ];
+
+      expect(handUtils.compareConsecutives(hand, activeHand)).to.be.eq(true);
+    });
+    it('should return false if hand ranks lower than active', () => {
+      const activeHand = [
+        {
+          name: '3S',
+          rank: 1,
+          isSelected: false
+        },
+        {
+          name: '4S',
+          rank: 5,
+          isSelected: false
+        },
+        {
+          name: '5S',
+          rank: 9,
+          isSelected: false
+        },
+        {
+          name: '6C',
+          rank: 14,
+          isSelected: false
+        }
+      ];
+
+      const hand = [
+        {
+          name: '3C',
+          rank: 2,
+          isSelected: false
+        },
+        {
+          name: '4D',
+          rank: 7,
+          isSelected: false
+        },
+        {
+          name: '5H',
+          rank: 12,
+          isSelected: false
+        },
+        {
+          name: '6S',
+          rank: 13,
+          isSelected: false
+        }
+      ];
+
+      expect(handUtils.compareConsecutives(hand, activeHand)).to.be.eq(false);
     });
   });
 });
