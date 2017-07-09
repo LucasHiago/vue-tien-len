@@ -200,16 +200,20 @@ export default {
     submitHand(player) {
       // get player selected hand state
       const playerSelectedHand = this.gameState.players[player].selectedHand;
+      const activeHand = this.gameState.active.hand;
+      const isFirstHand = this.gameState.players[player].isFirstTurn;
 
-      // set game state active
-      this.gameState.active.hand = playerSelectedHand;
-      this.gameState.active.playerId = player;
+      if (handUtils.canBeatHand(playerSelectedHand, activeHand) || isFirstHand) {
+        // set game state active
+        this.gameState.active.hand = playerSelectedHand;
+        this.gameState.active.playerId = player;
 
-      // removed played cards from player
-      this.gameState.players[player].cards = _.filter(this.gameState.players[player].cards, ['isSelected', false]);
+        // removed played cards from player
+        this.gameState.players[player].cards = _.filter(this.gameState.players[player].cards, ['isSelected', false]);
 
-      // set next active player
-      this.setNextActivePlayer(player);
+        // set next active player
+        this.setNextActivePlayer(player);
+      }
     },
     setNextActivePlayer(curPlayer) {
       // set current player turn state
