@@ -122,7 +122,8 @@ export default {
         gameStart: false,
         active: {
           playerId: null,
-          hand: [] // list of cards
+          hand: [], // list of cards
+          passCounter: 0
         }
       }
     };
@@ -196,6 +197,7 @@ export default {
     },
     pass(player) {
       this.setNextActivePlayer(player);
+      this.gameState.active.passCounter = this.gameState.active.passCounter + 1;
     },
     submitHand(player) {
       // get player selected hand state
@@ -203,7 +205,8 @@ export default {
       const activeHand = this.gameState.active.hand;
       const isFirstHand = this.gameState.players[player].isFirstTurn;
 
-      if (handUtils.canBeatHand(playerSelectedHand, activeHand) || isFirstHand) {
+      if (handUtils.canBeatHand(playerSelectedHand, activeHand) || isFirstHand ||
+        activeHand.length === 0) {
         // set game state active
         this.gameState.active.hand = playerSelectedHand;
         this.gameState.active.playerId = player;
@@ -225,12 +228,18 @@ export default {
       nextPlayerId = nextPlayerId > 4 ? '1' : nextPlayerId.toString();
       const nextPlayer = `player${nextPlayerId}`;
       this.gameState.players[nextPlayer].isTurn = true;
-      this.gameState.active.playerId = nextPlayer;
     },
     canPlayHand(player) {
-      // if player's turn
+      // if not player's turn
       if (!this.gameState.players[player].isTurn) {
         return false;
+      }
+
+      // check if new round
+      if (this.gameState.active.passCounter === 3) {
+        this.gameState.active.passCounter = 0;
+        this.gameState.active.hand = [];
+        return true;
       }
 
       const playerSelectedHand = this.gameState.players[player].selectedHand;
