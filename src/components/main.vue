@@ -94,28 +94,32 @@ export default {
             isTurn: false,
             isFirstTurn: false,
             selectedHand: [],
-            canPlayHand: false // result of evaulating selectedHand
+            canPlayHand: false, // result of evaulating selectedHand,
+            isPassed: false
           },
           player2: {
             cards: [],
             isTurn: false,
             isFirstTurn: false,
             selectedHand: [],
-            canPlayHand: false // result of evaulating selectedHand
+            canPlayHand: false, // result of evaulating selectedHand
+            isPassed: false
           },
           player3: {
             cards: [],
             isTurn: false,
             isFirstTurn: false,
             selectedHand: [],
-            canPlayHand: false // result of evaulating selectedHand
+            canPlayHand: false, // result of evaulating selectedHand
+            isPassed: false
           },
           player4: {
             cards: [],
             isTurn: false,
             isFirstTurn: false,
             selectedHand: [],
-            canPlayHand: false // result of evaulating selectedHand
+            canPlayHand: false, // result of evaulating selectedHand
+            isPassed: false
           }
         },
         // prob can move to Store
@@ -197,6 +201,7 @@ export default {
     },
     pass(player) {
       this.setNextActivePlayer(player);
+      this.gameState.players[player].isPassed = true;
       this.gameState.active.passCounter = this.gameState.active.passCounter + 1;
     },
     submitHand(player) {
@@ -219,15 +224,21 @@ export default {
       }
     },
     setNextActivePlayer(curPlayer) {
-      // set current player turn state
+      // reset current player turn state
       this.gameState.players[curPlayer].isTurn = false;
       this.gameState.players[curPlayer].isFirstTurn = false;
 
-      // set next player turn state
-      let nextPlayerId = parseInt(curPlayer[curPlayer.length - 1], 10) + 1;
-      nextPlayerId = nextPlayerId > 4 ? '1' : nextPlayerId.toString();
-      const nextPlayer = `player${nextPlayerId}`;
-      this.gameState.players[nextPlayer].isTurn = true;
+      // if next player didn't pass before, then set next player turn state
+      let nextPlayerPassed = true;
+      let curNextPlayer = this.getNextPlayer(curPlayer);
+      while (nextPlayerPassed) {
+        if (!this.gameState.players[curNextPlayer].isPassed) {
+          nextPlayerPassed = false;
+        } else {
+          curNextPlayer = this.getNextPlayer(curNextPlayer);
+        }
+      }
+      this.gameState.players[curNextPlayer].isTurn = true;
     },
     canPlayHand(player) {
       // if not player's turn
@@ -239,6 +250,8 @@ export default {
       if (this.gameState.active.passCounter === 3) {
         this.gameState.active.passCounter = 0;
         this.gameState.active.hand = [];
+        // reset players states
+        this.resetPlayersState(player);
         return true;
       }
 
@@ -246,11 +259,66 @@ export default {
       const isFirstHand = this.gameState.players[player].isFirstTurn;
 
       return handUtils.isValidHand(playerSelectedHand, isFirstHand);
+    },
+    getNextPlayer(curPlayer) {
+      // returns the next player in the sequence
+      let nextPlayerId = parseInt(curPlayer[curPlayer.length - 1], 10) + 1;
+      nextPlayerId = nextPlayerId > 4 ? '1' : nextPlayerId.toString();
+      const nextPlayer = `player${nextPlayerId}`;
+
+      return nextPlayer;
+    },
+    resetPlayersState(curPlayer) {
+      // keep track of cur player state
+      const curPlayerGameState = this.gameState.players[curPlayer];
+      // reset players game state
+      Object.assign(this.gameState.players, this.defaultPlayersState);
+      // apply cur player state
+      this.gameState.players[curPlayer] = curPlayerGameState;
     }
   },
 
   components: {
     Card
+  },
+
+  computed: {
+    defaultPlayersState() {
+      return {
+        player1: {
+          cards: this.gameState.players.player1.cards,
+          isTurn: false,
+          isFirstTurn: false,
+          selectedHand: [],
+          canPlayHand: false, // result of evaulating selectedHand,
+          isPassed: false
+        },
+        player2: {
+          cards: this.gameState.players.player2.cards,
+          isTurn: false,
+          isFirstTurn: false,
+          selectedHand: [],
+          canPlayHand: false, // result of evaulating selectedHand
+          isPassed: false
+        },
+        player3: {
+          cards: this.gameState.players.player3.cards,
+          isTurn: false,
+          isFirstTurn: false,
+          selectedHand: [],
+          canPlayHand: false, // result of evaulating selectedHand
+          isPassed: false
+        },
+        player4: {
+          cards: this.gameState.players.player4.cards,
+          isTurn: false,
+          isFirstTurn: false,
+          selectedHand: [],
+          canPlayHand: false, // result of evaulating selectedHand
+          isPassed: false
+        }
+      };
+    }
   }
 };
 </script>
