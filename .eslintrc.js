@@ -4,6 +4,7 @@ module.exports = {
         "import", "html"
     ],
     "rules": {
-        "comma-dangle": 0
+        "comma-dangle": 0,
+        "max-len": [2, {"code": 180}]
     }
 };
