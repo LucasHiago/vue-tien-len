@@ -166,4 +166,28 @@ function getFOKs(cards) {
   return listOfFOKs;
 }
 
-module.exports = { getCardNumeral, getCTPS, getConsecutives, getFOKs };
+// return list of possible triples hands (of index pos) in list of cards
+function getTriples(cards) {
+  // modify cards to keep track of original index of input
+  const modCards = _.map(cards, (card, index) => {
+    const curCard = card;
+    curCard.prevIndex = index;
+    return curCard;
+  });
+  const sortedCards = _.sortBy(modCards, 'rank');
+
+  const listOfTriples = [];
+  Object.keys(sortedCards).forEach((card, index) => {
+    if (index < 11) {
+      const hand = sortedCards.slice(index, index + 3);
+      if (handUtils.isTriple(hand)) {
+        listOfTriples.push(hand.map(c => c.prevIndex));
+      }
+    }
+  });
+
+
+  return listOfTriples;
+}
+
+module.exports = { getCardNumeral, getCTPS, getConsecutives, getFOKs, getTriples };

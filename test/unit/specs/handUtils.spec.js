@@ -1,6 +1,6 @@
 import handUtils from '../../../src/utils/handUtils';
 
-describe.only('handUtils', () => {
+describe('handUtils', () => {
   describe('isSPTF()', () => {
     it('should return true for singles', () => {
       const hand = [
@@ -178,7 +178,7 @@ describe.only('handUtils', () => {
       expect(handUtils.isFourOfKind(hand)).to.be.eq(false);
     });
   });
-  describe.only('isTriple()', () => {
+  describe('isTriple()', () => {
     it('should return true for triples', () => {
       const hand = [
         {

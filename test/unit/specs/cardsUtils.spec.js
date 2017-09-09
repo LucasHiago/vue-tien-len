@@ -1,6 +1,6 @@
 import cardsUtils from '../../../src/utils/cardsUtils';
 
-describe('cardsUtils', () => {
+describe.only('cardsUtils', () => {
   describe('getCardNumeral()', () => {
     it('should return number/face that is not 10', () => {
       const card = {
@@ -460,6 +460,101 @@ describe('cardsUtils', () => {
       const expectedListOfHands = [
         [12, 6, 10, 2],
         [4, 0, 11, 7],
+      ];
+
+      expect(actualListOfHands).to.be.deep.eq(expectedListOfHands);
+    });
+  });
+  describe.only('getTriples()', () => {
+    it('should return triples', () => {
+      const cards = [
+        {
+          name: '10C',
+          rank: 30,
+          number: 10,
+          isSelected: false
+        },
+        {
+          name: 'AS',
+          rank: 45,
+          number: 14,
+          isSelected: false
+        },
+        {
+          name: '4H',
+          rank: 8,
+          number: 4,
+          isSelected: false
+        },
+        {
+          name: '8D',
+          rank: 23,
+          number: 8,
+          isSelected: false
+        },
+        {
+          name: '10S',
+          rank: 29,
+          number: 10,
+          isSelected: false
+        },
+        {
+          name: '9C',
+          rank: 26,
+          number: 9,
+          isSelected: false
+        },
+        {
+          name: '4C',
+          rank: 6,
+          number: 4,
+          isSelected: false
+        },
+        {
+          name: '10H',
+          rank: 32,
+          number: 10,
+          isSelected: false
+        },
+        {
+          name: 'AD',
+          rank: 47,
+          number: 14,
+          isSelected: false
+        },
+        {
+          name: 'AH',
+          rank: 48,
+          number: 14,
+          isSelected: false
+        },
+        {
+          name: '4D',
+          rank: 7,
+          number: 4,
+          isSelected: false
+        },
+        {
+          name: '10D',
+          rank: 31,
+          number: 10,
+          isSelected: false
+        },
+        {
+          name: '4S',
+          rank: 5,
+          number: 4,
+          isSelected: false
+        }
+      ];
+
+      const actualListOfHands = cardsUtils.getTriples(cards);
+      const expectedListOfHands = [
+        [12, 6, 10],
+        [6, 10, 2],
+        [4, 0, 11],
+        [0, 11, 7],
+        [1, 8, 9]
       ];
 
       expect(actualListOfHands).to.be.deep.eq(expectedListOfHands);
