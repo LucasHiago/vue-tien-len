@@ -283,5 +283,94 @@ describe('cardsUtils', () => {
 
       expect(actualListOfHands).to.be.deep.eq(expectedListOfHands);
     });
+    it('should return consecutives for pairs', () => {
+      const cards = [
+        {
+          name: '9H',
+          rank: 28,
+          number: 9,
+          isSelected: false
+        },
+        {
+          name: 'KD',
+          rank: 43,
+          number: 13,
+          isSelected: false
+        },
+        {
+          name: 'QH',
+          rank: 40,
+          number: 12,
+          isSelected: false
+        },
+        {
+          name: '3D',
+          rank: 3,
+          number: 3,
+          isSelected: false
+        },
+        {
+          name: '8S',
+          rank: 21,
+          number: 8,
+          isSelected: false
+        },
+        {
+          name: '9C',
+          rank: 26,
+          number: 9,
+          isSelected: false
+        },
+        {
+          name: 'QD',
+          rank: 39,
+          number: 12,
+          isSelected: false
+        },
+        {
+          name: 'QS',
+          rank: 37,
+          number: 12,
+          isSelected: false
+        },
+        {
+          name: 'AH',
+          rank: 48,
+          number: 14,
+          isSelected: false
+        },
+        {
+          name: '3H',
+          rank: 4,
+          number: 3,
+          isSelected: false
+        },
+        {
+          name: '4D',
+          rank: 7,
+          number: 4,
+          isSelected: false
+        },
+        {
+          name: '3S',
+          rank: 1,
+          number: 3,
+          isSelected: false
+        },
+        {
+          name: 'AD',
+          rank: 47,
+          number: 14,
+          isSelected: false
+        }
+      ];
+
+      const actualListOfHands = cardsUtils.getConsecutives(cards);
+      const expectedListOfHands = [
+        [7, 1, 12],
+      ];
+
+      expect(actualListOfHands).to.be.deep.eq(expectedListOfHands);
+    });
   });
 });
