@@ -18,7 +18,7 @@ function getCardNumeral(card) {
   return card.name.substr(0, 1);
 }
 
-// return list of possible CTPs hands in list of cards (index pos)
+// return list of possible CTPs hands (of index pos) in list of cards (index pos)
 function getCTPS(cards) {
   // modify cards to keep track of original index of input
   const modCards = _.map(cards, (card, index) => {
@@ -87,7 +87,7 @@ function getCTPS(cards) {
   return ctps;
 }
 
-// return list of possible CONSECUTIVE hands in list of cards (index pos)
+// return list of possible CONSECUTIVE hands (of index pos) in list of cards
 function getConsecutives(cards) {
   // modify cards to keep track of original index of input
   const modCards = _.map(cards, (card, index) => {
@@ -142,4 +142,28 @@ function getConsecutives(cards) {
   return listOfListConsecs;
 }
 
-module.exports = { getCardNumeral, getCTPS, getConsecutives };
+// return list of possible FOK hands (of index pos) in list of cards
+function getFOKs(cards) {
+  // modify cards to keep track of original index of input
+  const modCards = _.map(cards, (card, index) => {
+    const curCard = card;
+    curCard.prevIndex = index;
+    return curCard;
+  });
+  const sortedCards = _.sortBy(modCards, 'rank');
+
+  const listOfFOKs = [];
+  Object.keys(sortedCards).forEach((card, index) => {
+    if (index < 10) {
+      const hand = sortedCards.slice(index, index + 4);
+      if (handUtils.isFourOfKind(hand)) {
+        listOfFOKs.push(hand.map(c => c.prevIndex));
+      }
+    }
+  });
+
+
+  return listOfFOKs;
+}
+
+module.exports = { getCardNumeral, getCTPS, getConsecutives, getFOKs };
