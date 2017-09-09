@@ -1,6 +1,6 @@
 import handUtils from '../../../src/utils/handUtils';
 
-describe('handUtils', () => {
+describe.only('handUtils', () => {
   describe('isSPTF()', () => {
     it('should return true for singles', () => {
       const hand = [
@@ -176,6 +176,66 @@ describe('handUtils', () => {
       ];
 
       expect(handUtils.isFourOfKind(hand)).to.be.eq(false);
+    });
+  });
+  describe.only('isTriple()', () => {
+    it('should return true for triples', () => {
+      const hand = [
+        {
+          name: '4H',
+          rank: 8,
+          isSelected: false
+        },
+        {
+          name: '4D',
+          rank: 7,
+          isSelected: false
+        },
+        {
+          name: '4S',
+          rank: 5,
+          isSelected: false
+        }
+      ];
+
+      expect(handUtils.isTriple(hand)).to.be.eq(true);
+    });
+    it('should return false for less than 3 cards', () => {
+      const hand = [
+        {
+          name: '4C',
+          rank: 6,
+          isSelected: false
+        },
+        {
+          name: '4H',
+          rank: 8,
+          isSelected: false
+        }
+      ];
+
+      expect(handUtils.isTriple(hand)).to.be.eq(false);
+    });
+    it('should return false for 3 cards but not triples', () => {
+      const hand = [
+        {
+          name: '4C',
+          rank: 6,
+          isSelected: false
+        },
+        {
+          name: '4H',
+          rank: 8,
+          isSelected: false
+        },
+        {
+          name: '5S',
+          rank: 9,
+          isSelected: false
+        }
+      ];
+
+      expect(handUtils.isTriple(hand)).to.be.eq(false);
     });
   });
   describe('isConsecutive()', () => {

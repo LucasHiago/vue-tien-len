@@ -67,6 +67,24 @@ function isFourOfKind(hand) {
   return isFourOfaKind;
 }
 
+// determines if hand is triple
+function isTriple(hand) {
+  if (hand.length !== 3) return false;
+  let numeral = '';
+  let isTripleKind = true;
+
+  Object.keys(hand).forEach((card) => {
+    // eslint-disable-next-line max-len
+    const cardNumeral = hand[card].name.length === 3 ? hand[card].name.substring(0, 2) : hand[card].name[0];
+    if (!numeral) {
+      numeral = cardNumeral;
+    }
+    if (cardNumeral !== numeral) isTripleKind = false;
+  });
+
+  return isTripleKind;
+}
+
 // determines if a hand is a valid consecutive hand
 function isConsecutive(hand) {
   if (isSPTF(hand)) return false;
@@ -187,6 +205,7 @@ export default {
   isValidHand,
   isSPTF,
   isFourOfKind,
+  isTriple,
   isConsecutive,
   isConsecTriplePairs,
   isSameType,
