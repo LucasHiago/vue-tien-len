@@ -179,6 +179,11 @@ function getTriples(cards) {
   const listOfTriples = [];
   Object.keys(sortedCards).forEach((card, index) => {
     if (index < 11) {
+      // TODO: FOKs can yield combinations of triples out of order
+      // i.e. 3S, 3C, 3D, 3H -> [3S, 3C, 3D], [3C, 3D, 3H], [3D, 3H, 3S]
+      // shouldn't be too big of a deal since we're mostly concerned with just fetching
+      // any triples right now
+
       const hand = sortedCards.slice(index, index + 3);
       if (handUtils.isTriple(hand)) {
         listOfTriples.push(hand.map(c => c.prevIndex));

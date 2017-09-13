@@ -238,6 +238,61 @@ describe('handUtils', () => {
       expect(handUtils.isTriple(hand)).to.be.eq(false);
     });
   });
+  describe('isPair()', () => {
+    it('should return true for pairs', () => {
+      const hand = [
+        {
+          name: '4H',
+          rank: 8,
+          isSelected: false
+        },
+        {
+          name: '4D',
+          rank: 7,
+          isSelected: false
+        }
+      ];
+
+      expect(handUtils.isPair(hand)).to.be.eq(true);
+    });
+    it('should return false for not 2 cards', () => {
+      const hand = [
+        {
+          name: '4C',
+          rank: 6,
+          isSelected: false
+        },
+        {
+          name: '4H',
+          rank: 8,
+          isSelected: false
+        },
+        {
+          name: '4H',
+          rank: 8,
+          isSelected: false
+        }
+      ];
+
+      expect(handUtils.isPair(hand)).to.be.eq(false);
+    });
+    it('should return false for 2 cards but not pairs', () => {
+      const hand = [
+        {
+          name: '4C',
+          rank: 6,
+          isSelected: false
+        },
+        {
+          name: '5H',
+          rank: 12,
+          isSelected: false
+        }
+      ];
+
+      expect(handUtils.isPair(hand)).to.be.eq(false);
+    });
+  });
   describe('isConsecutive()', () => {
     it('should return false for presence of 2', () => {
       const hand = [

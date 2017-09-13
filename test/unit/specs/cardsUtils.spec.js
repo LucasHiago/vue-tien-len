@@ -1,6 +1,6 @@
 import cardsUtils from '../../../src/utils/cardsUtils';
 
-describe.only('cardsUtils', () => {
+describe('cardsUtils', () => {
   describe('getCardNumeral()', () => {
     it('should return number/face that is not 10', () => {
       const card = {
@@ -465,7 +465,7 @@ describe.only('cardsUtils', () => {
       expect(actualListOfHands).to.be.deep.eq(expectedListOfHands);
     });
   });
-  describe.only('getTriples()', () => {
+  describe('getTriples()', () => {
     it('should return triples', () => {
       const cards = [
         {

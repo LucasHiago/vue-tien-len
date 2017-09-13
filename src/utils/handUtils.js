@@ -85,6 +85,24 @@ function isTriple(hand) {
   return isTripleKind;
 }
 
+// determines if hand is a pair
+function isPair(hand) {
+  if (hand.length !== 2) return false;
+  let numeral = '';
+  let isPairKind = true;
+
+  Object.keys(hand).forEach((card) => {
+    // eslint-disable-next-line max-len
+    const cardNumeral = hand[card].name.length === 3 ? hand[card].name.substring(0, 2) : hand[card].name[0];
+    if (!numeral) {
+      numeral = cardNumeral;
+    }
+    if (cardNumeral !== numeral) isPairKind = false;
+  });
+
+  return isPairKind;
+}
+
 // determines if a hand is a valid consecutive hand
 function isConsecutive(hand) {
   if (isSPTF(hand)) return false;
@@ -204,6 +222,7 @@ function canBeatHand(hand, activeHand) {
 export default {
   isValidHand,
   isSPTF,
+  isPair,
   isFourOfKind,
   isTriple,
   isConsecutive,
