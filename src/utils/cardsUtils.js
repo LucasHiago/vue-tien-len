@@ -2,12 +2,6 @@
 import _ from 'lodash';
 import handUtils from './handUtils';
 
-// returns object representing all the possible hands of the list of cards
-// function getPossibleHands(cards) {
-
-
-// }
-
 
 // returns the number or face part of the card name
 function getCardNumeral(card) {
@@ -195,4 +189,47 @@ function getTriples(cards) {
   return listOfTriples;
 }
 
-module.exports = { getCardNumeral, getCTPS, getConsecutives, getFOKs, getTriples };
+// return list of possible pairs hands (of index pos) in list of cards
+function getPairs(cards) {
+  // modify cards to keep track of original index of input
+  const modCards = _.map(cards, (card, index) => {
+    const curCard = card;
+    curCard.prevIndex = index;
+    return curCard;
+  });
+  const sortedCards = _.sortBy(modCards, 'rank');
+
+  const listOfPairs = [];
+  Object.keys(sortedCards).forEach((card, index) => {
+    if (index < 12) {
+      // TODO: Triples can yield combinations of pairs out of order
+      // i.e. 3S, 3C, 3D -> [3S, 3C], [3C, 3D], [3D, 3S]
+      // shouldn't be too big of a deal since we're mostly concerned with just fetching
+      // any pairs right now
+
+      const hand = sortedCards.slice(index, index + 2);
+      if (handUtils.isPair(hand)) {
+        listOfPairs.push(hand.map(c => c.prevIndex));
+      }
+    }
+  });
+
+
+  return listOfPairs;
+}
+
+// returns object representing all the possible hands of the list of cards
+// function getPossibleHands(cards) {
+//   // parse cards list and return object showing all possible hands
+//   const ctps = getCTPS(cards);
+//   const consecutive = getConsecutives(cards);
+//   const foks = getFOKs(cards);
+//   const triples = getTriples(cards);
+//   const pairs
+//   return {
+//     CTPS:
+//   }
+
+// }
+
+module.exports = { getCardNumeral, getCTPS, getConsecutives, getFOKs, getTriples, getPairs };
