@@ -1,6 +1,6 @@
 import cardsUtils from '../../../src/utils/cardsUtils';
 
-describe.only('cardsUtils', () => {
+describe('cardsUtils', () => {
   describe('getCardNumeral()', () => {
     it('should return number/face that is not 10', () => {
       const card = {
@@ -560,7 +560,7 @@ describe.only('cardsUtils', () => {
       expect(actualListOfHands).to.be.deep.eq(expectedListOfHands);
     });
   });
-  describe.only('getPairs()', () => {
+  describe('getPairs()', () => {
     it('should return pairs', () => {
       const cards = [
         {
@@ -656,6 +656,105 @@ describe.only('cardsUtils', () => {
       ];
 
       expect(actualListOfHands).to.be.deep.eq(expectedListOfHands);
+    });
+  });
+  describe('getPossibleHands()', () => {
+    it('should return correct possible hands', () => {
+      const cards = [
+        {
+          name: '10S',
+          rank: 29,
+          number: 10
+        },
+        {
+          name: '10H',
+          rank: 32,
+          number: 10,
+          isSelected: false
+        },
+        {
+          name: '2D',
+          rank: 51,
+          number: 2,
+          isSelected: false
+        },
+        {
+          name: 'JS',
+          rank: 33,
+          number: 11,
+          isSelected: false
+        },
+        {//
+          name: '7S',
+          rank: 17,
+          number: 7,
+          isSelected: false
+        },
+        {
+          name: '8C',
+          rank: 22,
+          number: 8,
+          isSelected: false
+        },
+        {
+          name: '10D',
+          rank: 31,
+          number: 10,
+          isSelected: false
+        },
+        {
+          name: '7C',
+          rank: 18,
+          number: 7,
+          isSelected: false
+        },
+        {
+          name: '6S',
+          rank: 13,
+          number: 6,
+          isSelected: false
+        },
+        {
+          name: 'QS',
+          rank: 37,
+          number: 12,
+          isSelected: false
+        },
+        {
+          name: '6C',
+          rank: 14,
+          number: 6,
+          isSelected: false
+        },
+        {
+          name: '8S',
+          rank: 21,
+          number: 8,
+          isSelected: false
+        },
+        {
+          name: '10C',
+          rank: 30,
+          number: 10,
+          isSelected: false
+        }
+      ];
+
+      const expectedPossibleHands = {
+        CTPS: [[8, 10, 4, 7, 11, 5]],
+        CONSECUTIVE: [[8, 4, 11], [0, 3, 9], [10, 7, 5]],
+        FOKS: [[0, 12, 6, 1]],
+        TRIPLES: [[0, 12, 6], [12, 6, 1]],
+        PAIRS: [[8, 10], [4, 7], [11, 5], [0, 12], [12, 6], [6, 1]]
+      };
+
+
+      const actualListOfHands = cardsUtils.getPossibleHands(cards);
+      expect(actualListOfHands.CTPS).to.be.deep.eq(expectedPossibleHands.CTPS);
+      expect(actualListOfHands.CONSECUTIVE).to.be.deep.eq(expectedPossibleHands.CONSECUTIVE);
+      expect(actualListOfHands.FOKS).to.be.deep.eq(expectedPossibleHands.FOKS);
+      expect(actualListOfHands.TRIPLES).to.be.deep.eq(expectedPossibleHands.TRIPLES);
+      expect(actualListOfHands.PAIRS).to.be.deep.eq(expectedPossibleHands.PAIRS);
     });
   });
 });

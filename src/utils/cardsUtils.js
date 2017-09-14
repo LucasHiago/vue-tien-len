@@ -219,17 +219,21 @@ function getPairs(cards) {
 }
 
 // returns object representing all the possible hands of the list of cards
-// function getPossibleHands(cards) {
-//   // parse cards list and return object showing all possible hands
-//   const ctps = getCTPS(cards);
-//   const consecutive = getConsecutives(cards);
-//   const foks = getFOKs(cards);
-//   const triples = getTriples(cards);
-//   const pairs
-//   return {
-//     CTPS:
-//   }
+function getPossibleHands(cards) {
+  // parse cards list and return object showing all possible hands
+  const ctps = getCTPS(cards);
+  const consecutive = getConsecutives(cards);
+  const foks = getFOKs(cards);
+  const triples = getTriples(cards);
+  const pairs = getPairs(cards);
 
-// }
+  return {
+    CTPS: ctps,
+    CONSECUTIVE: consecutive,
+    FOKS: foks,
+    TRIPLES: triples,
+    PAIRS: pairs
+  };
+}
 
-module.exports = { getCardNumeral, getCTPS, getConsecutives, getFOKs, getTriples, getPairs };
+module.exports = { getCardNumeral, getCTPS, getConsecutives, getFOKs, getTriples, getPairs, getPossibleHands };
