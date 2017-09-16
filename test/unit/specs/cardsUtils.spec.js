@@ -659,7 +659,7 @@ describe('cardsUtils', () => {
     });
   });
   describe('getPossibleHands()', () => {
-    it('should return correct possible hands', () => {
+    it('should return correct possible hands with all possible hands', () => {
       const cards = [
         {
           name: '10S',
@@ -746,6 +746,103 @@ describe('cardsUtils', () => {
         FOKS: [[0, 12, 6, 1]],
         TRIPLES: [[0, 12, 6], [12, 6, 1]],
         PAIRS: [[8, 10], [4, 7], [11, 5], [0, 12], [12, 6], [6, 1]]
+      };
+
+
+      const actualListOfHands = cardsUtils.getPossibleHands(cards);
+      expect(actualListOfHands.CTPS).to.be.deep.eq(expectedPossibleHands.CTPS);
+      expect(actualListOfHands.CONSECUTIVE).to.be.deep.eq(expectedPossibleHands.CONSECUTIVE);
+      expect(actualListOfHands.FOKS).to.be.deep.eq(expectedPossibleHands.FOKS);
+      expect(actualListOfHands.TRIPLES).to.be.deep.eq(expectedPossibleHands.TRIPLES);
+      expect(actualListOfHands.PAIRS).to.be.deep.eq(expectedPossibleHands.PAIRS);
+    });
+    it('should return correct possible hands with all possible hands with no CTPS nor FOKS', () => {
+      const cards = [
+        {
+          name: 'QS',
+          rank: 37,
+          number: 12
+        },
+        {
+          name: 'KD',
+          rank: 43,
+          number: 13,
+          isSelected: false
+        },
+        {
+          name: 'AH',
+          rank: 48,
+          number: 14,
+          isSelected: false
+        },
+        {
+          name: '4H',
+          rank: 8,
+          number: 4,
+          isSelected: false
+        },
+        {//
+          name: '4D',
+          rank: 7,
+          number: 4,
+          isSelected: false
+        },
+        {
+          name: '6D',
+          rank: 15,
+          number: 6,
+          isSelected: false
+        },
+        {
+          name: '5C',
+          rank: 10,
+          number: 5,
+          isSelected: false
+        },
+        {
+          name: '3S',
+          rank: 1,
+          number: 3,
+          isSelected: false
+        },
+        {
+          name: '10S',
+          rank: 29,
+          number: 10,
+          isSelected: false
+        },
+        {
+          name: '10C',
+          rank: 30,
+          number: 10,
+          isSelected: false
+        },
+        {
+          name: 'QH',
+          rank: 40,
+          number: 12,
+          isSelected: false
+        },
+        {
+          name: 'QC',
+          rank: 38,
+          number: 12,
+          isSelected: false
+        },
+        {
+          name: 'JS',
+          rank: 33,
+          number: 11,
+          isSelected: false
+        }
+      ];
+
+      const expectedPossibleHands = {
+        CTPS: [],
+        CONSECUTIVE: [[7, 4, 6], [7, 4, 6, 5], [4, 6, 5], [8, 12, 0], [8, 12, 0, 1], [8, 12, 0, 1, 2], [12, 0, 1], [12, 0, 1, 2], [0, 1, 2]],
+        FOKS: [],
+        TRIPLES: [[0, 11, 10]],
+        PAIRS: [[4, 3], [8, 9], [0, 11], [11, 10]]
       };
 
 
