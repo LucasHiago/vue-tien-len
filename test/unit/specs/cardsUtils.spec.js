@@ -1,4 +1,5 @@
 import cardsUtils from '../../../src/utils/cardsUtils';
+import { getMappedCards } from '../../utils/getMappedCards';
 
 describe('cardsUtils', () => {
   describe('getCardNumeral()', () => {
@@ -852,6 +853,46 @@ describe('cardsUtils', () => {
       expect(actualListOfHands.FOKS).to.be.deep.eq(expectedPossibleHands.FOKS);
       expect(actualListOfHands.TRIPLES).to.be.deep.eq(expectedPossibleHands.TRIPLES);
       expect(actualListOfHands.PAIRS).to.be.deep.eq(expectedPossibleHands.PAIRS);
+    });
+  });
+  describe('getMappedCards()', () => {
+    it('should get the mapped cards in order', () => {
+      const cardNames = ['QS', 'KD', 'AH', '4H'];
+
+      const expectedCards = [
+        {
+          name: 'QS',
+          rank: 37,
+          isSelected: false,
+          number: 12,
+          suit: 'S'
+        },
+        {
+          name: 'KD',
+          rank: 43,
+          isSelected: false,
+          number: 13,
+          suit: 'D'
+        },
+        {
+          name: 'AH',
+          rank: 48,
+          isSelected: false,
+          number: 14,
+          suit: 'H'
+        },
+        {
+          name: '4H',
+          rank: 8,
+          isSelected: false,
+          number: 4,
+          suit: 'H'
+        }
+      ];
+
+      const cards = getMappedCards(cardNames);
+
+      expect(cards).to.deep.equal(expectedCards);
     });
   });
 });
