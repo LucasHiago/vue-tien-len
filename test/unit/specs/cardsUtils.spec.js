@@ -1,7 +1,7 @@
 import cardsUtils from '../../../src/utils/cardsUtils';
 import { getMappedCards } from '../../utils/getMappedCards';
 
-describe('cardsUtils', () => {
+describe.only('cardsUtils', () => {
   describe('getCardNumeral()', () => {
     it('should return number/face that is not 10', () => {
       const card = {
@@ -961,5 +961,26 @@ describe('cardsUtils', () => {
       const higherHand = cardsUtils.getHigherHand(activeHand, cards);
       expect(higherHand).to.be.deep.equal([]);
     });
+  });
+  describe.only('getLowestHand()', () => {
+    it('should return the lowest hand for cards', () => {
+      const cardsName = ['QS', 'KH', 'AH', '4H', '4D', '6D', '5C', '3S', '10S', '10D', 'QH', 'QC', 'JS'];
+      const cards = getMappedCards(cardsName);
+
+      const lowestHand = cardsUtils.getLowestHand(cards);
+
+      expect(lowestHand).to.be.deep.equal([8, 12, 0, 1, 2]);
+    });
+    // it('should return a CTPS hand for a single active card that is a 2', () => {
+    //   const activeHandName = ['2S'];
+    //   const cardsName = ['6S', '6D', '7H', '7D', '8D', '8C', '3C', '3S', '10S', '10C', 'QH', 'QC', '2D'];
+
+    //   const activeHand = getMappedCards(activeHandName);
+    //   const cards = getMappedCards(cardsName);
+
+    //   const higherHand = cardsUtils.getHigherHand(activeHand, cards);
+
+    //   expect(higherHand).to.be.deep.equal([0, 1, 3, 2, 5, 4]);
+    // });
   });
 });

@@ -237,6 +237,8 @@ function getPossibleHands(cards) {
 }
 
 // returns a hand from a list of cards that is next highest than active hand
+// strategy -> the defensive function for when AI is not starting the round...
+// ... we want to play the next higher hand that can beat the active hand
 function getHigherHand(activeHand, cards) {
   let higherHand = [];
 
@@ -261,8 +263,6 @@ function getHigherHand(activeHand, cards) {
     Object.keys(posHandsTypes).forEach((handType) => {
       // iterate each hand type
       const typePosHands = posHandsTypes[handType];
-      console.log('typePosHands');
-      console.log(typePosHands);
 
       // strategy -> we want to play lowest ranked hand of the same type
       //    i.e. [[0,3,5],[1,2,4]] --> we want to play [0,3,5]
@@ -277,16 +277,11 @@ function getHigherHand(activeHand, cards) {
       });
     });
 
-    // console.log('posHands');
-    // console.log(JSON.stringify(posHands));
     // strategy ->
     // - we want to get rid of as many cards as possible, so in a situation between CTPS or FOKS to beat a 2,
     //      we want to play the CTPS because it has the most number of cards
     higherHand = posHands.length > 0 ? _.max(posHands) : posHands;
   }
-
-  // console.log('middle higherHand');
-  // console.log(higherHand);
 
   if (activeHand.length === 1 && higherHand.length === 0) {
     // modify cards to keep track of original index of input
@@ -302,9 +297,69 @@ function getHigherHand(activeHand, cards) {
     higherHand = [foundHigher.prevIndex] || higherHand;
   }
 
-  // console.log('return higherHand');
-  // console.log(higherHand);
   return higherHand;
 }
 
-module.exports = { getCardNumeral, getCTPS, getConsecutives, getFOKs, getTriples, getPairs, getPossibleHands, getHigherHand };
+// returns a hand from a list of cards that is 'lowest' but highest number of cards
+function getLowestHand(cards) {
+  if (cards.length === 0) {
+    return [];
+  }
+
+  const posHandsTypes = getPossibleHands(cards);
+
+  /* posHandsTypes obj
+    {
+      CTPS: [[...]],
+      CONSECUTIVE: [[...]],
+      FOKS: [[...]],
+      TRIPLES: [[...]],
+      PAIRS: [[...]]
+    }
+  */
+
+  // we want the lowest hand but also get rid of the most amount of cards
+  let lowestHand = null;
+  Object.keys(posHandsTypes).forEach((handType) => {
+    // iterate each hand type
+    const typePosHands = posHandsTypes[handType];
+
+    typePosHands.forEach((posHand) => {
+      if (lowestHand === null) {
+        lowestHand = posHand;
+      } else if (posHand.length > lowestHand.length) {
+        lowestHand = posHand;
+      }
+    });
+  });
+
+  // TDO: strategy -> should AI play singles when there is a non-single
+  // lowestHand
+
+  // if lowestHand is still null or empty, then we only have singles left
+  if (lowestHand === null || lowestHand.length === 0) {
+    // modify cards to keep track of original index of input
+    const modCards = _.map(cards, (card, index) => {
+      const curCard = card;
+      curCard.prevIndex = index;
+      return curCard;
+    });
+
+    const sortedCards = _.sortBy(modCards, 'rank');
+    lowestHand = sortedCards[0].prevIndex;
+  }
+
+  return lowestHand;
+}
+
+module.exports = {
+  getCardNumeral,
+  getCTPS,
+  getConsecutives,
+  getFOKs,
+  getTriples,
+  getPairs,
+  getPossibleHands,
+  getHigherHand,
+  getLowestHand
+};
