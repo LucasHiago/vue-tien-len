@@ -895,4 +895,71 @@ describe('cardsUtils', () => {
       expect(cards).to.deep.equal(expectedCards);
     });
   });
+  describe('getHigherHand()', () => {
+    it('should return a higher hand for a single active card', () => {
+      const activeHandName = ['4S'];
+      const cardsName = ['QS', 'KD', 'AH', '4H', '4D', '6D', '5C', '3S', '10S', '10C', 'QH', 'QC', 'JS'];
+
+      const activeHand = getMappedCards(activeHandName);
+      const cards = getMappedCards(cardsName);
+
+      const higherHand = cardsUtils.getHigherHand(activeHand, cards);
+
+      expect(higherHand).to.be.deep.equal([4]);
+    });
+    it('should return a CTPS hand for a single active card that is a 2', () => {
+      const activeHandName = ['2S'];
+      const cardsName = ['6S', '6D', '7H', '7D', '8D', '8C', '3C', '3S', '10S', '10C', 'QH', 'QC', '2D'];
+
+      const activeHand = getMappedCards(activeHandName);
+      const cards = getMappedCards(cardsName);
+
+      const higherHand = cardsUtils.getHigherHand(activeHand, cards);
+
+      expect(higherHand).to.be.deep.equal([0, 1, 3, 2, 5, 4]);
+    });
+    it('should return a higher consecutive hand', () => {
+      const activeHandName = ['4S', '5D', '6D'];
+      const cardsName = ['6S', '6D', '7H', '7D', '8D', '8C', '3C', '3S', '10S', '10C', 'QH', 'QC', '2D'];
+
+      const activeHand = getMappedCards(activeHandName);
+      const cards = getMappedCards(cardsName);
+
+      const higherHand = cardsUtils.getHigherHand(activeHand, cards);
+
+      expect(higherHand).to.be.deep.equal([0, 3, 5]);
+    });
+    it('should return a higher pair hand', () => {
+      const activeHandName = ['4S', '4D'];
+      const cardsName = ['7H', '7D', '8D', '8C', '3C', '4C', '4H', '3S', '10S', '10C', 'QH', 'QC', '2D'];
+
+      const activeHand = getMappedCards(activeHandName);
+      const cards = getMappedCards(cardsName);
+
+      const higherHand = cardsUtils.getHigherHand(activeHand, cards);
+
+      expect(higherHand).to.be.deep.equal([5, 6]);
+    });
+    it('should return a higher triple hand', () => {
+      const activeHandName = ['4S', '4D', '4H'];
+      const cardsName = ['7H', '7D', '8D', '8C', '3C', '4C', '3S', '10S', '10C', '10H', 'QC', '2D'];
+
+      const activeHand = getMappedCards(activeHandName);
+      const cards = getMappedCards(cardsName);
+
+      const higherHand = cardsUtils.getHigherHand(activeHand, cards);
+
+      expect(higherHand).to.be.deep.equal([7, 8, 9]);
+    });
+    it('should return nothing if AI does not have a higher hand', () => {
+      const activeHandName = ['4S', '4D'];
+      const cardsName = ['7D', '8D', '3C', '4C', '3S', '10S', 'QC', '2D'];
+
+      const activeHand = getMappedCards(activeHandName);
+      const cards = getMappedCards(cardsName);
+
+      const higherHand = cardsUtils.getHigherHand(activeHand, cards);
+      expect(higherHand).to.be.deep.equal([]);
+    });
+  });
 });

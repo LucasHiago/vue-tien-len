@@ -236,4 +236,78 @@ function getPossibleHands(cards) {
   };
 }
 
-module.exports = { getCardNumeral, getCTPS, getConsecutives, getFOKs, getTriples, getPairs, getPossibleHands };
+// returns a hand from a list of cards that is next highest than active hand
+function getHigherHand(activeHand, cards) {
+  let higherHand = [];
+
+  if (activeHand.length === 0 || cards.length === 0) {
+    throw new Error('activeHand and cards must be non-zero length');
+  }
+
+  // get list of hands that are same type as active
+  if (activeHand.length > 1 || activeHand[0].number === 2) {
+    const posHandsTypes = getPossibleHands(cards);
+    // console.log('posHandsTypes');
+    // console.log(JSON.stringify(posHandsTypes));
+
+    /* posHandsTypes obj
+      {
+        CTPS: [[...]],
+        CONSECUTIVE: [[...]],
+        FOKS: [[...]],
+        TRIPLES: [[...]],
+        PAIRS: [[...]]
+      }
+    */
+
+    const posHands = [];
+    Object.keys(posHandsTypes).forEach((handType) => {
+      // iterate each hand type
+      const typePosHands = posHandsTypes[handType];
+      console.log('typePosHands');
+      console.log(typePosHands);
+
+      // strategy -> we want to play lowest ranked hand of the same type
+      //    i.e. [[0,3,5],[1,2,4]] --> we want to play [0,3,5]
+      let gotPosHand = false;
+      typePosHands.forEach((posHand) => {
+        // convert list of list of orig pos index to collection of cards
+        const realPosHand = posHand.map(cardIndex => cards[cardIndex]);
+        if (!gotPosHand && handUtils.canBeatHand(realPosHand, activeHand)) {
+          posHands.push(posHand);
+          gotPosHand = true;
+        }
+      });
+    });
+
+    // console.log('posHands');
+    // console.log(JSON.stringify(posHands));
+    // strategy ->
+    // - we want to get rid of as many cards as possible, so in a situation between CTPS or FOKS to beat a 2,
+    //      we want to play the CTPS because it has the most number of cards
+    higherHand = posHands.length > 0 ? _.max(posHands) : posHands;
+  }
+
+  // console.log('middle higherHand');
+  // console.log(higherHand);
+
+  if (activeHand.length === 1 && higherHand.length === 0) {
+    // modify cards to keep track of original index of input
+    const modCards = _.map(cards, (card, index) => {
+      const curCard = card;
+      curCard.prevIndex = index;
+      return curCard;
+    });
+
+    const sortedCards = _.sortBy(modCards, 'rank');
+
+    const foundHigher = _.find(sortedCards, card => card.rank > activeHand[0].rank);
+    higherHand = [foundHigher.prevIndex] || higherHand;
+  }
+
+  // console.log('return higherHand');
+  // console.log(higherHand);
+  return higherHand;
+}
+
+module.exports = { getCardNumeral, getCTPS, getConsecutives, getFOKs, getTriples, getPairs, getPossibleHands, getHigherHand };
