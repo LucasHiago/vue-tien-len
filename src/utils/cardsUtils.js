@@ -247,9 +247,6 @@ function getHigherHand(activeHand, cards) {
   // get list of hands that are same type as active
   if (activeHand.length > 1 || activeHand[0].number === 2) {
     const posHandsTypes = getPossibleHands(cards);
-    // console.log('posHandsTypes');
-    // console.log(JSON.stringify(posHandsTypes));
-
     /* posHandsTypes obj
       {
         CTPS: [[...]],
