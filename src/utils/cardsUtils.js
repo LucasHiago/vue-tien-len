@@ -346,7 +346,7 @@ function getLowestHand(cards) {
     });
 
     const sortedCards = _.sortBy(modCards, 'rank');
-    lowestHand = sortedCards[0].prevIndex;
+    lowestHand = [sortedCards[0].prevIndex];
   }
 
   return lowestHand;

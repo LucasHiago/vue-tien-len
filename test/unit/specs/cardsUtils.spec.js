@@ -963,7 +963,7 @@ describe.only('cardsUtils', () => {
     });
   });
   describe.only('getLowestHand()', () => {
-    it('should return the lowest hand for cards', () => {
+    it('should return the lowest hand with most amount of cards', () => {
       const cardsName = ['QS', 'KH', 'AH', '4H', '4D', '6D', '5C', '3S', '10S', '10D', 'QH', 'QC', 'JS'];
       const cards = getMappedCards(cardsName);
 
@@ -971,16 +971,15 @@ describe.only('cardsUtils', () => {
 
       expect(lowestHand).to.be.deep.equal([8, 12, 0, 1, 2]);
     });
-    // it('should return a CTPS hand for a single active card that is a 2', () => {
-    //   const activeHandName = ['2S'];
-    //   const cardsName = ['6S', '6D', '7H', '7D', '8D', '8C', '3C', '3S', '10S', '10C', 'QH', 'QC', '2D'];
+    it('should return lowest single for single-only cards', () => {
 
-    //   const activeHand = getMappedCards(activeHandName);
-    //   const cards = getMappedCards(cardsName);
+      const cardsName = ['6D', '8D', '3C', '10S', '2D'];
 
-    //   const higherHand = cardsUtils.getHigherHand(activeHand, cards);
+      const cards = getMappedCards(cardsName);
 
-    //   expect(higherHand).to.be.deep.equal([0, 1, 3, 2, 5, 4]);
-    // });
+      const lowestHand = cardsUtils.getLowestHand(cards);
+
+      expect(lowestHand).to.be.deep.equal([2]);
+    });
   });
 });
