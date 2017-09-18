@@ -70,7 +70,7 @@ function isConsecutive(hand) {
 
 // return list of possible CONSECUTIVE hands in list of cards (index pos)
 function getConsecutives(cards) {
-  console.log('getConsecutives()');
+
   // modify cards to keep track of original index of input
   const modCards = _.map(cards, (card, index) => {
     const curCard = card;
@@ -232,6 +232,3 @@ const expectedListOfHands = [
   [3, 7, 4] // 21
 ];
 
-console.log(actualListOfHands);
-console.log(expectedListOfHands);
-console.log('end');
