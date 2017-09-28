@@ -972,7 +972,6 @@ describe.only('cardsUtils', () => {
       expect(lowestHand).to.be.deep.equal([8, 12, 0, 1, 2]);
     });
     it('should return lowest single for single-only cards', () => {
-
       const cardsName = ['6D', '8D', '3C', '10S', '2D'];
 
       const cards = getMappedCards(cardsName);
