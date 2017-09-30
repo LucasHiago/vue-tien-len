@@ -27,10 +27,6 @@ export default {
     };
   },
 
-  mounted() {
-    console.log('mounted');
-  },
-
   computed: {
     styleObject() {
       const card = this.cardMapKey;

@@ -1,7 +1,12 @@
 <template>
   <div class="hello">
     <div>
-      <button @click="play()">Play</button>
+      <template v-if="gameState.gameStart">
+        <button @click="playAgain()">Play Again</button>
+      </template>
+      <template v-else>
+        <button @click="play()">Play</button>
+      </template>
     </div>
     <div>
   
@@ -153,6 +158,9 @@ export default {
   methods: {
     play() {
       this.initializeGame();
+    },
+    playAgain() {
+      this.resetGame();
     },
     initializeGame() {
       this.gameState.gameStart = true;
@@ -362,7 +370,9 @@ export default {
     },
     resetGame() {
       // reset the game
-      Object.assign(this.gameState, this.defaultGameState);
+      this.gameState = this.defaultGameState;
+      console.log(this.gameState);
+      this.initializeGame();
     },
     freezePlayersArea() {
       // freezes the players play area
