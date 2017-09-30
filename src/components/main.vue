@@ -252,10 +252,15 @@ export default {
           this.winRank = this.winRank + 1;
         }
 
-        // TODO: check if game is over
-
         // set next active player
-        this.setNextActivePlayer(player);
+        const nextActivePlayer = this.setNextActivePlayer(player);
+
+        // check if game is over -> if second to last place has already been assigned
+        if (this.winRank === 4) {
+          this.gameState.players[nextActivePlayer].winRank = this.winRank;
+          // disable players area
+          this.freezePlayersArea();
+        }
       }
     },
     setNextActivePlayer(curPlayer) {
@@ -288,6 +293,7 @@ export default {
       // console.log('final next player:');
       // console.log(curNextPlayer);
       this.gameState.players[curNextPlayer].isTurn = true;
+      return curNextPlayer;
     },
     canPlayHand(player) {
       // if not player's turn
@@ -357,6 +363,12 @@ export default {
     resetGame() {
       // reset the game
       Object.assign(this.gameState, this.defaultGameState);
+    },
+    freezePlayersArea() {
+      // freezes the players play area
+      Object.keys(this.gameState.players).forEach((player) => {
+        this.gameState.players[player].isTurn = false;
+      });
     },
     minimizeCards(n) {
       // reduce every players cards to n cards each
