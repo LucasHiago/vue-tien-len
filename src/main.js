@@ -17,4 +17,5 @@ new Vue({
   components: { App }
 });
 
+// TODO: initialize queue of fake users
 getAllUsers(store);

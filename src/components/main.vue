@@ -24,7 +24,7 @@
         </template>
   
         <h3>
-          <span :class="{activePlayer: isActivePlayer('player1')}">Player 1</span>
+          <span :class="{activePlayer: isActivePlayer('player1')}">{{ gameState.players.player1.profile.username }}</span>
           <button @click="submitHand('player1')" :disabled="!canPlayHand('player1')">Play hand</button>
           <button @click="pass('player1')" :disabled="!canPass('player1')">Pass</button>
           <span v-if="gameState.players.player1.isPassed" class="passed">Passed</span>
@@ -40,7 +40,7 @@
         </div>
   
         <h3>
-          <span :class="{activePlayer: isActivePlayer('player2')}">Player 2</span>
+          <span :class="{activePlayer: isActivePlayer('player2')}">{{ gameState.players.player2.profile.username }}</span>
           <button @click="submitHand('player2')" :disabled="!canPlayHand('player2')">Play hand</button>
           <button @click="pass('player2')" :disabled="!canPass('player2')">Pass</button>
           <span v-if="gameState.players.player2.isPassed" class="passed">Passed</span>
@@ -56,7 +56,7 @@
         </div>
   
         <h3>
-          <span :class="{activePlayer: isActivePlayer('player3')}">Player 3</span>
+          <span :class="{activePlayer: isActivePlayer('player3')}">{{ gameState.players.player3.profile.username }}</span>
           <button @click="submitHand('player3')" :disabled="!canPlayHand('player3')">Play hand</button>
           <button @click="pass('player3')" :disabled="!canPass('player3')">Pass</button>
           <span v-if="gameState.players.player3.isPassed" class="passed">Passed</span>
@@ -72,7 +72,7 @@
         </div>
   
         <h3>
-          <span :class="{activePlayer: isActivePlayer('player4')}">Player 4</span>
+          <span :class="{activePlayer: isActivePlayer('player4')}">{{ gameState.players.player4.profile.username }}</span>
           <button @click="submitHand('player4')" :disabled="!canPlayHand('player4')">Play hand</button>
           <button @click="pass('player4')" :disabled="!canPass('player4')">Pass</button>
           <span v-if="gameState.players.player4.isPassed" class="passed">Passed</span>
@@ -104,6 +104,7 @@ import handUtils from '../utils/handUtils';
 export default {
 
   mounted() {
+    // fetch fake users from data store queue
     this.getAllUsers();
   },
 
@@ -118,7 +119,12 @@ export default {
             selectedHand: [],
             canPlayHand: false, // result of evaulating selectedHand,
             isPassed: false,
-            winRank: undefined
+            winRank: undefined,
+            profile: {
+              userId: '',
+              username: '',
+              isFake: false
+            }
           },
           player2: {
             cards: [],
@@ -127,7 +133,12 @@ export default {
             selectedHand: [],
             canPlayHand: false, // result of evaulating selectedHand
             isPassed: false,
-            winRank: undefined
+            winRank: undefined,
+            profile: {
+              userId: '',
+              username: '',
+              isFake: false
+            }
           },
           player3: {
             cards: [],
@@ -136,7 +147,12 @@ export default {
             selectedHand: [],
             canPlayHand: false, // result of evaulating selectedHand
             isPassed: false,
-            winRank: undefined
+            winRank: undefined,
+            profile: {
+              userId: '',
+              username: '',
+              isFake: false
+            }
           },
           player4: {
             cards: [],
@@ -145,7 +161,12 @@ export default {
             selectedHand: [],
             canPlayHand: false, // result of evaulating selectedHand
             isPassed: false,
-            winRank: undefined
+            winRank: undefined,
+            profile: {
+              userId: '',
+              username: '',
+              isFake: false
+            }
           }
         },
         // prob can move to Store
@@ -163,6 +184,7 @@ export default {
   methods: {
     ...mapActions(['getAllUsers']),
 
+    // state controllers
     play() {
       this.initializeGame();
     },
@@ -182,10 +204,34 @@ export default {
       this.sortByRank();
 
       // bug fixing - reduce to n cards
-      this.minimizeCards(2);
+      // this.minimizeCards(2);
 
-      // determine who goes first
-      this.setFirstTurnPlayer();
+      // TODO: initialize real player and fake players
+      this.initializePlayers();
+    },
+    initializePlayers() {
+      // determine who goes first (real player goes first)
+      const firstTurnPLayer = this.setFirstTurnPlayer();
+      console.log('firstTurnPLayer');
+      console.log(firstTurnPLayer);
+      // set real player profile
+      this.gameState.players[firstTurnPLayer].profile.userId = '1';
+      this.gameState.players[firstTurnPLayer].profile.username = 'YOU';
+      console.log(this.gameState.players[firstTurnPLayer].profile);
+      const fakeUsers = _.cloneDeep(this.fakeUsers);
+
+      // set fake players profile
+      Object.keys(this.gameState.players).forEach((player) => {
+        console.log('fakeUsers');
+        console.log(fakeUsers);
+        console.log('player: ');
+        console.log(player);
+        if (player !== firstTurnPLayer) {
+          const fakeUser = fakeUsers.shift();
+          this.gameState.players[player].profile = fakeUser;
+          console.log(this.gameState.players[player].profile);
+        }
+      });
     },
     dealCards(deck) {
       this.gameState.players.player1.cards = deck.deck.slice(0, 13);
@@ -208,6 +254,8 @@ export default {
       this.gameState.players[playerFound].isTurn = true;
       this.gameState.players[playerFound].isFirstTurn = true;
       this.gameState.active.playerId = playerFound;
+
+      return playerFound;
     },
     sortByRank() {
       // TODO: move sortByRank to Deck class
@@ -221,6 +269,23 @@ export default {
         this.gameState.players[player].cards = hand;
       });
     },
+    resetPlayersState() {
+      // reset players game state
+      Object.assign(this.gameState.players, this.defaultPlayersState);
+    },
+    resetGame() {
+      // reset the game
+      this.gameState = this.defaultGameState;
+      this.initializeGame();
+    },
+    freezePlayersArea() {
+      // freezes the players play area
+      Object.keys(this.gameState.players).forEach((player) => {
+        this.gameState.players[player].isTurn = false;
+      });
+    },
+
+    // handlers
     cardClickHandler(player, index) {
       // set isSelected prop on card
       if (this.gameState.players[player].isTurn) {
@@ -230,19 +295,6 @@ export default {
       // set player selected hand state
       const playerSelectedHand = _.filter(this.gameState.players[player].cards, 'isSelected');
       this.gameState.players[player].selectedHand = playerSelectedHand;
-    },
-    isActivePlayer(player) {
-      return this.gameState.players[player].isTurn || false;
-    },
-    canPass(player) {
-      // player can only pass if it is their turn and there are active hands
-
-      return this.gameState.players[player].isTurn && this.gameState.active.hand.length > 0;
-    },
-    pass(player) {
-      this.gameState.players[player].isPassed = true;
-      this.passCounter = this.passCounter + 1;
-      this.setNextActivePlayer(player);
     },
     submitHand(player) {
       // get player selected hand state
@@ -278,28 +330,19 @@ export default {
         }
       }
     },
-    setNextActivePlayer(curPlayer) {
-      // reset current player turn state
-      this.gameState.players[curPlayer].isTurn = false;
-      this.gameState.players[curPlayer].isFirstTurn = false;
 
-      // determine next player
-      let isNextPlayerActive = false;
-      let curNextPlayer = this.getNextPlayer(curPlayer);
-      while (!isNextPlayerActive) {
-        // make next player active if
-        // 1. next player has not won AND has not passed
-        // 2. next player has passed AND we're in a reset state AND there's no other active players in round
-        if ((!this.gameState.players[curNextPlayer].winRank && !this.gameState.players[curNextPlayer].isPassed) ||
-          (this.gameState.players[curNextPlayer].isPassed && this.shouldResetPlayersState() &&
-            !this.isOtherPlayersInRound())) {
-          isNextPlayerActive = true;
-        } else {
-          curNextPlayer = this.getNextPlayer(curNextPlayer);
-        }
-      }
-      this.gameState.players[curNextPlayer].isTurn = true;
-      return curNextPlayer;
+    // players actions
+    pass(player) {
+      this.gameState.players[player].isPassed = true;
+      this.passCounter = this.passCounter + 1;
+      this.setNextActivePlayer(player);
+    },
+
+    // each player computed props
+    canPass(player) {
+      // player can only pass if it is their turn and there are active hands
+
+      return this.gameState.players[player].isTurn && this.gameState.active.hand.length > 0;
     },
     canPlayHand(player) {
       // if not player's turn
@@ -313,6 +356,35 @@ export default {
 
       return handUtils.isValidHand(playerSelectedHand, isFirstHand);
     },
+    isActivePlayer(player) {
+      return this.gameState.players[player].isTurn || false;
+    },
+
+    setNextActivePlayer(curPlayer) {
+      // reset current player turn state
+      this.gameState.players[curPlayer].isTurn = false;
+      this.gameState.players[curPlayer].isFirstTurn = false;
+
+      // determine next player
+      let isNextPlayerActive = false;
+      let curNextPlayer = this.getNextPlayer(curPlayer);
+      while (!isNextPlayerActive) {
+        // make next player active if
+        // 1. next player has not won AND has not passed
+        // 2. next player has passed AND we're in a reset state AND there's no other active players in round
+        if ((!this.gameState.players[curNextPlayer].winRank && !this.gameState.players[curNextPlayer].isPassed) ||
+          (this.gameState.players[curNextPlayer].isPassed && this.shouldResetPlayersState &&
+            !this.isOtherPlayersInRound)) {
+          isNextPlayerActive = true;
+        } else {
+          curNextPlayer = this.getNextPlayer(curNextPlayer);
+        }
+      }
+      this.gameState.players[curNextPlayer].isTurn = true;
+      return curNextPlayer;
+    },
+
+    // helper functions
     getNextPlayer(curPlayer) {
       // returns the next player in the sequence
       let nextPlayerId = parseInt(curPlayer[curPlayer.length - 1], 10) + 1;
@@ -320,47 +392,6 @@ export default {
       const nextPlayer = `player${nextPlayerId}`;
 
       return nextPlayer;
-    },
-    shouldResetPlayersState() {
-      // get total active players ()
-      let activePlayers = 0;
-      Object.keys(this.gameState.players).forEach((player) => {
-        if (!this.gameState.players[player].winRank ||
-          (this.gameState.players[player].winRank && this.gameState.active.playerId === player)) {
-          activePlayers += 1;
-        }
-      });
-
-      return this.passCounter === activePlayers - 1 || false;
-    },
-    isOtherPlayersInRound() {
-      // checks if other players who have NOT won are still in the round
-      // default case - no other active players are in round
-      let otherPlayersStillInRound = false;
-      // eslint-disable-next-line consistent-return
-      Object.keys(this.gameState.players).forEach((player) => {
-        if (!this.gameState.players[player].winRank &&
-          !this.gameState.players[player].isPassed) {
-          otherPlayersStillInRound = true;
-        }
-      });
-
-      return otherPlayersStillInRound;
-    },
-    resetPlayersState() {
-      // reset players game state
-      Object.assign(this.gameState.players, this.defaultPlayersState);
-    },
-    resetGame() {
-      // reset the game
-      this.gameState = this.defaultGameState;
-      this.initializeGame();
-    },
-    freezePlayersArea() {
-      // freezes the players play area
-      Object.keys(this.gameState.players).forEach((player) => {
-        this.gameState.players[player].isTurn = false;
-      });
     },
     minimizeCards(n) {
       // helper debug method to reduce every players cards to n cards each
@@ -376,8 +407,37 @@ export default {
 
   computed: {
     ...mapGetters({
-      users: 'users'
+      fakeUsers: 'users'
     }),
+
+    shouldResetPlayersState() {
+      // get total active players ()
+      let activePlayers = 0;
+      Object.keys(this.gameState.players).forEach((player) => {
+        if (!this.gameState.players[player].winRank ||
+          (this.gameState.players[player].winRank && this.gameState.active.playerId === player)) {
+          activePlayers += 1;
+        }
+      });
+
+      return this.passCounter === activePlayers - 1 || false;
+    },
+
+    isOtherPlayersInRound() {
+      // checks if other players who have NOT won are still in the round
+      // default case - no other active players are in round
+      let otherPlayersStillInRound = false;
+      // eslint-disable-next-line consistent-return
+      Object.keys(this.gameState.players).forEach((player) => {
+        if (!this.gameState.players[player].winRank &&
+          !this.gameState.players[player].isPassed) {
+          otherPlayersStillInRound = true;
+        }
+      });
+
+      return otherPlayersStillInRound;
+    },
+
     defaultPlayersState() {
       return {
         player1: {
@@ -387,7 +447,8 @@ export default {
           selectedHand: [],
           canPlayHand: false, // result of evaulating selectedHand,
           isPassed: false,
-          winRank: this.gameState.players.player1.winRank || undefined
+          winRank: this.gameState.players.player1.winRank || undefined,
+          profile: this.gameState.players.player1.profile || false
         },
         player2: {
           cards: this.gameState.players.player2.cards,
@@ -396,7 +457,8 @@ export default {
           selectedHand: [],
           canPlayHand: false, // result of evaulating selectedHand
           isPassed: false,
-          winRank: this.gameState.players.player2.winRank || undefined
+          winRank: this.gameState.players.player2.winRank || undefined,
+          profile: this.gameState.players.player2.profile || false
         },
         player3: {
           cards: this.gameState.players.player3.cards,
@@ -405,7 +467,8 @@ export default {
           selectedHand: [],
           canPlayHand: false, // result of evaulating selectedHand
           isPassed: false,
-          winRank: this.gameState.players.player3.winRank || undefined
+          winRank: this.gameState.players.player3.winRank || undefined,
+          profile: this.gameState.players.player3.profile || false
         },
         player4: {
           cards: this.gameState.players.player4.cards,
@@ -414,7 +477,8 @@ export default {
           selectedHand: [],
           canPlayHand: false, // result of evaulating selectedHand
           isPassed: false,
-          winRank: this.gameState.players.player4.winRank || undefined
+          winRank: this.gameState.players.player4.winRank || undefined,
+          profile: this.gameState.players.player4.profile || false
         }
       };
     },
@@ -429,7 +493,12 @@ export default {
             selectedHand: [],
             canPlayHand: false, // result of evaulating selectedHand,
             isPassed: false,
-            winRank: undefined
+            winRank: undefined,
+            profile: {
+              userId: '',
+              username: '',
+              isFake: false
+            }
           },
           player2: {
             cards: [],
@@ -438,7 +507,12 @@ export default {
             selectedHand: [],
             canPlayHand: false, // result of evaulating selectedHand
             isPassed: false,
-            winRank: undefined
+            winRank: undefined,
+            profile: {
+              userId: '',
+              username: '',
+              isFake: false
+            }
           },
           player3: {
             cards: [],
@@ -447,7 +521,12 @@ export default {
             selectedHand: [],
             canPlayHand: false, // result of evaulating selectedHand
             isPassed: false,
-            winRank: undefined
+            winRank: undefined,
+            profile: {
+              userId: '',
+              username: '',
+              isFake: false
+            }
           },
           player4: {
             cards: [],
@@ -456,7 +535,12 @@ export default {
             selectedHand: [],
             canPlayHand: false, // result of evaulating selectedHand
             isPassed: false,
-            winRank: undefined
+            winRank: undefined,
+            profile: {
+              userId: '',
+              username: '',
+              isFake: false
+            }
           }
         },
         // prob can move to Store
@@ -473,7 +557,7 @@ export default {
   watch: {
     passCounter(newPC) {
       if (newPC) {
-        if (this.shouldResetPlayersState()) {
+        if (this.shouldResetPlayersState) {
           // keep curent state and rset othe rplayers state
           const curPlayer = this.gameState.active.playerId;
           const curPlayerGameState = this.gameState.players[curPlayer];
