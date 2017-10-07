@@ -96,7 +96,7 @@
 <script>
 
 import _ from 'lodash';
-import { mapGetters } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 import Card from './Card.vue';
 import Deck from '../Classes/deck';
 import handUtils from '../utils/handUtils';
@@ -104,9 +104,7 @@ import handUtils from '../utils/handUtils';
 export default {
 
   mounted() {
-    console.log('mounted');
-
-    this.$store.dispatch('getAllUsers');
+    this.getAllUsers();
   },
 
   data() {
@@ -163,6 +161,8 @@ export default {
   },
 
   methods: {
+    ...mapActions(['getAllUsers']),
+
     play() {
       this.initializeGame();
     },

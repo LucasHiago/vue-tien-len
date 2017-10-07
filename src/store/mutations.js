@@ -1,9 +1,9 @@
-import Vue from 'vue';
+/* eslint-disable no-param-reassign */
 import * as mutationTypes from './mutation-types';
 
 export default {
   [mutationTypes.FETCHED_USERS](state, { users }) {
-    Vue.set(state.users, users);
+    state.users = users;
   }
 };
 
