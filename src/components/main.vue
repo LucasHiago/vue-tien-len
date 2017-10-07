@@ -96,11 +96,18 @@
 <script>
 
 import _ from 'lodash';
+import { mapGetters } from 'vuex';
 import Card from './Card.vue';
 import Deck from '../Classes/deck';
 import handUtils from '../utils/handUtils';
 
 export default {
+
+  mounted() {
+    console.log('mounted');
+
+    this.$store.dispatch('getAllUsers');
+  },
 
   data() {
     return {
@@ -371,7 +378,6 @@ export default {
     resetGame() {
       // reset the game
       this.gameState = this.defaultGameState;
-      console.log(this.gameState);
       this.initializeGame();
     },
     freezePlayersArea() {
@@ -393,6 +399,9 @@ export default {
   },
 
   computed: {
+    ...mapGetters({
+      users: 'users'
+    }),
     defaultPlayersState() {
       return {
         player1: {
