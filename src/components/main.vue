@@ -96,11 +96,16 @@
 <script>
 
 import _ from 'lodash';
+import { mapActions, mapGetters } from 'vuex';
 import Card from './Card.vue';
 import Deck from '../Classes/deck';
 import handUtils from '../utils/handUtils';
 
 export default {
+
+  mounted() {
+    this.getAllUsers();
+  },
 
   data() {
     return {
@@ -156,6 +161,8 @@ export default {
   },
 
   methods: {
+    ...mapActions(['getAllUsers']),
+
     play() {
       this.initializeGame();
     },
@@ -272,9 +279,6 @@ export default {
       }
     },
     setNextActivePlayer(curPlayer) {
-      // console.log('setNextActivePlayer');
-      // console.log('current player:');
-      // console.log(curPlayer);
       // reset current player turn state
       this.gameState.players[curPlayer].isTurn = false;
       this.gameState.players[curPlayer].isFirstTurn = false;
@@ -283,13 +287,9 @@ export default {
       let isNextPlayerActive = false;
       let curNextPlayer = this.getNextPlayer(curPlayer);
       while (!isNextPlayerActive) {
-        // console.log('curNextPlayer:');
-        // console.log(curNextPlayer);
         // make next player active if
         // 1. next player has not won AND has not passed
         // 2. next player has passed AND we're in a reset state AND there's no other active players in round
-        // console.log(`curNextPlayer has NOT passed: ${!this.gameState.players[curNextPlayer].isPassed}`);
-        // console.log(`curNextPlayer has NOT won: ${!this.gameState.players[curNextPlayer].winRank}`);
         if ((!this.gameState.players[curNextPlayer].winRank && !this.gameState.players[curNextPlayer].isPassed) ||
           (this.gameState.players[curNextPlayer].isPassed && this.shouldResetPlayersState() &&
             !this.isOtherPlayersInRound())) {
@@ -298,8 +298,6 @@ export default {
           curNextPlayer = this.getNextPlayer(curNextPlayer);
         }
       }
-      // console.log('final next player:');
-      // console.log(curNextPlayer);
       this.gameState.players[curNextPlayer].isTurn = true;
       return curNextPlayer;
     },
@@ -324,7 +322,6 @@ export default {
       return nextPlayer;
     },
     shouldResetPlayersState() {
-      // console.log('shouldResetPlayersState()');
       // get total active players ()
       let activePlayers = 0;
       Object.keys(this.gameState.players).forEach((player) => {
@@ -334,15 +331,9 @@ export default {
         }
       });
 
-      // console.log('passCounter');
-      // console.log(this.passCounter);
-      // console.log('activePlayers');
-      // console.log(activePlayers);
-
       return this.passCounter === activePlayers - 1 || false;
     },
     isOtherPlayersInRound() {
-      // console.log('isOtherPlayersInRound()');
       // checks if other players who have NOT won are still in the round
       // default case - no other active players are in round
       let otherPlayersStillInRound = false;
@@ -350,28 +341,19 @@ export default {
       Object.keys(this.gameState.players).forEach((player) => {
         if (!this.gameState.players[player].winRank &&
           !this.gameState.players[player].isPassed) {
-          // console.log(`player:${player}`);
-          // console.log(this.gameState.players[player].winRank);
-          // console.log(this.gameState.players[player].isPassed);
           otherPlayersStillInRound = true;
         }
       });
 
-      // console.log(`return otherPlayersStillInRound: ${otherPlayersStillInRound}`);
       return otherPlayersStillInRound;
     },
     resetPlayersState() {
-      console.log('resetPlayersState()');
-      console.log(this.gameState.players);
-      // console.log('*****');
       // reset players game state
       Object.assign(this.gameState.players, this.defaultPlayersState);
-      console.log(this.gameState.players);
     },
     resetGame() {
       // reset the game
       this.gameState = this.defaultGameState;
-      console.log(this.gameState);
       this.initializeGame();
     },
     freezePlayersArea() {
@@ -381,7 +363,7 @@ export default {
       });
     },
     minimizeCards(n) {
-      // reduce every players cards to n cards each
+      // helper debug method to reduce every players cards to n cards each
       Object.keys(this.gameState.players).forEach((player) => {
         this.gameState.players[player].cards = this.gameState.players[player].cards.slice(0, n);
       });
@@ -393,6 +375,9 @@ export default {
   },
 
   computed: {
+    ...mapGetters({
+      users: 'users'
+    }),
     defaultPlayersState() {
       return {
         player1: {
@@ -488,8 +473,6 @@ export default {
   watch: {
     passCounter(newPC) {
       if (newPC) {
-        // console.log('new PC');
-        // console.log(newPC);
         if (this.shouldResetPlayersState()) {
           // keep curent state and rset othe rplayers state
           const curPlayer = this.gameState.active.playerId;

@@ -5,6 +5,8 @@ module.exports = {
     ],
     "rules": {
         "comma-dangle": 0,
+        "import/prefer-default-export": 0,
+        "arrow-body-style": 0,
         "max-len": [2, {"code": 180}]
     }
 };
