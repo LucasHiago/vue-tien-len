@@ -30,6 +30,9 @@
           <span v-if="gameState.players.player1.isPassed" class="passed">Passed</span>
           <span v-else class="inRound">In Round</span>
           <span v-if="gameState.players.player1.winRank">Win Rank: {{ gameState.players.player1.winRank }}</span>
+          <span v-if="gameState.players.player1.profile.isFake && gameState.players.player1.profile.isThinking">
+            <i class="fa fa-spinner fa-pulse fa-lg fa-fw"></i>
+          </span>
         </h3>
         <div class="hand">
           <div v-for="(card, index) in gameState.players.player1.cards" :key="card" class="card-container">
@@ -46,6 +49,9 @@
           <span v-if="gameState.players.player2.isPassed" class="passed">Passed</span>
           <span v-else class="inRound">In Round</span>
           <span v-if="gameState.players.player2.winRank">Win Rank: {{ gameState.players.player2.winRank }}</span>
+          <span v-if="gameState.players.player2.profile.isFake && gameState.players.player2.profile.isThinking">
+            <i class="fa fa-spinner fa-pulse fa-lg fa-fw"></i>
+          </span>
         </h3>
         <div class="hand">
           <div v-for="(card, index) in gameState.players.player2.cards" :key="card" class="card-container">
@@ -62,6 +68,9 @@
           <span v-if="gameState.players.player3.isPassed" class="passed">Passed</span>
           <span v-else class="inRound">In Round</span>
           <span v-if="gameState.players.player3.winRank">Win Rank: {{ gameState.players.player3.winRank }}</span>
+          <span v-if="gameState.players.player3.profile.isFake && gameState.players.player3.profile.isThinking">
+            <i class="fa fa-spinner fa-pulse fa-lg fa-fw"></i>
+          </span>
         </h3>
         <div class="hand">
           <div v-for="(card, index) in gameState.players.player3.cards" :key="card" class="card-container">
@@ -78,6 +87,9 @@
           <span v-if="gameState.players.player4.isPassed" class="passed">Passed</span>
           <span v-else class="inRound">In Round</span>
           <span v-if="gameState.players.player4.winRank">Win Rank: {{ gameState.players.player4.winRank }}</span>
+          <span v-if="gameState.players.player4.profile.isFake && gameState.players.player4.profile.isThinking">
+            <i class="fa fa-spinner fa-pulse fa-lg fa-fw"></i>
+          </span>
         </h3>
         <div class="hand">
           <div v-for="(card, index) in gameState.players.player4.cards" :key="card" class="card-container">
@@ -100,6 +112,7 @@ import { mapActions, mapGetters } from 'vuex';
 import Card from './Card.vue';
 import Deck from '../Classes/deck';
 import handUtils from '../utils/handUtils';
+import cardsUtils from '../utils/cardsUtils';
 
 export default {
 
@@ -123,7 +136,8 @@ export default {
             profile: {
               userId: '',
               username: '',
-              isFake: false
+              isFake: false,
+              isThinking: false
             }
           },
           player2: {
@@ -137,7 +151,8 @@ export default {
             profile: {
               userId: '',
               username: '',
-              isFake: false
+              isFake: false,
+              isThinking: false
             }
           },
           player3: {
@@ -151,7 +166,8 @@ export default {
             profile: {
               userId: '',
               username: '',
-              isFake: false
+              isFake: false,
+              isThinking: false
             }
           },
           player4: {
@@ -165,7 +181,8 @@ export default {
             profile: {
               userId: '',
               username: '',
-              isFake: false
+              isFake: false,
+              isThinking: false
             }
           }
         },
@@ -212,24 +229,16 @@ export default {
     initializePlayers() {
       // determine who goes first (real player goes first)
       const firstTurnPLayer = this.setFirstTurnPlayer();
-      console.log('firstTurnPLayer');
-      console.log(firstTurnPLayer);
       // set real player profile
       this.gameState.players[firstTurnPLayer].profile.userId = '1';
       this.gameState.players[firstTurnPLayer].profile.username = 'YOU';
-      console.log(this.gameState.players[firstTurnPLayer].profile);
       const fakeUsers = _.cloneDeep(this.fakeUsers);
 
       // set fake players profile
       Object.keys(this.gameState.players).forEach((player) => {
-        console.log('fakeUsers');
-        console.log(fakeUsers);
-        console.log('player: ');
-        console.log(player);
         if (player !== firstTurnPLayer) {
           const fakeUser = fakeUsers.shift();
           this.gameState.players[player].profile = fakeUser;
-          console.log(this.gameState.players[player].profile);
         }
       });
     },
@@ -285,7 +294,67 @@ export default {
       });
     },
 
-    // handlers
+    // AI controller
+    aiController(curAIplayer) {
+      // TODO: add loaders to make illusion that AI is thinking
+      this.gameState.players[curAIplayer].profile.isThinking = true;
+
+      const LATENCY_TURN = 4000;
+      const LATENCY_DECISION = 500;
+      const activeHand = _.cloneDeep(this.gameState.active.hand);
+      const playerCards = _.cloneDeep(this.gameState.players[curAIplayer].cards);
+      // console.log('current AI player is:');
+      // console.log(players[curAIplayer].profile.username);
+
+      /*
+      STRATEGY ->
+        If AI is not leading the round, then play highest hand
+        ... else, AI is leading the round so play lowest hand
+      */
+      const isLeadingRound = activeHand.length === 0 || false;
+
+      console.log('getLowestHand:');
+      console.log(cardsUtils.getLowestHand(playerCards));
+      console.log('getHIgherHand:');
+      console.log(cardsUtils.getHigherHand(activeHand, playerCards));
+
+      // determine AI player selected hand
+      let handToPlay = null;
+      if (isLeadingRound) {
+        console.log('leading round');
+        // leading round
+        handToPlay = cardsUtils.getLowestHand(playerCards);
+      } else {
+        // not leading round, so try to get higher hand
+        console.log('not leading round');
+        handToPlay = cardsUtils.getHigherHand(activeHand, playerCards);
+      }
+
+      if (handToPlay.length > 0) {
+        setTimeout(() => {
+          // may be unecessary, but set ai player selected hand animations
+          handToPlay.forEach((cardIndex) => {
+            this.gameState.players[curAIplayer].cards[cardIndex].isSelected = true;
+          });
+          setTimeout(() => {
+            this.gameState.players[curAIplayer].profile.isThinking = false;
+            // prep selectedHand and submit hand
+            const realHandToPlay = _.map(handToPlay, cardIndex => playerCards[cardIndex]);
+            this.gameState.players[curAIplayer].selectedHand = realHandToPlay;
+            this.submitHand(curAIplayer);
+          }, LATENCY_DECISION);
+        }, LATENCY_TURN);
+      } else {
+        // try to pass
+        setTimeout(() => {
+          this.gameState.players[curAIplayer].profile.isThinking = false;
+          console.log(`${curAIplayer} passing...`);
+          this.pass(curAIplayer);
+        }, LATENCY_TURN);
+      }
+    },
+
+    // handlers - players actions
     cardClickHandler(player, index) {
       // set isSelected prop on card
       if (this.gameState.players[player].isTurn) {
@@ -298,9 +367,10 @@ export default {
     },
     submitHand(player) {
       // get player selected hand state
-      const playerSelectedHand = this.gameState.players[player].selectedHand;
+      const players = this.gameState.players;
+      const playerSelectedHand = players[player].selectedHand;
       const activeHand = this.gameState.active.hand;
-      const isFirstHand = this.gameState.players[player].isFirstTurn;
+      const isFirstHand = players[player].isFirstTurn;
 
       // player can submit hand if starting round, or has a hand that can beat active hand
       if (handUtils.canBeatHand(playerSelectedHand, activeHand) || isFirstHand ||
@@ -310,12 +380,12 @@ export default {
         this.gameState.active.playerId = player;
 
         // removed played cards from player
-        this.gameState.players[player].cards = _.filter(this.gameState.players[player].cards, ['isSelected', false]);
+        players[player].cards = _.filter(players[player].cards, ['isSelected', false]);
 
         // if player has no more cards, then assign player win rank
-        if (this.gameState.players[player].cards.length === 0) {
+        if (players[player].cards.length === 0) {
           // player won
-          this.gameState.players[player].winRank = this.winRank;
+          players[player].winRank = this.winRank;
           this.winRank = this.winRank + 1;
         }
 
@@ -324,18 +394,26 @@ export default {
 
         // check if game is over -> if second to last place has already been assigned
         if (this.winRank === 4) {
-          this.gameState.players[nextActivePlayer].winRank = this.winRank;
+          players[nextActivePlayer].winRank = this.winRank;
           // disable players area
           this.freezePlayersArea();
         }
+
+        // control player if next player is AI
+        if (players[nextActivePlayer].profile.isFake) {
+          this.aiController(nextActivePlayer);
+        }
       }
     },
-
-    // players actions
     pass(player) {
       this.gameState.players[player].isPassed = true;
       this.passCounter = this.passCounter + 1;
-      this.setNextActivePlayer(player);
+      const nextActivePlayer = this.setNextActivePlayer(player);
+
+      // invoke ai controller if next player is AI
+      if (this.gameState.players[nextActivePlayer].profile.isFake) {
+        this.aiController(nextActivePlayer);
+      }
     },
 
     // each player computed props
@@ -497,7 +575,8 @@ export default {
             profile: {
               userId: '',
               username: '',
-              isFake: false
+              isFake: false,
+              isThinking: false
             }
           },
           player2: {
@@ -511,7 +590,8 @@ export default {
             profile: {
               userId: '',
               username: '',
-              isFake: false
+              isFake: false,
+              isThinking: false
             }
           },
           player3: {
@@ -525,7 +605,8 @@ export default {
             profile: {
               userId: '',
               username: '',
-              isFake: false
+              isFake: false,
+              isThinking: false
             }
           },
           player4: {
@@ -539,7 +620,8 @@ export default {
             profile: {
               userId: '',
               username: '',
-              isFake: false
+              isFake: false,
+              isThinking: false
             }
           }
         },

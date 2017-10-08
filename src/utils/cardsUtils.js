@@ -239,7 +239,14 @@ function getPossibleHands(cards) {
 // returns a hand from a list of cards that is next highest than active hand
 // strategy -> the defensive function for when AI is not starting the round...
 // ... we want to play the next higher hand that can beat the active hand
-function getHigherHand(activeHand, cards) {
+function getHigherHand(gameActiveHand, playerCards) {
+  const cards = _.cloneDeep(playerCards);
+  const activeHand = _.cloneDeep(gameActiveHand);
+  // console.log('getHigherHand()');
+  // console.log('activeHand:');
+  // console.log(activeHand);
+  // console.log('cards:');
+  // console.log(cards);
   let higherHand = [];
 
   if (activeHand.length === 0 || cards.length === 0) {
@@ -294,14 +301,18 @@ function getHigherHand(activeHand, cards) {
     const sortedCards = _.sortBy(modCards, 'rank');
 
     const foundHigher = _.find(sortedCards, card => card.rank > activeHand[0].rank);
-    higherHand = [foundHigher.prevIndex] || higherHand;
+    higherHand = foundHigher ? [foundHigher.prevIndex] : higherHand;
   }
+
+  // console.log('return higherHand:');
+  // console.log(higherHand);
 
   return higherHand;
 }
 
 // returns a hand from a list of cards that is 'lowest' but highest number of cards
-function getLowestHand(cards) {
+function getLowestHand(playerCards) {
+  const cards = _.cloneDeep(playerCards);
   if (cards.length === 0) {
     return [];
   }
@@ -352,7 +363,7 @@ function getLowestHand(cards) {
   return lowestHand;
 }
 
-module.exports = {
+export default {
   getCardNumeral,
   getCTPS,
   getConsecutives,

@@ -962,7 +962,7 @@ describe.only('cardsUtils', () => {
       expect(higherHand).to.be.deep.equal([]);
     });
   });
-  describe.only('getLowestHand()', () => {
+  describe('getLowestHand()', () => {
     it('should return the lowest hand with most amount of cards', () => {
       const cardsName = ['QS', 'KH', 'AH', '4H', '4D', '6D', '5C', '3S', '10S', '10D', 'QH', 'QC', 'JS'];
       const cards = getMappedCards(cardsName);
