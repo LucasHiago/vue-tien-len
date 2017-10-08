@@ -6,6 +6,8 @@ import router from './router';
 import store from './store';
 import { getAllUsers } from './store/actions';
 
+require('font-awesome/css/font-awesome.css');
+
 Vue.config.productionTip = false;
 
 /* eslint-disable no-new */
@@ -17,4 +19,5 @@ new Vue({
   components: { App }
 });
 
+// TODO: initialize queue of fake users
 getAllUsers(store);

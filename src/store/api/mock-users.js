@@ -1,18 +1,22 @@
 module.exports = [
   {
-    userId: '1',
-    username: 'jonSnow1'
+    userId: '100',
+    username: 'jonSnow1',
+    isFake: true
   },
   {
-    userId: '2',
-    username: 'TallMan344'
+    userId: '200',
+    username: 'TallMan344',
+    isFake: true
   },
   {
-    userId: '3',
-    username: 'QueenBee2'
+    userId: '300',
+    username: 'QueenBee2',
+    isFake: true
   },
   {
-    userId: '4',
-    username: 'eddieFart$'
+    userId: '400',
+    username: 'eddieFart$',
+    isFake: true
   }
 ];
