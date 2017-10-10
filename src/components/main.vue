@@ -312,7 +312,7 @@ export default {
         If AI is not leading the round, then play highest hand
         ... else, AI is leading the round so play lowest hand
       */
-      const isLeadingRound = activeHand.length === 0 || false;
+      const isLeadingRound = this.shouldResetPlayersState;
 
       // determine AI player selected hand
       let handToPlay = null;
@@ -344,7 +344,7 @@ export default {
         // try to pass
         setTimeout(() => {
           this.gameState.players[curAIplayer].profile.isThinking = false;
-          console.log(`${curAIplayer} passing...`);
+          console.log(`${curAIplayerUsername} passing...`);
           this.pass(curAIplayer);
         }, LATENCY_TURN);
       }
@@ -389,14 +389,16 @@ export default {
         const nextActivePlayer = this.setNextActivePlayer(player);
 
         // check if game is over -> if second to last place has already been assigned
-        if (this.winRank === 4) {
+        const isGameOver = this.winRank === 4 || false;
+        if (isGameOver) {
+          console.log('**************GAME OVER!************');
           players[nextActivePlayer].winRank = this.winRank;
           // disable players area
           this.freezePlayersArea();
         }
 
         // control player if next player is AI
-        if (players[nextActivePlayer].profile.isFake) {
+        if (!isGameOver && players[nextActivePlayer].profile.isFake) {
           this.aiController(nextActivePlayer);
         }
       }
