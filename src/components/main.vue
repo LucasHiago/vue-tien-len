@@ -303,8 +303,9 @@ export default {
       const LATENCY_DECISION = 500;
       const activeHand = _.cloneDeep(this.gameState.active.hand);
       const playerCards = _.cloneDeep(this.gameState.players[curAIplayer].cards);
-      // console.log('current AI player is:');
-      // console.log(players[curAIplayer].profile.username);
+      const curAIplayerUsername = this.gameState.players[curAIplayer].profile.username;
+      console.log('current AI player is:');
+      console.log(curAIplayerUsername);
 
       /*
       STRATEGY ->
@@ -313,20 +314,15 @@ export default {
       */
       const isLeadingRound = activeHand.length === 0 || false;
 
-      console.log('getLowestHand:');
-      console.log(cardsUtils.getLowestHand(playerCards));
-      console.log('getHIgherHand:');
-      console.log(cardsUtils.getHigherHand(activeHand, playerCards));
-
       // determine AI player selected hand
       let handToPlay = null;
       if (isLeadingRound) {
-        console.log('leading round');
+        console.log(`${curAIplayerUsername} leading round`);
         // leading round
         handToPlay = cardsUtils.getLowestHand(playerCards);
       } else {
         // not leading round, so try to get higher hand
-        console.log('not leading round');
+        console.log(`${curAIplayerUsername} not leading round`);
         handToPlay = cardsUtils.getHigherHand(activeHand, playerCards);
       }
 
