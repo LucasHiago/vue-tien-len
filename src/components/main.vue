@@ -303,30 +303,26 @@ export default {
       const LATENCY_DECISION = 500;
       const activeHand = _.cloneDeep(this.gameState.active.hand);
       const playerCards = _.cloneDeep(this.gameState.players[curAIplayer].cards);
-      // console.log('current AI player is:');
-      // console.log(players[curAIplayer].profile.username);
+      const curAIplayerUsername = this.gameState.players[curAIplayer].profile.username;
+      console.log('current AI player is:');
+      console.log(curAIplayerUsername);
 
       /*
       STRATEGY ->
         If AI is not leading the round, then play highest hand
         ... else, AI is leading the round so play lowest hand
       */
-      const isLeadingRound = activeHand.length === 0 || false;
-
-      console.log('getLowestHand:');
-      console.log(cardsUtils.getLowestHand(playerCards));
-      console.log('getHIgherHand:');
-      console.log(cardsUtils.getHigherHand(activeHand, playerCards));
+      const isLeadingRound = this.shouldResetPlayersState;
 
       // determine AI player selected hand
       let handToPlay = null;
       if (isLeadingRound) {
-        console.log('leading round');
+        console.log(`${curAIplayerUsername} leading round`);
         // leading round
         handToPlay = cardsUtils.getLowestHand(playerCards);
       } else {
         // not leading round, so try to get higher hand
-        console.log('not leading round');
+        console.log(`${curAIplayerUsername} not leading round`);
         handToPlay = cardsUtils.getHigherHand(activeHand, playerCards);
       }
 
@@ -348,7 +344,7 @@ export default {
         // try to pass
         setTimeout(() => {
           this.gameState.players[curAIplayer].profile.isThinking = false;
-          console.log(`${curAIplayer} passing...`);
+          console.log(`${curAIplayerUsername} passing...`);
           this.pass(curAIplayer);
         }, LATENCY_TURN);
       }
@@ -393,14 +389,16 @@ export default {
         const nextActivePlayer = this.setNextActivePlayer(player);
 
         // check if game is over -> if second to last place has already been assigned
-        if (this.winRank === 4) {
+        const isGameOver = this.winRank === 4 || false;
+        if (isGameOver) {
+          console.log('**************GAME OVER!************');
           players[nextActivePlayer].winRank = this.winRank;
           // disable players area
           this.freezePlayersArea();
         }
 
         // control player if next player is AI
-        if (players[nextActivePlayer].profile.isFake) {
+        if (!isGameOver && players[nextActivePlayer].profile.isFake) {
           this.aiController(nextActivePlayer);
         }
       }
