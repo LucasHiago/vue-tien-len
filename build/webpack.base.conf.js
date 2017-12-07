@@ -9,7 +9,6 @@ function resolve (dir) {
 
 module.exports = {
   entry: {
-    'lib': ['./src/lib'],
     'app': ['./src/main']
   },
   output: {
