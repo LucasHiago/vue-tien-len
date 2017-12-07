@@ -1,0 +1,59 @@
+Tien len is a very fun game to play, once you know the rules!
+
+Each player are dealt 13 cards, and so, only a max of four players can play at a time.
+
+The game revolves around playing different combinations of hands in rounds of play. 
+
+That is, there is a type of hand that is in play per round, and the person who dictates which type of hand is in the current round
+is usually the winner of the previous round,or the first player to start the game.
+
+Other players must play the same type of hand if they want to stay in the round and get rid of their cards. Else, if a player
+does not have a higher ranked hand than the active hand in the round, then that player cannot expel their cards and is out of the current round
+of play.
+
+Remember, the objective is to get rid of all your cards first!
+
+To back up a but, the rules of the game are as follow:
+
+1) The types of hands are as follow:
+
+Single - You can play a single card with the same denomination. Ex: 3S
+Pair - You can play a pair of cards with the same denomination. Ex: 4S, 4K
+Triple - You can play a triplet of cards with the same denomination. Ex: 10S, 10C, 10H
+Four of a kind - You can play a quad of cards with the same denomination. Ex: JS, JK, JD, JH
+Sequence - You can play a minimal of 3 cards in sequenced denominations, that doesn't include a 2.
+            Ex: 4S, 5D, 6H
+                10H, JD, QS, KS, AD
+Paired Sequence - Similiar to sequence, but in pairs!
+            Ex: 4S, 4H, 5D, 5H, 6S, 6D
+                10H, JD, QS, KS, AD
+
+2) To determine if a hand will beat another hand of the same type, note that: the card denomination ranks higher than the suits, and if both hands have the same highest
+   denominations, then the suits are compared.
+   The card denomination ranking from lowest to highest is 3, 4, 5, 6, 7, 8, 9, 10, J, Q, K, A, 2. And, the suits ranking from lowest to highest is
+   Spades, Clubs, Diamonds and Hearts.
+
+   Example: 3S < 4H, JDJS < KSKH, 10K < 2S, 10S < 10H, 5S5D < 5C5H
+
+3) Special cases: 
+   * Even though the 2H is of the highest order in regards to both denominations and suits, a paired sequence hand and a four of a kind can beat a 2 of any suits.
+     However, it can only be a single 2.
+     Ex: 
+     2H < 4S, 4H, 5D, 5H, 6S, 6D
+     2H < 4S, 4D, 4C, 4H
+
+4) If starting a new game, the first player to go is usually the player that won the last game. However, if starting a brand new session of games, the player with
+   the 3S goes first, and they must play the 3S as a single card, or as part of a valid hand.
+   Ex: 3S
+       3S, 4D, 5C
+
+
+The skill aspect of the game is knwoing when to play a big hand, and when to wait. You may play a big sequenced hand to win the round, but then is left with
+very weak hands to finish the game. So forth, you may not want to be too reserved as holding on to big hands, especially 2s, can leave you out key rounds, and
+enable other players to take charge and finish their combinations of hands.
+
+Have fun!
+     
+     
+
+
