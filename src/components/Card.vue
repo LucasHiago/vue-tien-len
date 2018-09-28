@@ -1,5 +1,7 @@
 <template>
-  <div class="card" v-bind:style="styleObject" :class="{ selected: isSelected }">
+  <div class="card" :class="{ selected: isSelected }">
+    <div v-html="require(`./../assets/faces/${svgFile}`)">
+    </div>
   </div>
 </template>
 
@@ -55,6 +57,12 @@ export default {
       return {
         backgroundPosition: `${left}px ${top}px`
       };
+    },
+
+    svgFile() {
+      const cardName = CardMap[this.cardMapKey].name;
+
+      return `${cardName}.svg`;
     }
   }
 };
@@ -66,7 +74,6 @@ export default {
   position: relative;
   width: 76px;
   height: 110px;
-  background: url('../assets/deck.png');
 }
 
 .cardPosition {
@@ -75,5 +82,9 @@ export default {
 
 .selected {
   top: 12px;
+}
+
+.card div svg {
+  width: 10em;
 }
 </style>
