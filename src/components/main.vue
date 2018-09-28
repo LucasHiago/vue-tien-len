@@ -9,6 +9,11 @@
       </template>
     </div>
     <div>
+
+      <h1>Hello</h1>
+
+      <div v-html="require(`./../assets/faces/${icon}`)">
+      </div>
   
       <template v-if="gameState.gameStart">
         <!-- active hands area -->
@@ -113,6 +118,7 @@ import Card from './Card.vue';
 import Deck from '../Classes/deck';
 import handUtils from '../utils/handUtils';
 import cardsUtils from '../utils/cardsUtils';
+import SvgCard from '../assets/faces/2_of_clubs.svg';
 
 export default {
 
@@ -478,13 +484,18 @@ export default {
   },
 
   components: {
-    Card
+    Card,
+    SvgCard
   },
 
   computed: {
     ...mapGetters({
       fakeUsers: 'users'
     }),
+
+    icon() {
+      return '2_of_clubs.svg';
+    },
 
     shouldResetPlayersState() {
       // get total active players ()
@@ -694,5 +705,12 @@ h3 {
 
 .passed {
   color: #CF000F;
+}
+
+.test-card {
+  position: relative;
+  width: 76px;
+  height: 110px;
+  background: url('../assets/deck.svg');
 }
 </style>
