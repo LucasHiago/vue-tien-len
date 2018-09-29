@@ -670,17 +670,10 @@ h3 {
 .hand {
   width: 1000px;
   height: 110px;
-  margin-left: 152px;
-  -ms-transform: rotate(180deg);
-  /* IE 9 */
-  -webkit-transform: rotate(180deg);
-  /* Safari */
-  transform: rotate(180deg);
 }
 
 .card-container {
-  float: right;
-  width: 6%;
+  display: inline-block;
 }
 
 .activePlayer {
