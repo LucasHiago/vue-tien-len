@@ -1,5 +1,5 @@
 <template>
-  <div class="card" :class="{ selected: isSelected }">
+  <div class="card-container" :style="styleObj" :class="{ selected: isSelected }">
     <div v-html="require(`./../assets/faces/${svgFile}`)">
     </div>
   </div>
@@ -11,6 +11,10 @@ import { CardMap } from '../Constants/CardMap';
 export default {
   props: {
     cardMapKey: {
+      type: Number,
+      required: true
+    },
+    cardHandIndex: {
       type: Number,
       required: true
     },
@@ -29,6 +33,13 @@ export default {
   },
 
   computed: {
+    styleObj() {
+      const delta = 30;
+      return {
+        left: `${this.cardHandIndex * delta}px`
+      };
+    },
+
     svgFile() {
       const cardName = CardMap[this.cardMapKey].name;
 
@@ -40,17 +51,15 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.card {
-  position: relative;
+.card-container {
   width: 76px;
   height: 110px;
+  display: inline-block;
+  position: absolute;
 }
 
 .selected {
   top: 12px;
 }
 
-.card div svg {
-  width: 10em;
-}
 </style>
