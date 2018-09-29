@@ -11,6 +11,7 @@
     <div>
   
       <template v-if="gameState.gameStart">
+
         <!-- active hands area -->
         <template v-if="gameState.active.hand.length > 0">
           <div class="activePlayerContainer">
@@ -18,10 +19,11 @@
           </div>
           <div class="hand">
             <div v-for="(card, index) in gameState.active.hand" :key="card.rank">
-              <card :cardMapKey="parseInt(card.cardKey)"></card>
+              <card :cardMapKey="parseInt(card.cardKey)" :card-hand-index="index"></card>
             </div>
           </div>
         </template>
+        <!-- end active hand -->
   
         <h3>
           <span :class="{activePlayer: isActivePlayer('player1')}">{{ gameState.players.player1.profile.username }}</span>
@@ -35,15 +37,15 @@
           </span>
         </h3>
         <div class="hand">
-          <div v-for="(card, index) in gameState.players.player1.cards" :key="card.rank">
-            <div @click="cardClickHandler('player1', index)">
-              <card 
+          <template v-for="(card, index) in gameState.players.player1.cards">
+            <div @click="cardClickHandler('player1', index)" :key="card.rank">
+              <card
                 :cardMapKey="parseInt(card.cardKey)"
                 :is-selected="card.isSelected"
-                :card-hand-index="index">
+                :card-hand-index="index" >
               </card>
             </div>
-          </div>
+          </template>
         </div>
   
         <h3>
@@ -58,15 +60,15 @@
           </span>
         </h3>
         <div class="hand">
-          <div v-for="(card, index) in gameState.players.player2.cards" :key="card.rank">
-            <div @click="cardClickHandler('player2', index)">
-              <card 
+          <template v-for="(card, index) in gameState.players.player2.cards">
+            <div @click="cardClickHandler('player2', index)" :key="card.rank">
+              <card
                 :cardMapKey="parseInt(card.cardKey)"
                 :is-selected="card.isSelected"
-                :card-hand-index="index">
+                :card-hand-index="index" >
               </card>
             </div>
-          </div>
+          </template>
         </div>
   
         <h3>
@@ -81,15 +83,15 @@
           </span>
         </h3>
         <div class="hand">
-          <div v-for="(card, index) in gameState.players.player3.cards" :key="card.rank">
-            <div @click="cardClickHandler('player3', index)">
-              <card 
+          <template v-for="(card, index) in gameState.players.player3.cards">
+            <div @click="cardClickHandler('player3', index)" :key="card.rank">
+              <card
                 :cardMapKey="parseInt(card.cardKey)"
                 :is-selected="card.isSelected"
-                :card-hand-index="index">
+                :card-hand-index="index" >
               </card>
             </div>
-          </div>
+          </template>
         </div>
   
         <h3>
@@ -104,15 +106,15 @@
           </span>
         </h3>
         <div class="hand">
-          <div v-for="(card, index) in gameState.players.player4.cards" :key="card.rank">
-            <div @click="cardClickHandler('player4', index)">
-              <card 
+          <template v-for="(card, index) in gameState.players.player4.cards">
+            <div @click="cardClickHandler('player4', index)" :key="card.rank">
+              <card
                 :cardMapKey="parseInt(card.cardKey)"
                 :is-selected="card.isSelected"
-                :card-hand-index="index">
+                :card-hand-index="index" >
               </card>
             </div>
-          </div>
+          </template>
         </div>
   
       </template>
