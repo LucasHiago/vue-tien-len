@@ -45,7 +45,8 @@
                 <card
                   :cardMapKey="parseInt(card.cardKey)"
                   :is-selected="card.isSelected"
-                  :card-hand-index="index" >
+                  :card-hand-index="index"
+                  :player-id="1">
                 </card>
               </div>
             </template>
@@ -71,7 +72,8 @@
                 <card
                   :cardMapKey="parseInt(card.cardKey)"
                   :is-selected="card.isSelected"
-                  :card-hand-index="index" >
+                  :card-hand-index="index"
+                  :player-id="2">
                 </card>
               </div>
             </template>
@@ -97,7 +99,8 @@
                 <card
                   :cardMapKey="parseInt(card.cardKey)"
                   :is-selected="card.isSelected"
-                  :card-hand-index="index" >
+                  :card-hand-index="index"
+                  :player-id="3">
                 </card>
               </div>
             </template>
@@ -123,7 +126,8 @@
                 <card
                   :cardMapKey="parseInt(card.cardKey)"
                   :is-selected="card.isSelected"
-                  :card-hand-index="index" >
+                  :card-hand-index="index"
+                  :player-id="4">
                 </card>
               </div>
             </template>
@@ -528,16 +532,16 @@ export default {
           top: (height / 2)
         },
         2: {
-          left: width * (3 / 4),
-          top: height / 2
+          left: 0,
+          top: 0
         },
         3: {
           left: (width / 2) - halfOfHand,
           top: 100
         },
         4: {
-          left: 50,
-          top: height / 2
+          left: 0,
+          top: 500
         }
       };
 
@@ -755,12 +759,6 @@ h3 {
   text-align: left;
   margin-left: 137px;
   margin-bottom: 15px;
-}
-
-.hand {
-  width: 1000px;
-  height: 110px;
-  position: relative;
 }
 
 .activePlayer {

@@ -22,6 +22,10 @@ export default {
       type: Boolean,
       required: false,
       default: false
+    },
+    playerId: {
+      type: Number,
+      required: true
     }
   },
 
@@ -34,9 +38,29 @@ export default {
 
   computed: {
     styleObj() {
-      const delta = 30;
+      const isEvenPLayer = this.playerId % 2 === 0;
+
+      let delta = 30;
+
+      if (this.playerId === 2) {
+        delta *= -1;
+      }
+      let rotateDeg = 0;
+
+      if (isEvenPLayer) {
+        rotateDeg = this.playerId === 2 ? -90 : 90;
+      }
+
+      if (isEvenPLayer) {
+        return {
+          top: `${this.cardHandIndex * delta}px`,
+          transform: `rotate(${rotateDeg}deg)`
+        };
+      }
+
       return {
-        left: `${this.cardHandIndex * delta}px`
+        left: `${this.cardHandIndex * delta}px`,
+        transform: `rotate(${rotateDeg}deg)`
       };
     },
 
