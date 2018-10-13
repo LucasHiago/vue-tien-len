@@ -503,8 +503,8 @@ export default {
           top: (GAME_ARENA_HEIGHT / 2) + playerControlsHeight
         },
         2: {
-          left: 0,
-          top: 0
+          left: GAME_ARENA_WIDTH * (7 / 8),
+          top: handWidth + 12
         },
         3: {
           left: (GAME_ARENA_WIDTH - handWidth) / 2,
