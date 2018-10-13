@@ -131,6 +131,11 @@ import Deck from '../Classes/deck';
 import handUtils from '../utils/handUtils';
 import cardsUtils from '../utils/cardsUtils';
 
+const GAME_ARENA_WIDTH = 1200;
+const GAME_ARENA_HEIGHT = 600;
+const CARD_WIDTH = 76;
+const CARD_DELTA = 30;
+
 export default {
   mounted() {
     // fetch fake users from data store queue
@@ -484,29 +489,26 @@ export default {
     },
     getPlayerHandStyleObject(player) {
       console.log('getPlayerHandStyleObject', player);
-      // get game-arena width
-      // eslint-disable-next-line no-undef
-      // const width = 1200;
-      // eslint-disable-next-line no-undef
-      // const height = 600;
 
       // approximation of length of hand with cards
       // const halfOfHand = HAND_WIDTH / 6.5;
+      const handWidth = (13 * CARD_WIDTH) - (13 * (CARD_WIDTH - CARD_DELTA));
+      const playerControlsHeight = 60;
 
       // const isEvenPlayer = player % 2 === 0;
 
       const map = {
         1: {
-          left: 0,
-          top: 0
+          left: (GAME_ARENA_WIDTH - handWidth) / 2,
+          top: (GAME_ARENA_HEIGHT / 2) + playerControlsHeight
         },
         2: {
           left: 0,
           top: 0
         },
         3: {
-          left: 0,
-          top: 100
+          left: (GAME_ARENA_WIDTH - handWidth) / 2,
+          top: 0
         },
         4: {
           left: 0,
@@ -720,6 +722,7 @@ h3 {
   width: 1200px;
   height: 600px;
   border: 1px solid blue;
+  margin: auto;
 }
 
 .activePlayer {
