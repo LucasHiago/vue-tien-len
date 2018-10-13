@@ -40,10 +40,11 @@ export default {
     styleObj() {
       const isEvenPLayer = this.playerId % 2 === 0;
 
-      let delta = 30;
+      const oddPlayerDelta = 30;
+      let evenPLayerDelta = 25;
 
       if (this.playerId === 2) {
-        delta *= -1;
+        evenPLayerDelta *= -1;
       }
       let rotateDeg = 0;
 
@@ -53,13 +54,13 @@ export default {
 
       if (isEvenPLayer) {
         return {
-          top: `${this.cardHandIndex * delta}px`,
+          top: `${(this.cardHandIndex * evenPLayerDelta)}px`,
           transform: `rotate(${rotateDeg}deg)`
         };
       }
 
       return {
-        left: `${this.cardHandIndex * delta}px`,
+        left: `${this.cardHandIndex * oddPlayerDelta}px`,
         transform: `rotate(${rotateDeg}deg)`
       };
     },
@@ -78,7 +79,7 @@ export default {
 .card-container {
   width: 76px;
   height: 110px;
-  display: inline-block;
+  /* display: inline-block; */
   position: absolute;
 }
 

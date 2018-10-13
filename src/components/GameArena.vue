@@ -95,18 +95,18 @@
     </div>
 
     <div id="player4" :style="getPlayerHandStyleObject(4)">
-      <h3>
-        <span :class="{activePlayer: isActivePlayer('player4')}">{{ gameState.players.player4.profile.username }}</span>
-        <button @click="submitHand('player4')" :disabled="!canPlayHand('player4')">Play hand</button>
-        <button @click="pass('player4')" :disabled="!canPass('player4')">Pass</button>
+      <div style="position: relative; right: 120px;">
+        <span :class="{activePlayer: isActivePlayer('player4')}">{{ gameState.players.player4.profile.username }}</span><br />
+        <button @click="submitHand('player4')" :disabled="!canPlayHand('player4')">Play hand</button><br />
+        <button @click="pass('player4')" :disabled="!canPass('player4')">Pass</button><br />
         <span v-if="gameState.players.player4.isPassed" class="passed">Passed</span>
-        <span v-else class="inRound">In Round</span>
-        <span v-if="gameState.players.player4.winRank">Win Rank: {{ gameState.players.player4.winRank }}</span>
-        <span v-if="gameState.players.player4.profile.isFake && gameState.players.player4.profile.isThinking">
+        <span v-else class="inRound">In Round</span><br />
+        <span v-if="gameState.players.player4.winRank">Win Rank: {{ gameState.players.player4.winRank }}</span><br />
+        <span v-if="gameState.players.player4.profile.isFake && gameState.players.player4.profile.isThinking"><br />
           <i class="fa fa-spinner fa-pulse fa-lg fa-fw"></i>
-        </span>
+        </span><br />
         Player 4
-      </h3>
+      </div>
       <div class="hand">
         <template v-for="(card, index) in gameState.players.player4.cards">
           <div @click="cardClickHandler('player4', index)" :key="card.rank">
@@ -511,8 +511,8 @@ export default {
           top: 0
         },
         4: {
-          left: 0,
-          top: 500
+          left: GAME_ARENA_WIDTH / 8,
+          top: 100
         }
       };
 
@@ -711,11 +711,11 @@ export default {
 </script>
 
 <style scoped>
-h3 {
+/* h3 {
   text-align: left;
   margin-left: 137px;
   margin-bottom: 15px;
-}
+} */
 
 #game-arena {
   position: relative;
