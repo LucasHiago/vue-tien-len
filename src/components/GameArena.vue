@@ -2,19 +2,21 @@
   <div id="game-arena">
     <!-- active hands area -->
     <template v-if="gameState.active.hand.length > 0">
-      <div class="activePlayerContainer">
-        {{ gameState.active.playerId }}
-      </div>
-      <div class="hand">
-        <div v-for="(card, index) in gameState.active.hand" :key="card.rank">
-          <card :cardMapKey="parseInt(card.cardKey)" :card-hand-index="index"></card>
+      <div id="active-hand-container">
+        <div class="activePlayerContainer">
+          {{ gameState.active.playerId }}
+        </div>
+        <div class="hand">
+          <div v-for="(card, index) in gameState.active.hand" :key="card.rank">
+            <card :cardMapKey="parseInt(card.cardKey)" :card-hand-index="index"></card>
+          </div>
         </div>
       </div>
     </template>
     <!-- end active hand -->
 
     <div id="player1" :style="getPlayerHandStyleObject(1)">
-      <h3>
+      <h3 style="position: relative; top: 200px;">
         <span :class="{activePlayer: isActivePlayer('player1')}">{{ gameState.players.player1.profile.username }}</span>
         <button @click="submitHand('player1')" :disabled="!canPlayHand('player1')">Play hand</button>
         <button @click="pass('player1')" :disabled="!canPass('player1')">Pass</button>
@@ -718,6 +720,15 @@ export default {
   width: 1200px;
   height: 600px;
   /* border: 1px solid blue; */
+  margin: auto;
+}
+
+#active-hand-container {
+  width: 400px;
+  position: relative;
+  /* left: 450px; */
+  top: 215px;
+  border: 1px solid blue;
   margin: auto;
 }
 

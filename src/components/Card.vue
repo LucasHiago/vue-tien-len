@@ -86,7 +86,10 @@ export default {
         return oddLayoutPosition;
       }
 
-      return {};
+      // active cards
+      return {
+        left: `${this.cardHandIndex * 15}px`,
+      };
     },
 
     svgFile() {
