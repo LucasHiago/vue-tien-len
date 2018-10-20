@@ -538,10 +538,6 @@ export default {
       fakeUsers: 'users'
     }),
 
-    icon() {
-      return '2_of_clubs.svg';
-    },
-
     shouldResetPlayersState() {
       // get total active players ()
       let activePlayers = 0;
@@ -721,7 +717,7 @@ export default {
   position: relative;
   width: 1200px;
   height: 600px;
-  border: 1px solid blue;
+  /* border: 1px solid blue; */
   margin: auto;
 }
 

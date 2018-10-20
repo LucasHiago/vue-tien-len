@@ -1,5 +1,5 @@
 <template>
-  <div class="card-container" :style="styleObj" :class="{ selected: isSelected }">
+  <div class="card-container" :style="styleObj">
     <div v-html="require(`./../assets/faces/${svgFile}`)">
     </div>
   </div>
@@ -25,7 +25,7 @@ export default {
     },
     playerId: {
       type: Number,
-      required: true
+      required: false
     }
   },
 
@@ -38,31 +38,55 @@ export default {
 
   computed: {
     styleObj() {
-      const isEvenPLayer = this.playerId % 2 === 0;
+      // return player hand styles
+      if (this.playerId) {
+        const isEvenPLayer = this.playerId % 2 === 0;
 
-      const oddPlayerDelta = 30;
-      let evenPLayerDelta = 25;
+        const oddPlayerDelta = 30;
+        let evenPlayerDelta = 25;
 
-      if (this.playerId === 2) {
-        evenPLayerDelta *= -1;
-      }
-      let rotateDeg = 0;
+        if (this.playerId === 2) {
+          evenPlayerDelta *= -1;
+        }
+        let rotateDeg = 0;
 
-      if (isEvenPLayer) {
-        rotateDeg = this.playerId === 2 ? -90 : 90;
-      }
+        if (isEvenPLayer) {
+          rotateDeg = this.playerId === 2 ? -90 : 90;
+        }
 
-      if (isEvenPLayer) {
-        return {
-          top: `${(this.cardHandIndex * evenPLayerDelta)}px`,
+        if (isEvenPLayer) {
+          const evenLayoutPosition = {
+            top: `${(this.cardHandIndex * evenPlayerDelta)}px`,
+            transform: `rotate(${rotateDeg}deg)`
+          };
+
+          if (this.playerId === 2) {
+            evenLayoutPosition.left = this.isSelected ? `${evenPlayerDelta}px` : '0';
+          } else {
+            evenLayoutPosition.right = this.isSelected ? `-${evenPlayerDelta}px` : '0';
+          }
+
+          return evenLayoutPosition;
+        }
+
+        // odd players cards
+        const oddLayoutPosition = {
+          left: `${this.cardHandIndex * oddPlayerDelta}px`,
           transform: `rotate(${rotateDeg}deg)`
         };
+
+        if (this.isSelected && (this.playerId % 2 !== 0)) {
+          if (this.playerId === 1) {
+            oddLayoutPosition.top = '50px';
+          } else {
+            oddLayoutPosition.top = '80px';
+          }
+        }
+
+        return oddLayoutPosition;
       }
 
-      return {
-        left: `${this.cardHandIndex * oddPlayerDelta}px`,
-        transform: `rotate(${rotateDeg}deg)`
-      };
+      return {};
     },
 
     svgFile() {
@@ -81,10 +105,6 @@ export default {
   height: 110px;
   /* display: inline-block; */
   position: absolute;
-}
-
-.selected {
-  top: 12px;
 }
 
 </style>
