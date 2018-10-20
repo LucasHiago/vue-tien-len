@@ -41,7 +41,7 @@
     </div>
 
     <div id="player2" :style="getPlayerHandStyleObject(2)">
-      <h3>
+      <h3 style="position: relative; left: 87px; bottom: 110px;">
         <span :class="{activePlayer: isActivePlayer('player2')}">{{ gameState.players.player2.profile.username }}</span>
         <button @click="submitHand('player2')" :disabled="!canPlayHand('player2')">Play hand</button>
         <button @click="pass('player2')" :disabled="!canPass('player2')">Pass</button>
