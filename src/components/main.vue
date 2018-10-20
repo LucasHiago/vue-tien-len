@@ -9,14 +9,15 @@
       </template>
     </div>
 
-    <game-arena v-if="gameStart"></game-arena>
+    <template v-if="gameStart">
+        <game-arena></game-arena>
+    </template>
 
   </div>
 </template>
 
 <script>
 import GameArena from './GameArena.vue';
-
 // const CARD_WIDTH = 76;
 // const HAND_WIDTH = CARD_WIDTH * 13;
 

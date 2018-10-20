@@ -1,4 +1,6 @@
 
+import { cloneDeep } from 'lodash';
+
 const { CardMap } = require('../Constants/CardMap');
 
 class Deck {
@@ -11,15 +13,17 @@ class Deck {
     const deck = [];
     // keep map of cards added (keyed by position index)
     const cardsAdded = {};
+
+    const clonedCardMap = cloneDeep(CardMap);
     // assign each card a random index position 0 <= index < 52
-    Object.keys(CardMap).forEach((cardKey) => {
+    Object.keys(clonedCardMap).forEach((cardKey) => {
       let gotUniqueIndex = false;
       while (!gotUniqueIndex) {
         // eslint-disable-next-line no-underscore-dangle
         const randomIndex = this._randomNumber(0, 52);
         if (!cardsAdded[randomIndex]) {
           gotUniqueIndex = true;
-          cardsAdded[randomIndex] = CardMap[cardKey];
+          cardsAdded[randomIndex] = clonedCardMap[cardKey];
           cardsAdded[randomIndex].cardKey = cardKey;
         }
       }

@@ -292,15 +292,6 @@ export default {
         this.gameState.players[player].cards = hand;
       });
     },
-    resetPlayersState() {
-      // reset players game state
-      Object.assign(this.gameState.players, this.defaultPlayersState);
-    },
-    resetGame() {
-      // reset the game
-      this.gameState = this.defaultGameState;
-      this.initializeGame();
-    },
     freezePlayersArea() {
       // freezes the players play area
       Object.keys(this.gameState.players).forEach((player) => {
@@ -566,123 +557,6 @@ export default {
       });
 
       return otherPlayersStillInRound;
-    },
-
-    defaultPlayersState() {
-      return {
-        player1: {
-          cards: this.gameState.players.player1.cards,
-          isTurn: this.gameState.players.player1.isTurn,
-          isFirstTurn: false,
-          selectedHand: [],
-          canPlayHand: false, // result of evaulating selectedHand,
-          isPassed: false,
-          winRank: this.gameState.players.player1.winRank || undefined,
-          profile: this.gameState.players.player1.profile || false
-        },
-        player2: {
-          cards: this.gameState.players.player2.cards,
-          isTurn: this.gameState.players.player2.isTurn,
-          isFirstTurn: false,
-          selectedHand: [],
-          canPlayHand: false, // result of evaulating selectedHand
-          isPassed: false,
-          winRank: this.gameState.players.player2.winRank || undefined,
-          profile: this.gameState.players.player2.profile || false
-        },
-        player3: {
-          cards: this.gameState.players.player3.cards,
-          isTurn: this.gameState.players.player3.isTurn,
-          isFirstTurn: false,
-          selectedHand: [],
-          canPlayHand: false, // result of evaulating selectedHand
-          isPassed: false,
-          winRank: this.gameState.players.player3.winRank || undefined,
-          profile: this.gameState.players.player3.profile || false
-        },
-        player4: {
-          cards: this.gameState.players.player4.cards,
-          isTurn: this.gameState.players.player4.isTurn,
-          isFirstTurn: false,
-          selectedHand: [],
-          canPlayHand: false, // result of evaulating selectedHand
-          isPassed: false,
-          winRank: this.gameState.players.player4.winRank || undefined,
-          profile: this.gameState.players.player4.profile || false
-        }
-      };
-    },
-
-    defaultGameState() {
-      return {
-        players: {
-          player1: {
-            cards: [],
-            isTurn: false,
-            isFirstTurn: false,
-            selectedHand: [],
-            canPlayHand: false, // result of evaulating selectedHand,
-            isPassed: false,
-            winRank: undefined,
-            profile: {
-              userId: '',
-              username: '',
-              isFake: false,
-              isThinking: false
-            }
-          },
-          player2: {
-            cards: [],
-            isTurn: false,
-            isFirstTurn: false,
-            selectedHand: [],
-            canPlayHand: false, // result of evaulating selectedHand
-            isPassed: false,
-            winRank: undefined,
-            profile: {
-              userId: '',
-              username: '',
-              isFake: false,
-              isThinking: false
-            }
-          },
-          player3: {
-            cards: [],
-            isTurn: false,
-            isFirstTurn: false,
-            selectedHand: [],
-            canPlayHand: false, // result of evaulating selectedHand
-            isPassed: false,
-            winRank: undefined,
-            profile: {
-              userId: '',
-              username: '',
-              isFake: false,
-              isThinking: false
-            }
-          },
-          player4: {
-            cards: [],
-            isTurn: false,
-            isFirstTurn: false,
-            selectedHand: [],
-            canPlayHand: false, // result of evaulating selectedHand
-            isPassed: false,
-            winRank: undefined,
-            profile: {
-              userId: '',
-              username: '',
-              isFake: false,
-              isThinking: false
-            }
-          }
-        },
-        active: {
-          playerId: null,
-          hand: [], // list of cards
-          passCounter: 0
-        }
-      };
     }
   },
 
