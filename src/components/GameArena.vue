@@ -241,44 +241,46 @@ export default {
       this.initializePlayers();
     },
     initializePlayers() {
-      // determine who goes first (real player goes first)
-      const firstTurnPLayer = this.setFirstTurnPlayer();
-      // set real player profile
-      this.gameState.players[firstTurnPLayer].profile.userId = '1';
-      this.gameState.players[firstTurnPLayer].profile.username = 'YOU';
-      const fakeUsers = _.cloneDeep(this.fakeUsers);
+      // determine who goes first
+      this.setFirstTurnPlayer();
+
+      // set player 1 to be real player
+      this.gameState.players.player1.profile.userId = '1';
+      this.gameState.players.player1.profile.username = 'YOU';
 
       // set fake players profile
+      const fakeUsers = _.cloneDeep(this.fakeUsers);
       Object.keys(this.gameState.players).forEach((player) => {
-        if (player !== firstTurnPLayer) {
+        if (player !== 'player1') {
           const fakeUser = fakeUsers.shift();
           this.gameState.players[player].profile = fakeUser;
         }
       });
     },
-    dealCards(deck) {
-      this.gameState.players.player1.cards = deck.deck.slice(0, 13);
-      this.gameState.players.player2.cards = deck.deck.slice(13, 26);
-      this.gameState.players.player3.cards = deck.deck.slice(26, 39);
-      this.gameState.players.player4.cards = deck.deck.slice(39, 52);
-    },
     setFirstTurnPlayer() {
       // player with 3S goes first
       const targetRank = 1; // 3S
 
+      // find player with 3S
       let playerFound = null;
-
       Object.keys(this.gameState.players).forEach((player) => {
         if (_.find(this.gameState.players[player].cards, ['rank', targetRank])) {
           playerFound = player;
         }
       });
 
+      // assign found player to go first
       this.gameState.players[playerFound].isTurn = true;
       this.gameState.players[playerFound].isFirstTurn = true;
       this.gameState.active.playerId = playerFound;
 
       return playerFound;
+    },
+    dealCards(deck) {
+      this.gameState.players.player1.cards = deck.deck.slice(0, 13);
+      this.gameState.players.player2.cards = deck.deck.slice(13, 26);
+      this.gameState.players.player3.cards = deck.deck.slice(26, 39);
+      this.gameState.players.player4.cards = deck.deck.slice(39, 52);
     },
     sortByRank() {
       // TODO: move sortByRank to Deck class
