@@ -1,7 +1,7 @@
 import cardsUtils from '../../../src/utils/cardsUtils';
 import { getMappedCards } from '../../utils/getMappedCards';
 
-describe.only('cardsUtils', () => {
+describe('cardsUtils', () => {
   describe('getCardNumeral()', () => {
     it('should return number/face that is not 10', () => {
       const card = {

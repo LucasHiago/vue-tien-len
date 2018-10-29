@@ -242,7 +242,7 @@ export default {
     },
     initializePlayers() {
       // determine who goes first
-      this.setFirstTurnPlayer();
+      const firstTurnPlayer = this.setFirstTurnPlayer();
 
       // set player 1 to be real player
       this.gameState.players.player1.profile.userId = '1';
@@ -256,6 +256,11 @@ export default {
           this.gameState.players[player].profile = fakeUser;
         }
       });
+
+      // if firstTurnPlayer is AI, then hand control over to AI
+      if (this.gameState.players[firstTurnPlayer].profile.isFake) {
+        this.aiController(firstTurnPlayer, true);
+      }
     },
     setFirstTurnPlayer() {
       // player with 3S goes first
@@ -302,35 +307,41 @@ export default {
     },
 
     // AI controller
-    aiController(curAIplayer) {
+    aiController(curAIplayer, isFirstTurn) {
       // TODO: add loaders to make illusion that AI is thinking
       this.gameState.players[curAIplayer].profile.isThinking = true;
 
       const LATENCY_TURN = 4000;
       const LATENCY_DECISION = 500;
-      const activeHand = _.cloneDeep(this.gameState.active.hand);
-      const playerCards = _.cloneDeep(this.gameState.players[curAIplayer].cards);
+
       const curAIplayerUsername = this.gameState.players[curAIplayer].profile.username;
-      console.log('current AI player is:');
-      console.log(curAIplayerUsername);
-
-      /*
-      STRATEGY ->
-        If AI is not leading the round, then play highest hand
-        ... else, AI is leading the round so play lowest hand
-      */
-      const isLeadingRound = this.shouldResetPlayersState;
-
+      const playerCards = _.cloneDeep(this.gameState.players[curAIplayer].cards);
       // determine AI player selected hand
       let handToPlay = null;
-      if (isLeadingRound) {
-        console.log(`${curAIplayerUsername} leading round`);
-        // leading round
+
+      if (isFirstTurn) {
+        // should play 3S
         handToPlay = cardsUtils.getLowestHand(playerCards);
       } else {
-        // not leading round, so try to get higher hand
-        console.log(`${curAIplayerUsername} not leading round`);
-        handToPlay = cardsUtils.getHigherHand(activeHand, playerCards);
+        const activeHand = _.cloneDeep(this.gameState.active.hand);
+        console.log('current AI player is:');
+        console.log(curAIplayerUsername);
+
+        /*
+        STRATEGY ->
+          If AI is not leading the round, then play highest hand
+          ... else, AI is leading the round so play lowest hand
+        */
+        const isLeadingRound = this.shouldResetPlayersState;
+        if (isLeadingRound) {
+          console.log(`${curAIplayerUsername} leading round`);
+          // leading round
+          handToPlay = cardsUtils.getLowestHand(playerCards);
+        } else {
+          // not leading round, so try to get higher hand
+          console.log(`${curAIplayerUsername} not leading round`);
+          handToPlay = cardsUtils.getHigherHand(activeHand, playerCards);
+        }
       }
 
       if (handToPlay.length > 0) {
