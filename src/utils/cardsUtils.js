@@ -13,7 +13,7 @@ function getCardNumeral(card) {
 }
 
 // return list of possible CTPs hands (of index pos) in list of cards (index pos)
-function getCTPS(cards) {
+function getCTPS(cards, returnsCardObj) {
   // modify cards to keep track of original index of input
   const modCards = _.map(cards, (card, index) => {
     const curCard = card;
@@ -71,7 +71,7 @@ function getCTPS(cards) {
         // found hand that is ctp, so grab prevIndex's from curHand cards
         const curCTPindexes = [];
         curHand.forEach((card) => {
-          curCTPindexes.push(card.prevIndex);
+          curCTPindexes.push(returnsCardObj ? card : card.prevIndex);
         });
         ctps.push(curCTPindexes);
       }
@@ -82,7 +82,7 @@ function getCTPS(cards) {
 }
 
 // return list of possible CONSECUTIVE hands (of index pos) in list of cards
-function getConsecutives(cards) {
+function getConsecutives(cards, returnsCardObj) {
   // modify cards to keep track of original index of input
   const modCards = _.map(cards, (card, index) => {
     const curCard = card;
@@ -125,7 +125,9 @@ function getConsecutives(cards) {
           curHand.push(card);
 
           if (handUtils.isConsecutive(curHand)) {
-            const consecHand = _.cloneDeep(curHand).map(curCard => curCard.prevIndex);
+            const consecHand = _.cloneDeep(curHand).map((curCard) => {
+              return returnsCardObj ? curCard : curCard.prevIndex;
+            });
             listOfListConsecs.push(consecHand);
           }
         }
@@ -137,7 +139,7 @@ function getConsecutives(cards) {
 }
 
 // return list of possible FOK hands (of index pos) in list of cards
-function getFOKs(cards) {
+function getFOKs(cards, returnsCardObj) {
   // modify cards to keep track of original index of input
   const modCards = _.map(cards, (card, index) => {
     const curCard = card;
@@ -151,7 +153,9 @@ function getFOKs(cards) {
     if (index < 10) {
       const hand = sortedCards.slice(index, index + 4);
       if (handUtils.isFourOfKind(hand)) {
-        listOfFOKs.push(hand.map(c => c.prevIndex));
+        listOfFOKs.push(hand.map((curCard) => {
+          return returnsCardObj ? curCard : curCard.prevIndex;
+        }));
       }
     }
   });
@@ -161,7 +165,7 @@ function getFOKs(cards) {
 }
 
 // return list of possible triples hands (of index pos) in list of cards
-function getTriples(cards) {
+function getTriples(cards, returnsCardObj) {
   // modify cards to keep track of original index of input
   const modCards = _.map(cards, (card, index) => {
     const curCard = card;
@@ -180,7 +184,9 @@ function getTriples(cards) {
 
       const hand = sortedCards.slice(index, index + 3);
       if (handUtils.isTriple(hand)) {
-        listOfTriples.push(hand.map(c => c.prevIndex));
+        listOfTriples.push(hand.map((curCard) => {
+          return returnsCardObj ? curCard : curCard.prevIndex;
+        }));
       }
     }
   });
@@ -190,7 +196,7 @@ function getTriples(cards) {
 }
 
 // return list of possible pairs hands (of index pos) in list of cards
-function getPairs(cards) {
+function getPairs(cards, returnsCardObj) {
   // modify cards to keep track of original index of input
   const modCards = _.map(cards, (card, index) => {
     const curCard = card;
@@ -209,7 +215,9 @@ function getPairs(cards) {
 
       const hand = sortedCards.slice(index, index + 2);
       if (handUtils.isPair(hand)) {
-        listOfPairs.push(hand.map(c => c.prevIndex));
+        listOfPairs.push(hand.map((curCard) => {
+          return returnsCardObj ? curCard : curCard.prevIndex;
+        }));
       }
     }
   });
@@ -219,13 +227,13 @@ function getPairs(cards) {
 }
 
 // returns object representing all the possible hands of the list of cards
-function getPossibleHands(cards) {
+function getPossibleHands(cards, returnsCardObj) {
   // parse cards list and return object showing all possible hands
-  const ctps = getCTPS(cards);
-  const consecutive = getConsecutives(cards);
-  const foks = getFOKs(cards);
-  const triples = getTriples(cards);
-  const pairs = getPairs(cards);
+  const ctps = returnsCardObj ? getCTPS(cards, true) : getCTPS(cards);
+  const consecutive = returnsCardObj ? getConsecutives(cards, true) : getConsecutives(cards);
+  const foks = returnsCardObj ? getFOKs(cards, true) : getFOKs(cards);
+  const triples = returnsCardObj ? getTriples(cards, true) : getTriples(cards);
+  const pairs = returnsCardObj ? getPairs(cards, true) : getPairs(cards);
 
   return {
     CTPS: ctps,
@@ -242,11 +250,6 @@ function getPossibleHands(cards) {
 function getHigherHand(gameActiveHand, playerCards) {
   const cards = _.cloneDeep(playerCards);
   const activeHand = _.cloneDeep(gameActiveHand);
-  // console.log('getHigherHand()');
-  // console.log('activeHand:');
-  // console.log(activeHand);
-  // console.log('cards:');
-  // console.log(cards);
   let higherHand = [];
 
   if (activeHand.length === 0 || cards.length === 0) {
@@ -304,9 +307,6 @@ function getHigherHand(gameActiveHand, playerCards) {
     higherHand = foundHigher ? [foundHigher.prevIndex] : higherHand;
   }
 
-  // console.log('return higherHand:');
-  // console.log(higherHand);
-
   return higherHand;
 }
 
@@ -363,6 +363,72 @@ function getLowestHand(playerCards) {
   return lowestHand;
 }
 
+function getLowestHandWith3S(playerCards) {
+  const cards = _.cloneDeep(playerCards);
+  if (cards.length === 0) {
+    return [];
+  }
+
+  const posHandsTypes = getPossibleHands(cards, true);
+
+  /* posHandsTypes obj
+    {
+      CTPS: [[...]],
+      CONSECUTIVE: [[...]],
+      FOKS: [[...]],
+      TRIPLES: [[...]],
+      PAIRS: [[...]]
+    }
+  */
+
+  // filter possible hands for only hands with 3S
+  Object.keys(posHandsTypes).forEach((type) => {
+    const typeHands = posHandsTypes[type];
+    // only want hands with 3S
+    posHandsTypes[type] = typeHands.filter((hand) => {
+      return _.findIndex(hand, { name: '3S' }) > -1;
+    });
+
+    posHandsTypes[type] = posHandsTypes[type].map((hand) => {
+      return hand.map(card => card.prevIndex);
+    });
+    // convert each card back to prevIndex
+  });
+
+  // we want the lowest hand but also get rid of the most amount of cards
+  let lowestHand = null;
+  Object.keys(posHandsTypes).forEach((handType) => {
+    // iterate each hand type
+    const typePosHands = posHandsTypes[handType];
+
+    typePosHands.forEach((posHand) => {
+      if (lowestHand === null) {
+        lowestHand = posHand;
+      } else if (posHand.length > lowestHand.length) {
+        lowestHand = posHand;
+      }
+    });
+  });
+
+  // TDO: strategy -> should AI play singles when there is a non-single
+  // lowestHand
+
+  // if lowestHand is still null or empty, then we only have singles left
+  if (lowestHand === null || lowestHand.length === 0) {
+    // modify cards to keep track of original index of input
+    const modCards = _.map(cards, (card, index) => {
+      const curCard = card;
+      curCard.prevIndex = index;
+      return curCard;
+    });
+
+    const sortedCards = _.sortBy(modCards, 'rank');
+    lowestHand = [sortedCards[0].prevIndex];
+  }
+
+  return lowestHand;
+}
+
 export default {
   getCardNumeral,
   getCTPS,
@@ -372,5 +438,6 @@ export default {
   getPairs,
   getPossibleHands,
   getHigherHand,
-  getLowestHand
+  getLowestHand,
+  getLowestHandWith3S
 };

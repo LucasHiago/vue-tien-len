@@ -981,4 +981,23 @@ describe.only('cardsUtils', () => {
       expect(lowestHand).to.be.deep.equal([2]);
     });
   });
+  describe('getLowestHandWith3S()', () => {
+    it('should return the lowest hand with most amount of cards with 3S', () => {
+      const cardsName = ['QS', 'KH', 'AH', '4H', '4D', '6D', '5C', '3S', '10S', '10D', 'QH', 'QC', 'JS'];
+      const cards = getMappedCards(cardsName);
+
+      const lowestHand = cardsUtils.getLowestHandWith3S(cards);
+
+      expect(lowestHand).to.be.deep.equal([7, 4, 6, 5]);
+    });
+    it('should return lowest single for single-only cards with 3S', () => {
+      const cardsName = ['6D', '8D', '3C', '10S', '2D'];
+
+      const cards = getMappedCards(cardsName);
+
+      const lowestHand = cardsUtils.getLowestHandWith3S(cards);
+
+      expect(lowestHand).to.be.deep.equal([2]);
+    });
+  });
 });

@@ -241,44 +241,51 @@ export default {
       this.initializePlayers();
     },
     initializePlayers() {
-      // determine who goes first (real player goes first)
-      const firstTurnPLayer = this.setFirstTurnPlayer();
-      // set real player profile
-      this.gameState.players[firstTurnPLayer].profile.userId = '1';
-      this.gameState.players[firstTurnPLayer].profile.username = 'YOU';
-      const fakeUsers = _.cloneDeep(this.fakeUsers);
+      // determine who goes first
+      const firstTurnPlayer = this.setFirstTurnPlayer();
+
+      // set player 1 to be real player
+      this.gameState.players.player1.profile.userId = '1';
+      this.gameState.players.player1.profile.username = 'YOU';
 
       // set fake players profile
+      const fakeUsers = _.cloneDeep(this.fakeUsers);
       Object.keys(this.gameState.players).forEach((player) => {
-        if (player !== firstTurnPLayer) {
+        if (player !== 'player1') {
           const fakeUser = fakeUsers.shift();
           this.gameState.players[player].profile = fakeUser;
         }
       });
-    },
-    dealCards(deck) {
-      this.gameState.players.player1.cards = deck.deck.slice(0, 13);
-      this.gameState.players.player2.cards = deck.deck.slice(13, 26);
-      this.gameState.players.player3.cards = deck.deck.slice(26, 39);
-      this.gameState.players.player4.cards = deck.deck.slice(39, 52);
+
+      // if firstTurnPlayer is AI, then hand control over to AI
+      if (this.gameState.players[firstTurnPlayer].profile.isFake) {
+        this.aiController(firstTurnPlayer, true);
+      }
     },
     setFirstTurnPlayer() {
       // player with 3S goes first
       const targetRank = 1; // 3S
 
+      // find player with 3S
       let playerFound = null;
-
       Object.keys(this.gameState.players).forEach((player) => {
         if (_.find(this.gameState.players[player].cards, ['rank', targetRank])) {
           playerFound = player;
         }
       });
 
+      // assign found player to go first
       this.gameState.players[playerFound].isTurn = true;
       this.gameState.players[playerFound].isFirstTurn = true;
       this.gameState.active.playerId = playerFound;
 
       return playerFound;
+    },
+    dealCards(deck) {
+      this.gameState.players.player1.cards = deck.deck.slice(0, 13);
+      this.gameState.players.player2.cards = deck.deck.slice(13, 26);
+      this.gameState.players.player3.cards = deck.deck.slice(26, 39);
+      this.gameState.players.player4.cards = deck.deck.slice(39, 52);
     },
     sortByRank() {
       // TODO: move sortByRank to Deck class
@@ -300,35 +307,37 @@ export default {
     },
 
     // AI controller
-    aiController(curAIplayer) {
+    aiController(curAIplayer, isFirstTurn) {
       // TODO: add loaders to make illusion that AI is thinking
       this.gameState.players[curAIplayer].profile.isThinking = true;
 
       const LATENCY_TURN = 4000;
       const LATENCY_DECISION = 500;
-      const activeHand = _.cloneDeep(this.gameState.active.hand);
+
+      // const curAIplayerUsername = this.gameState.players[curAIplayer].profile.username;
       const playerCards = _.cloneDeep(this.gameState.players[curAIplayer].cards);
-      const curAIplayerUsername = this.gameState.players[curAIplayer].profile.username;
-      console.log('current AI player is:');
-      console.log(curAIplayerUsername);
-
-      /*
-      STRATEGY ->
-        If AI is not leading the round, then play highest hand
-        ... else, AI is leading the round so play lowest hand
-      */
-      const isLeadingRound = this.shouldResetPlayersState;
-
       // determine AI player selected hand
       let handToPlay = null;
-      if (isLeadingRound) {
-        console.log(`${curAIplayerUsername} leading round`);
-        // leading round
-        handToPlay = cardsUtils.getLowestHand(playerCards);
+
+      if (isFirstTurn) {
+        // should play 3S
+        handToPlay = cardsUtils.getLowestHandWith3S(playerCards);
       } else {
-        // not leading round, so try to get higher hand
-        console.log(`${curAIplayerUsername} not leading round`);
-        handToPlay = cardsUtils.getHigherHand(activeHand, playerCards);
+        const activeHand = _.cloneDeep(this.gameState.active.hand);
+
+        /*
+        STRATEGY ->
+          If AI is not leading the round, then play highest hand
+          ... else, AI is leading the round so play lowest hand
+        */
+        const isLeadingRound = this.shouldResetPlayersState;
+        if (isLeadingRound) {
+          // leading round
+          handToPlay = cardsUtils.getLowestHand(playerCards);
+        } else {
+          // not leading round, so try to get higher hand
+          handToPlay = cardsUtils.getHigherHand(activeHand, playerCards);
+        }
       }
 
       if (handToPlay.length > 0) {
@@ -349,7 +358,6 @@ export default {
         // try to pass
         setTimeout(() => {
           this.gameState.players[curAIplayer].profile.isThinking = false;
-          console.log(`${curAIplayerUsername} passing...`);
           this.pass(curAIplayer);
         }, LATENCY_TURN);
       }
@@ -396,7 +404,6 @@ export default {
         // check if game is over -> if second to last place has already been assigned
         const isGameOver = this.winRank === 4 || false;
         if (isGameOver) {
-          console.log('**************GAME OVER!************');
           players[nextActivePlayer].winRank = this.winRank;
           // disable players area
           this.freezePlayersArea();
@@ -481,8 +488,6 @@ export default {
       });
     },
     getPlayerHandStyleObject(player) {
-      console.log('getPlayerHandStyleObject', player);
-
       // approximation of length of hand with cards
       // const halfOfHand = HAND_WIDTH / 6.5;
       const handWidth = (13 * CARD_WIDTH) - (13 * (CARD_WIDTH - CARD_DELTA));
