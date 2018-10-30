@@ -314,7 +314,7 @@ export default {
       const LATENCY_TURN = 4000;
       const LATENCY_DECISION = 500;
 
-      const curAIplayerUsername = this.gameState.players[curAIplayer].profile.username;
+      // const curAIplayerUsername = this.gameState.players[curAIplayer].profile.username;
       const playerCards = _.cloneDeep(this.gameState.players[curAIplayer].cards);
       // determine AI player selected hand
       let handToPlay = null;
@@ -324,8 +324,6 @@ export default {
         handToPlay = cardsUtils.getLowestHand(playerCards);
       } else {
         const activeHand = _.cloneDeep(this.gameState.active.hand);
-        console.log('current AI player is:');
-        console.log(curAIplayerUsername);
 
         /*
         STRATEGY ->
@@ -334,12 +332,10 @@ export default {
         */
         const isLeadingRound = this.shouldResetPlayersState;
         if (isLeadingRound) {
-          console.log(`${curAIplayerUsername} leading round`);
           // leading round
           handToPlay = cardsUtils.getLowestHand(playerCards);
         } else {
           // not leading round, so try to get higher hand
-          console.log(`${curAIplayerUsername} not leading round`);
           handToPlay = cardsUtils.getHigherHand(activeHand, playerCards);
         }
       }
@@ -362,7 +358,6 @@ export default {
         // try to pass
         setTimeout(() => {
           this.gameState.players[curAIplayer].profile.isThinking = false;
-          console.log(`${curAIplayerUsername} passing...`);
           this.pass(curAIplayer);
         }, LATENCY_TURN);
       }
@@ -409,7 +404,6 @@ export default {
         // check if game is over -> if second to last place has already been assigned
         const isGameOver = this.winRank === 4 || false;
         if (isGameOver) {
-          console.log('**************GAME OVER!************');
           players[nextActivePlayer].winRank = this.winRank;
           // disable players area
           this.freezePlayersArea();
@@ -494,8 +488,6 @@ export default {
       });
     },
     getPlayerHandStyleObject(player) {
-      console.log('getPlayerHandStyleObject', player);
-
       // approximation of length of hand with cards
       // const halfOfHand = HAND_WIDTH / 6.5;
       const handWidth = (13 * CARD_WIDTH) - (13 * (CARD_WIDTH - CARD_DELTA));
