@@ -321,7 +321,7 @@ export default {
 
       if (isFirstTurn) {
         // should play 3S
-        handToPlay = cardsUtils.getLowestHand(playerCards);
+        handToPlay = cardsUtils.getLowestHandWith3S(playerCards);
       } else {
         const activeHand = _.cloneDeep(this.gameState.active.hand);
 
