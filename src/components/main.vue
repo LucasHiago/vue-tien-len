@@ -33,11 +33,10 @@
 </template>
 
 <script>
-import VueCircle from 'vue2-circle-progress';
-import GameArena from './GameArena.vue';
+import VueCircle from 'vue2-circle-progress'
+import GameArena from './GameArena.vue'
 // const CARD_WIDTH = 76;
 // const HAND_WIDTH = CARD_WIDTH * 13;
-
 
 export default {
   name: 'Main',
@@ -47,40 +46,40 @@ export default {
     GameArena
   },
 
-  data() {
+  data () {
     return {
       gameStart: false,
-      fill: { gradient: ['red', 'green', 'blue'] },
-    };
+      fill: { gradient: ['red', 'green', 'blue'] }
+    }
   },
 
-  mounted() {
-    console.log('Main mounted');
+  mounted () {
+    console.log('Main mounted')
   },
 
   methods: {
-    play() {
-      this.gameStart = true;
+    play () {
+      this.gameStart = true
     },
 
-    playAgain() {
-      this.gameStart = false;
+    playAgain () {
+      this.gameStart = false
       this.$nextTick(() => {
-        this.gameStart = true;
-      });
+        this.gameStart = true
+      })
     },
 
-    progress(event, progress, stepValue) {
-      console.log(stepValue);
+    progress (event, progress, stepValue) {
+      console.log(stepValue)
     },
-    progress_end(event) {
-      console.log('Circle progress end');
-      console.log('event', event);
+    progress_end (event) {
+      console.log('Circle progress end')
+      console.log('event', event)
     }
   },
 
   computed: {}
-};
+}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
