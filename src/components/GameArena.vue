@@ -3,9 +3,9 @@
     <!-- active hands area -->
     <template v-if="gameState.active.hand.length > 0">
       <div id="active-hand-container">
-        <div class="activePlayerContainer">
+        <!-- <div class="activePlayerContainer">
           {{ gameState.active.playerId }}
-        </div>
+        </div> -->
         <div class="hand">
           <div v-for="(card, index) in gameState.active.hand" :key="card.rank">
             <card :cardMapKey="parseInt(card.cardKey)" :card-hand-index="index"></card>
@@ -15,8 +15,9 @@
     </template>
     <!-- end active hand -->
 
-    <div id="player1" :style="getPlayerHandStyleObject(1)">
-      <h3 style="position: relative; top: 200px;">
+    <div id="player1" style="position: absolute; left: 400px; bottom: 14%;">
+      <div style="position: absolute; z-index: 2;">
+        <avatar :name="gameState.players.player1.profile.username"></avatar>
         <span :class="{activePlayer: isActivePlayer('player1')}">{{ gameState.players.player1.profile.username }}</span>
         <button @click="submitHand('player1')" :disabled="!canPlayHand('player1')">Play hand</button>
         <button @click="pass('player1')" :disabled="!canPass('player1')">Pass</button>
@@ -27,7 +28,7 @@
           <i class="fa fa-spinner fa-pulse fa-lg fa-fw"></i>
         </span>
         Player 1
-      </h3>
+      </div>
       <div class="hand">
         <template v-for="(card, index) in gameState.players.player1.cards">
           <div @click="cardClickHandler('player1', index)" :key="card.rank">
@@ -35,15 +36,16 @@
               :cardMapKey="parseInt(card.cardKey)"
               :is-selected="card.isSelected"
               :card-hand-index="index"
-              :player-id="1">
+              :player-id="1"
+              :player-profile="gameState.players.player1.profile">
             </card>
           </div>
         </template>
       </div>
     </div>
 
-    <div id="player2" :style="getPlayerHandStyleObject(2)">
-      <h3 style="position: relative; left: 87px; bottom: 110px;">
+    <div id="player2" style="position: absolute; right: 18%; top: 225px;">
+      <h3 style="position: absolute; left: 0px; bottom: 0px;">
         <span :class="{activePlayer: isActivePlayer('player2')}">{{ gameState.players.player2.profile.username }}</span>
         <button @click="submitHand('player2')" :disabled="!canPlayHand('player2')">Play hand</button>
         <button @click="pass('player2')" :disabled="!canPass('player2')">Pass</button>
@@ -62,14 +64,15 @@
               :cardMapKey="parseInt(card.cardKey)"
               :is-selected="card.isSelected"
               :card-hand-index="index"
-              :player-id="2">
+              :player-id="2"
+              :player-profile="gameState.players.player2.profile">
             </card>
           </div>
         </template>
       </div>
     </div>
 
-    <div id="player3" :style="getPlayerHandStyleObject(3)">
+    <div id="player3" style="position: absolute; left: 500px; top: 0;">
       <h3>
         <span :class="{activePlayer: isActivePlayer('player3')}">{{ gameState.players.player3.profile.username }}</span>
         <button @click="submitHand('player3')" :disabled="!canPlayHand('player3')">Play hand</button>
@@ -89,14 +92,15 @@
               :cardMapKey="parseInt(card.cardKey)"
               :is-selected="card.isSelected"
               :card-hand-index="index"
-              :player-id="3">
+              :player-id="3"
+              :player-profile="gameState.players.player3.profile">
             </card>
           </div>
         </template>
       </div>
     </div>
 
-    <div id="player4" :style="getPlayerHandStyleObject(4)">
+    <div id="player4" style="position: absolute; left: 100px; top: 225px;">
       <div style="position: relative; right: 120px;">
         <span :class="{activePlayer: isActivePlayer('player4')}">{{ gameState.players.player4.profile.username }}</span><br />
         <button @click="submitHand('player4')" :disabled="!canPlayHand('player4')">Play hand</button><br />
@@ -116,7 +120,8 @@
               :cardMapKey="parseInt(card.cardKey)"
               :is-selected="card.isSelected"
               :card-hand-index="index"
-              :player-id="4">
+              :player-id="4"
+              :player-profile="gameState.players.player4.profile">
             </card>
           </div>
         </template>
@@ -129,14 +134,15 @@
 import _ from 'lodash'
 import { mapActions, mapGetters } from 'vuex'
 import Card from './Card.vue'
+import Avatar from './Avatar.vue'
 import Deck from '../Classes/deck'
 import handUtils from '../utils/handUtils'
 import cardsUtils from '../utils/cardsUtils'
 
-const GAME_ARENA_WIDTH = 1200
+// const GAME_ARENA_WIDTH = 1200
 const GAME_ARENA_HEIGHT = 600
-const CARD_WIDTH = 76
-const CARD_DELTA = 30
+// const CARD_WIDTH = 76
+// const CARD_DELTA = 30
 
 export default {
   mounted () {
@@ -404,6 +410,7 @@ export default {
         // check if game is over -> if second to last place has already been assigned
         const isGameOver = this.winRank === 4 || false
         if (isGameOver) {
+          console.log('**************GAME OVER!************')
           players[nextActivePlayer].winRank = this.winRank
           // disable players area
           this.freezePlayersArea()
@@ -490,27 +497,27 @@ export default {
     getPlayerHandStyleObject (player) {
       // approximation of length of hand with cards
       // const halfOfHand = HAND_WIDTH / 6.5
-      const handWidth = (13 * CARD_WIDTH) - (13 * (CARD_WIDTH - CARD_DELTA))
+      // const handWidth = (13 * CARD_WIDTH) - (13 * (CARD_WIDTH - CARD_DELTA))
       const playerControlsHeight = 60
 
       // const isEvenPlayer = player % 2 === 0
 
       const map = {
         1: {
-          left: (GAME_ARENA_WIDTH - handWidth) / 2,
+          left: 500,
           top: (GAME_ARENA_HEIGHT / 2) + playerControlsHeight
         },
         2: {
-          left: GAME_ARENA_WIDTH * (7 / 8),
-          top: handWidth + 12
+          right: 18,
+          top: 225
         },
         3: {
-          left: (GAME_ARENA_WIDTH - handWidth) / 2,
+          left: 500,
           top: 0
         },
         4: {
-          left: GAME_ARENA_WIDTH / 8,
-          top: 100
+          left: 100,
+          top: 225
         }
       }
 
@@ -519,16 +526,29 @@ export default {
 
       // const top = isEvenPlayer ? height / 2 : (height / 3)
 
+      if (player === 2) {
+        return {
+          position: 'absolute', // can move to a class
+          right: `${map[player].right}%`,
+          top: `${map[player].top}px`
+        }
+      }
+
       return {
         position: 'absolute', // can move to a class
         left: `${map[player].left}px`,
         top: `${map[player].top}px`
       }
+    },
+    resetPlayersState () {
+      // reset players game state
+      Object.assign(this.gameState.players, this.defaultPlayersState)
     }
   },
 
   components: {
-    Card
+    Card,
+    Avatar
   },
 
   computed: {
@@ -562,6 +582,51 @@ export default {
       })
 
       return otherPlayersStillInRound
+    },
+
+    defaultPlayersState () {
+      return {
+        player1: {
+          cards: this.gameState.players.player1.cards,
+          isTurn: this.gameState.players.player1.isTurn,
+          isFirstTurn: false,
+          selectedHand: [],
+          canPlayHand: false, // result of evaulating selectedHand,
+          isPassed: false,
+          winRank: this.gameState.players.player1.winRank || undefined,
+          profile: this.gameState.players.player1.profile || false
+        },
+        player2: {
+          cards: this.gameState.players.player2.cards,
+          isTurn: this.gameState.players.player2.isTurn,
+          isFirstTurn: false,
+          selectedHand: [],
+          canPlayHand: false, // result of evaulating selectedHand
+          isPassed: false,
+          winRank: this.gameState.players.player2.winRank || undefined,
+          profile: this.gameState.players.player2.profile || false
+        },
+        player3: {
+          cards: this.gameState.players.player3.cards,
+          isTurn: this.gameState.players.player3.isTurn,
+          isFirstTurn: false,
+          selectedHand: [],
+          canPlayHand: false, // result of evaulating selectedHand
+          isPassed: false,
+          winRank: this.gameState.players.player3.winRank || undefined,
+          profile: this.gameState.players.player3.profile || false
+        },
+        player4: {
+          cards: this.gameState.players.player4.cards,
+          isTurn: this.gameState.players.player4.isTurn,
+          isFirstTurn: false,
+          selectedHand: [],
+          canPlayHand: false, // result of evaulating selectedHand
+          isPassed: false,
+          winRank: this.gameState.players.player4.winRank || undefined,
+          profile: this.gameState.players.player4.profile || false
+        }
+      }
     }
   },
 
@@ -605,9 +670,7 @@ export default {
 #active-hand-container {
   width: 400px;
   position: relative;
-  /* left: 450px; */
-  top: 215px;
-  border: 1px solid blue;
+  top: 280px;
   margin: auto;
 }
 
