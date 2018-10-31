@@ -58,5 +58,9 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+#game-controllers-container {
+  position: absolute;
+  left: 0px;
+}
 
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div>
     <vue-circle
-      :progress="50"
+      :progress="progress"
       :size="150"
       :reverse="false"
       line-cap="round"
@@ -12,11 +12,11 @@
       insert-mode="append"
       :thickness="5"
       :show-percent="false"
-      @vue-circle-progress="progress"
-      @vue-circle-end="progress_end">
+      @vue-circle-progress="handleProgress"
+      @vue-circle-end="handleProgressEnd">
       <!-- Slot -->
       <div class="avatar">
-        <div class="name">{{ name }}</div>
+        <div :class="{active: isActive}">{{ name }}</div>
         <div v-html="require('./../assets/avatars/man-1.svg')"></div>
       </div>
     </vue-circle>
@@ -36,22 +36,35 @@ export default {
     name: {
       type: String,
       required: true
+    },
+    isActive: {
+      type: Boolean,
+      required: true
     }
   },
 
   data () {
     return {
+      progress: 0,
       fill: { gradient: ['red', 'green', 'blue'] }
     }
   },
 
   methods: {
-    progress (event, progress, stepValue) {
+    handleProgress (event, progress, stepValue) {
       console.log(stepValue)
     },
-    progress_end (event) {
+    handleProgressEnd (event) {
       console.log('Circle progress end')
       console.log('event', event)
+    }
+  },
+
+  watch: {
+    isActive (val) {
+      if (!val) {
+        this.progress = 0
+      }
     }
   }
 }
@@ -62,7 +75,7 @@ export default {
   width: 100px;
 }
 
-.avatar .name {
+.avatar .active {
   color: red;
   font-weight: bold;
 }

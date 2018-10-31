@@ -16,8 +16,11 @@
     <!-- end active hand -->
 
     <div id="player1" style="position: absolute; left: 400px; bottom: 14%;">
-      <div style="position: absolute; z-index: 2;">
-        <avatar :name="gameState.players.player1.profile.username"></avatar>
+      <div style="position: absolute; left: 100px; top: -120px;">
+        <avatar
+          :name="gameState.players.player1.profile.username"
+          :is-active="isActivePlayer('player1')">
+        </avatar>
         <span :class="{activePlayer: isActivePlayer('player1')}">{{ gameState.players.player1.profile.username }}</span>
         <button @click="submitHand('player1')" :disabled="!canPlayHand('player1')">Play hand</button>
         <button @click="pass('player1')" :disabled="!canPass('player1')">Pass</button>
@@ -45,10 +48,16 @@
     </div>
 
     <div id="player2" style="position: absolute; right: 18%; top: 225px;">
-      <h3 style="position: absolute; left: 0px; bottom: 0px;">
+      <div style="position: absolute; left: 0px; bottom: 0px;">
+        <avatar
+          :name="gameState.players.player2.profile.username"
+          :is-active="isActivePlayer('player2')">
+        </avatar>
+
         <span :class="{activePlayer: isActivePlayer('player2')}">{{ gameState.players.player2.profile.username }}</span>
-        <button @click="submitHand('player2')" :disabled="!canPlayHand('player2')">Play hand</button>
-        <button @click="pass('player2')" :disabled="!canPass('player2')">Pass</button>
+
+        <!-- <button @click="submitHand('player2')" :disabled="!canPlayHand('player2')">Play hand</button>
+        <button @click="pass('player2')" :disabled="!canPass('player2')">Pass</button> -->
         <span v-if="gameState.players.player2.isPassed" class="passed">Passed</span>
         <span v-else class="inRound">In Round</span>
         <span v-if="gameState.players.player2.winRank">Win Rank: {{ gameState.players.player2.winRank }}</span>
@@ -56,7 +65,7 @@
           <i class="fa fa-spinner fa-pulse fa-lg fa-fw"></i>
         </span>
         Player 2
-      </h3>
+      </div>
       <div class="hand">
         <template v-for="(card, index) in gameState.players.player2.cards">
           <div @click="cardClickHandler('player2', index)" :key="card.rank">
@@ -73,7 +82,11 @@
     </div>
 
     <div id="player3" style="position: absolute; left: 500px; top: 0;">
-      <h3>
+      <div>
+        <avatar
+          :name="gameState.players.player3.profile.username"
+          :is-active="isActivePlayer('player3')">
+        </avatar>
         <span :class="{activePlayer: isActivePlayer('player3')}">{{ gameState.players.player3.profile.username }}</span>
         <button @click="submitHand('player3')" :disabled="!canPlayHand('player3')">Play hand</button>
         <button @click="pass('player3')" :disabled="!canPass('player3')">Pass</button>
@@ -84,7 +97,7 @@
           <i class="fa fa-spinner fa-pulse fa-lg fa-fw"></i>
         </span>
         Player 3
-      </h3>
+      </div>
       <div class="hand">
         <template v-for="(card, index) in gameState.players.player3.cards">
           <div @click="cardClickHandler('player3', index)" :key="card.rank">
@@ -102,6 +115,10 @@
 
     <div id="player4" style="position: absolute; left: 100px; top: 225px;">
       <div style="position: relative; right: 120px;">
+        <avatar
+          :name="gameState.players.player4.profile.username"
+          :is-active="isActivePlayer('player4')">
+        </avatar>
         <span :class="{activePlayer: isActivePlayer('player4')}">{{ gameState.players.player4.profile.username }}</span><br />
         <button @click="submitHand('player4')" :disabled="!canPlayHand('player4')">Play hand</button><br />
         <button @click="pass('player4')" :disabled="!canPass('player4')">Pass</button><br />
