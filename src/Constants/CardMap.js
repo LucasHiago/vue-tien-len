@@ -367,6 +367,6 @@ const CardMap = {
     number: 2,
     suit: 'H'
   }
-};
+}
 
-module.exports = { CardMap };
+module.exports = { CardMap }

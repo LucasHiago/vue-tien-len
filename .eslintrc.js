@@ -1,12 +1,17 @@
 module.exports = {
-    "extends": "airbnb-base",
-    "plugins": [
-        "import", "html"
-    ],
-    "rules": {
-        "comma-dangle": 0,
-        "import/prefer-default-export": 0,
-        "arrow-body-style": 0,
-        "max-len": [2, {"code": 180}]
-    }
-};
+  root: true,
+  env: {
+    node: true
+  },
+  'extends': [
+    'plugin:vue/essential',
+    '@vue/standard'
+  ],
+  rules: {
+    'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off'
+  },
+  parserOptions: {
+    parser: 'babel-eslint'
+  }
+}

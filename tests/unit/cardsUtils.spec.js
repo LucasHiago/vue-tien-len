@@ -1,5 +1,5 @@
-import cardsUtils from '../../../src/utils/cardsUtils';
-import { getMappedCards } from '../../utils/getMappedCards';
+import cardsUtils from '../../src/utils/cardsUtils'
+import { getMappedCards } from '../utils/getMappedCards'
 
 describe.only('cardsUtils', () => {
   describe('getCardNumeral()', () => {
@@ -8,22 +8,20 @@ describe.only('cardsUtils', () => {
         name: '3C',
         rank: 2,
         isSelected: false
-      };
+      }
 
-
-      expect(cardsUtils.getCardNumeral(card)).to.be.eq('3');
-    });
+      expect(cardsUtils.getCardNumeral(card)).toBe('3')
+    })
     it('should return number that is 10', () => {
       const card = {
         name: '10C',
         rank: 2,
         isSelected: false
-      };
+      }
 
-
-      expect(cardsUtils.getCardNumeral(card)).to.be.eq('10');
-    });
-  });
+      expect(cardsUtils.getCardNumeral(card)).toBe('10')
+    })
+  })
   describe('getCTPS()', () => {
     it('should return back one CTPs hand for all 13 cards set', () => {
       const cards = [
@@ -93,12 +91,12 @@ describe.only('cardsUtils', () => {
           rank: 52,
           isSelected: false
         }
-      ];
+      ]
 
-      const expectedListOfHands = [[0, 1, 3, 6, 4, 5]];
-      const actualListOfHands = cardsUtils.getCTPS(cards);
-      expect(actualListOfHands).to.be.deep.eq(expectedListOfHands);
-    });
+      const expectedListOfHands = [[0, 1, 3, 6, 4, 5]]
+      const actualListOfHands = cardsUtils.getCTPS(cards)
+      expect(actualListOfHands).toEqual(expectedListOfHands)
+    })
     it('should return back two CTPs hand for all 13 cards set', () => {
       const cards = [
         {
@@ -166,13 +164,13 @@ describe.only('cardsUtils', () => {
           rank: 52,
           isSelected: false
         }
-      ];
+      ]
 
-      const expectedListOfHands = [[6, 7, 0, 1, 2, 3], [0, 1, 2, 3, 4, 5]];
-      const actualListOfHands = cardsUtils.getCTPS(cards);
-      expect(actualListOfHands).to.be.deep.eq(expectedListOfHands);
-    });
-  });
+      const expectedListOfHands = [[6, 7, 0, 1, 2, 3], [0, 1, 2, 3, 4, 5]]
+      const actualListOfHands = cardsUtils.getCTPS(cards)
+      expect(actualListOfHands).toEqual(expectedListOfHands)
+    })
+  })
   describe('getConsecutives()', () => {
     it('should return consecutives for non-pairs, no overlaps', () => {
       const cards = [
@@ -254,9 +252,9 @@ describe.only('cardsUtils', () => {
           number: 6,
           isSelected: false
         }
-      ];
+      ]
 
-      const actualListOfHands = cardsUtils.getConsecutives(cards);
+      const actualListOfHands = cardsUtils.getConsecutives(cards)
       const expectedListOfHands = [
         [10, 0, 9], // 0
         [10, 0, 9, 12], // 1
@@ -280,10 +278,10 @@ describe.only('cardsUtils', () => {
         [11, 1, 8, 2], // 19
         [1, 8, 2], // 20
         [3, 7, 4] // 21
-      ];
+      ]
 
-      expect(actualListOfHands).to.be.deep.eq(expectedListOfHands);
-    });
+      expect(actualListOfHands).toEqual(expectedListOfHands)
+    })
     it('should return consecutives for pairs', () => {
       const cards = [
         {
@@ -364,16 +362,16 @@ describe.only('cardsUtils', () => {
           number: 14,
           isSelected: false
         }
-      ];
+      ]
 
-      const actualListOfHands = cardsUtils.getConsecutives(cards);
+      const actualListOfHands = cardsUtils.getConsecutives(cards)
       const expectedListOfHands = [
-        [7, 1, 12],
-      ];
+        [7, 1, 12]
+      ]
 
-      expect(actualListOfHands).to.be.deep.eq(expectedListOfHands);
-    });
-  });
+      expect(actualListOfHands).toEqual(expectedListOfHands)
+    })
+  })
   describe('getFOKs()', () => {
     it('should return FOKs', () => {
       const cards = [
@@ -455,17 +453,17 @@ describe.only('cardsUtils', () => {
           number: 4,
           isSelected: false
         }
-      ];
+      ]
 
-      const actualListOfHands = cardsUtils.getFOKs(cards);
+      const actualListOfHands = cardsUtils.getFOKs(cards)
       const expectedListOfHands = [
         [12, 6, 10, 2],
-        [4, 0, 11, 7],
-      ];
+        [4, 0, 11, 7]
+      ]
 
-      expect(actualListOfHands).to.be.deep.eq(expectedListOfHands);
-    });
-  });
+      expect(actualListOfHands).toEqual(expectedListOfHands)
+    })
+  })
   describe('getTriples()', () => {
     it('should return triples', () => {
       const cards = [
@@ -547,20 +545,20 @@ describe.only('cardsUtils', () => {
           number: 4,
           isSelected: false
         }
-      ];
+      ]
 
-      const actualListOfHands = cardsUtils.getTriples(cards);
+      const actualListOfHands = cardsUtils.getTriples(cards)
       const expectedListOfHands = [
         [12, 6, 10],
         [6, 10, 2],
         [4, 0, 11],
         [0, 11, 7],
         [1, 8, 9]
-      ];
+      ]
 
-      expect(actualListOfHands).to.be.deep.eq(expectedListOfHands);
-    });
-  });
+      expect(actualListOfHands).toEqual(expectedListOfHands)
+    })
+  })
   describe('getPairs()', () => {
     it('should return pairs', () => {
       const cards = [
@@ -642,9 +640,9 @@ describe.only('cardsUtils', () => {
           number: 4,
           isSelected: false
         }
-      ];
+      ]
 
-      const actualListOfHands = cardsUtils.getPairs(cards);
+      const actualListOfHands = cardsUtils.getPairs(cards)
       const expectedListOfHands = [
         [12, 6],
         [6, 10],
@@ -654,11 +652,11 @@ describe.only('cardsUtils', () => {
         [11, 7],
         [1, 8],
         [8, 9]
-      ];
+      ]
 
-      expect(actualListOfHands).to.be.deep.eq(expectedListOfHands);
-    });
-  });
+      expect(actualListOfHands).toEqual(expectedListOfHands)
+    })
+  })
   describe('getPossibleHands()', () => {
     it('should return correct possible hands with all possible hands', () => {
       const cards = [
@@ -739,7 +737,7 @@ describe.only('cardsUtils', () => {
           number: 10,
           isSelected: false
         }
-      ];
+      ]
 
       const expectedPossibleHands = {
         CTPS: [[8, 10, 4, 7, 11, 5]],
@@ -747,16 +745,15 @@ describe.only('cardsUtils', () => {
         FOKS: [[0, 12, 6, 1]],
         TRIPLES: [[0, 12, 6], [12, 6, 1]],
         PAIRS: [[8, 10], [4, 7], [11, 5], [0, 12], [12, 6], [6, 1]]
-      };
+      }
 
-
-      const actualListOfHands = cardsUtils.getPossibleHands(cards);
-      expect(actualListOfHands.CTPS).to.be.deep.eq(expectedPossibleHands.CTPS);
-      expect(actualListOfHands.CONSECUTIVE).to.be.deep.eq(expectedPossibleHands.CONSECUTIVE);
-      expect(actualListOfHands.FOKS).to.be.deep.eq(expectedPossibleHands.FOKS);
-      expect(actualListOfHands.TRIPLES).to.be.deep.eq(expectedPossibleHands.TRIPLES);
-      expect(actualListOfHands.PAIRS).to.be.deep.eq(expectedPossibleHands.PAIRS);
-    });
+      const actualListOfHands = cardsUtils.getPossibleHands(cards)
+      expect(actualListOfHands.CTPS).toEqual(expectedPossibleHands.CTPS)
+      expect(actualListOfHands.CONSECUTIVE).toEqual(expectedPossibleHands.CONSECUTIVE)
+      expect(actualListOfHands.FOKS).toEqual(expectedPossibleHands.FOKS)
+      expect(actualListOfHands.TRIPLES).toEqual(expectedPossibleHands.TRIPLES)
+      expect(actualListOfHands.PAIRS).toEqual(expectedPossibleHands.PAIRS)
+    })
     it('should return correct possible hands with all possible hands with no CTPS nor FOKS', () => {
       const cards = [
         {
@@ -836,7 +833,7 @@ describe.only('cardsUtils', () => {
           number: 11,
           isSelected: false
         }
-      ];
+      ]
 
       const expectedPossibleHands = {
         CTPS: [],
@@ -844,20 +841,19 @@ describe.only('cardsUtils', () => {
         FOKS: [],
         TRIPLES: [[0, 11, 10]],
         PAIRS: [[4, 3], [8, 9], [0, 11], [11, 10]]
-      };
+      }
 
-
-      const actualListOfHands = cardsUtils.getPossibleHands(cards);
-      expect(actualListOfHands.CTPS).to.be.deep.eq(expectedPossibleHands.CTPS);
-      expect(actualListOfHands.CONSECUTIVE).to.be.deep.eq(expectedPossibleHands.CONSECUTIVE);
-      expect(actualListOfHands.FOKS).to.be.deep.eq(expectedPossibleHands.FOKS);
-      expect(actualListOfHands.TRIPLES).to.be.deep.eq(expectedPossibleHands.TRIPLES);
-      expect(actualListOfHands.PAIRS).to.be.deep.eq(expectedPossibleHands.PAIRS);
-    });
-  });
+      const actualListOfHands = cardsUtils.getPossibleHands(cards)
+      expect(actualListOfHands.CTPS).toEqual(expectedPossibleHands.CTPS)
+      expect(actualListOfHands.CONSECUTIVE).toEqual(expectedPossibleHands.CONSECUTIVE)
+      expect(actualListOfHands.FOKS).toEqual(expectedPossibleHands.FOKS)
+      expect(actualListOfHands.TRIPLES).toEqual(expectedPossibleHands.TRIPLES)
+      expect(actualListOfHands.PAIRS).toEqual(expectedPossibleHands.PAIRS)
+    })
+  })
   describe('getMappedCards()', () => {
     it('should get the mapped cards in order', () => {
-      const cardNames = ['QS', 'KD', 'AH', '4H'];
+      const cardNames = ['QS', 'KD', 'AH', '4H']
 
       const expectedCards = [
         {
@@ -888,116 +884,116 @@ describe.only('cardsUtils', () => {
           number: 4,
           suit: 'H'
         }
-      ];
+      ]
 
-      const cards = getMappedCards(cardNames);
+      const cards = getMappedCards(cardNames)
 
-      expect(cards).to.deep.equal(expectedCards);
-    });
-  });
+      expect(cards).toEqual(expectedCards)
+    })
+  })
   describe('getHigherHand()', () => {
     it('should return a higher hand for a single active card', () => {
-      const activeHandName = ['4S'];
-      const cardsName = ['QS', 'KD', 'AH', '4H', '4D', '6D', '5C', '3S', '10S', '10C', 'QH', 'QC', 'JS'];
+      const activeHandName = ['4S']
+      const cardsName = ['QS', 'KD', 'AH', '4H', '4D', '6D', '5C', '3S', '10S', '10C', 'QH', 'QC', 'JS']
 
-      const activeHand = getMappedCards(activeHandName);
-      const cards = getMappedCards(cardsName);
+      const activeHand = getMappedCards(activeHandName)
+      const cards = getMappedCards(cardsName)
 
-      const higherHand = cardsUtils.getHigherHand(activeHand, cards);
+      const higherHand = cardsUtils.getHigherHand(activeHand, cards)
 
-      expect(higherHand).to.be.deep.equal([4]);
-    });
+      expect(higherHand).toEqual([4])
+    })
     it('should return a CTPS hand for a single active card that is a 2', () => {
-      const activeHandName = ['2S'];
-      const cardsName = ['6S', '6D', '7H', '7D', '8D', '8C', '3C', '3S', '10S', '10C', 'QH', 'QC', '2D'];
+      const activeHandName = ['2S']
+      const cardsName = ['6S', '6D', '7H', '7D', '8D', '8C', '3C', '3S', '10S', '10C', 'QH', 'QC', '2D']
 
-      const activeHand = getMappedCards(activeHandName);
-      const cards = getMappedCards(cardsName);
+      const activeHand = getMappedCards(activeHandName)
+      const cards = getMappedCards(cardsName)
 
-      const higherHand = cardsUtils.getHigherHand(activeHand, cards);
+      const higherHand = cardsUtils.getHigherHand(activeHand, cards)
 
-      expect(higherHand).to.be.deep.equal([0, 1, 3, 2, 5, 4]);
-    });
+      expect(higherHand).toEqual([0, 1, 3, 2, 5, 4])
+    })
     it('should return a higher consecutive hand', () => {
-      const activeHandName = ['4S', '5D', '6D'];
-      const cardsName = ['6S', '6D', '7H', '7D', '8D', '8C', '3C', '3S', '10S', '10C', 'QH', 'QC', '2D'];
+      const activeHandName = ['4S', '5D', '6D']
+      const cardsName = ['6S', '6D', '7H', '7D', '8D', '8C', '3C', '3S', '10S', '10C', 'QH', 'QC', '2D']
 
-      const activeHand = getMappedCards(activeHandName);
-      const cards = getMappedCards(cardsName);
+      const activeHand = getMappedCards(activeHandName)
+      const cards = getMappedCards(cardsName)
 
-      const higherHand = cardsUtils.getHigherHand(activeHand, cards);
+      const higherHand = cardsUtils.getHigherHand(activeHand, cards)
 
-      expect(higherHand).to.be.deep.equal([0, 3, 5]);
-    });
+      expect(higherHand).toEqual([0, 3, 5])
+    })
     it('should return a higher pair hand', () => {
-      const activeHandName = ['4S', '4D'];
-      const cardsName = ['7H', '7D', '8D', '8C', '3C', '4C', '4H', '3S', '10S', '10C', 'QH', 'QC', '2D'];
+      const activeHandName = ['4S', '4D']
+      const cardsName = ['7H', '7D', '8D', '8C', '3C', '4C', '4H', '3S', '10S', '10C', 'QH', 'QC', '2D']
 
-      const activeHand = getMappedCards(activeHandName);
-      const cards = getMappedCards(cardsName);
+      const activeHand = getMappedCards(activeHandName)
+      const cards = getMappedCards(cardsName)
 
-      const higherHand = cardsUtils.getHigherHand(activeHand, cards);
+      const higherHand = cardsUtils.getHigherHand(activeHand, cards)
 
-      expect(higherHand).to.be.deep.equal([5, 6]);
-    });
+      expect(higherHand).toEqual([5, 6])
+    })
     it('should return a higher triple hand', () => {
-      const activeHandName = ['4S', '4D', '4H'];
-      const cardsName = ['7H', '7D', '8D', '8C', '3C', '4C', '3S', '10S', '10C', '10H', 'QC', '2D'];
+      const activeHandName = ['4S', '4D', '4H']
+      const cardsName = ['7H', '7D', '8D', '8C', '3C', '4C', '3S', '10S', '10C', '10H', 'QC', '2D']
 
-      const activeHand = getMappedCards(activeHandName);
-      const cards = getMappedCards(cardsName);
+      const activeHand = getMappedCards(activeHandName)
+      const cards = getMappedCards(cardsName)
 
-      const higherHand = cardsUtils.getHigherHand(activeHand, cards);
+      const higherHand = cardsUtils.getHigherHand(activeHand, cards)
 
-      expect(higherHand).to.be.deep.equal([7, 8, 9]);
-    });
+      expect(higherHand).toEqual([7, 8, 9])
+    })
     it('should return nothing if AI does not have a higher hand', () => {
-      const activeHandName = ['4S', '4D'];
-      const cardsName = ['7D', '8D', '3C', '4C', '3S', '10S', 'QC', '2D'];
+      const activeHandName = ['4S', '4D']
+      const cardsName = ['7D', '8D', '3C', '4C', '3S', '10S', 'QC', '2D']
 
-      const activeHand = getMappedCards(activeHandName);
-      const cards = getMappedCards(cardsName);
+      const activeHand = getMappedCards(activeHandName)
+      const cards = getMappedCards(cardsName)
 
-      const higherHand = cardsUtils.getHigherHand(activeHand, cards);
-      expect(higherHand).to.be.deep.equal([]);
-    });
-  });
+      const higherHand = cardsUtils.getHigherHand(activeHand, cards)
+      expect(higherHand).toEqual([])
+    })
+  })
   describe('getLowestHand()', () => {
     it('should return the lowest hand with most amount of cards', () => {
-      const cardsName = ['QS', 'KH', 'AH', '4H', '4D', '6D', '5C', '3S', '10S', '10D', 'QH', 'QC', 'JS'];
-      const cards = getMappedCards(cardsName);
+      const cardsName = ['QS', 'KH', 'AH', '4H', '4D', '6D', '5C', '3S', '10S', '10D', 'QH', 'QC', 'JS']
+      const cards = getMappedCards(cardsName)
 
-      const lowestHand = cardsUtils.getLowestHand(cards);
+      const lowestHand = cardsUtils.getLowestHand(cards)
 
-      expect(lowestHand).to.be.deep.equal([8, 12, 0, 1, 2]);
-    });
+      expect(lowestHand).toEqual([8, 12, 0, 1, 2])
+    })
     it('should return lowest single for single-only cards', () => {
-      const cardsName = ['6D', '8D', '3C', '10S', '2D'];
+      const cardsName = ['6D', '8D', '3C', '10S', '2D']
 
-      const cards = getMappedCards(cardsName);
+      const cards = getMappedCards(cardsName)
 
-      const lowestHand = cardsUtils.getLowestHand(cards);
+      const lowestHand = cardsUtils.getLowestHand(cards)
 
-      expect(lowestHand).to.be.deep.equal([2]);
-    });
-  });
+      expect(lowestHand).toEqual([2])
+    })
+  })
   describe('getLowestHandWith3S()', () => {
     it('should return the lowest hand with most amount of cards with 3S', () => {
-      const cardsName = ['QS', 'KH', 'AH', '4H', '4D', '6D', '5C', '3S', '10S', '10D', 'QH', 'QC', 'JS'];
-      const cards = getMappedCards(cardsName);
+      const cardsName = ['QS', 'KH', 'AH', '4H', '4D', '6D', '5C', '3S', '10S', '10D', 'QH', 'QC', 'JS']
+      const cards = getMappedCards(cardsName)
 
-      const lowestHand = cardsUtils.getLowestHandWith3S(cards);
+      const lowestHand = cardsUtils.getLowestHandWith3S(cards)
 
-      expect(lowestHand).to.be.deep.equal([7, 4, 6, 5]);
-    });
+      expect(lowestHand).toEqual([7, 4, 6, 5])
+    })
     it('should return lowest single for single-only cards with 3S', () => {
-      const cardsName = ['6D', '8D', '3C', '10S', '2D'];
+      const cardsName = ['6D', '8D', '3C', '10S', '2D']
 
-      const cards = getMappedCards(cardsName);
+      const cards = getMappedCards(cardsName)
 
-      const lowestHand = cardsUtils.getLowestHandWith3S(cards);
+      const lowestHand = cardsUtils.getLowestHandWith3S(cards)
 
-      expect(lowestHand).to.be.deep.equal([2]);
-    });
-  });
-});
+      expect(lowestHand).toEqual([2])
+    })
+  })
+})
