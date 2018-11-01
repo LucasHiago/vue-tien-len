@@ -30,50 +30,8 @@
         </template>
       </div>
     </div>
-    <div id="player1-avatar">
-      <avatar
-        :name="gameState.players.player1.profile.username"
-        :is-active="isActivePlayer('player1')">
-      </avatar>
-    </div>
-    <div id="player2-avatar">
-      <avatar
-        :name="gameState.players.player2.profile.username"
-        :is-active="isActivePlayer('player2')">
-      </avatar>
-      <span v-if="gameState.players.player2.isPassed" class="passed">Passed</span>
-      <span v-else class="inRound">In Round</span>
-      <span v-if="gameState.players.player2.winRank">Win Rank: {{ gameState.players.player2.winRank }}</span>
-      <span v-if="gameState.players.player2.profile.isFake && gameState.players.player2.profile.isThinking">
-        <i class="fa fa-spinner fa-pulse fa-lg fa-fw"></i>
-      </span>
-    </div>
-    <div id="player3-avatar">
-      <avatar
-        :name="gameState.players.player3.profile.username"
-        :is-active="isActivePlayer('player3')">
-      </avatar>
-      <span v-if="gameState.players.player3.isPassed" class="passed">Passed</span>
-      <span v-else class="inRound">In Round</span>
-      <span v-if="gameState.players.player3.winRank">Win Rank: {{ gameState.players.player3.winRank }}</span>
-      <span v-if="gameState.players.player3.profile.isFake && gameState.players.player3.profile.isThinking">
-        <i class="fa fa-spinner fa-pulse fa-lg fa-fw"></i>
-      </span>
-    </div>
-    <div id="player4-avatar">
-      <avatar
-        :name="gameState.players.player4.profile.username"
-        :is-active="isActivePlayer('player4')">
-      </avatar>
-      <span v-if="gameState.players.player4.isPassed" class="passed">Passed</span>
-      <span v-else class="inRound">In Round</span><br />
-      <span v-if="gameState.players.player4.winRank">Win Rank: {{ gameState.players.player4.winRank }}</span><br />
-      <span v-if="gameState.players.player4.profile.isFake && gameState.players.player4.profile.isThinking"><br />
-        <i class="fa fa-spinner fa-pulse fa-lg fa-fw"></i>
-      </span>
-    </div>
 
-    <!-- player controls -->
+    <!-- player 1 controls -->
     <div style="position: absolute; right: 0; bottom: 10%;">
       <!-- <span :class="{activePlayer: isActivePlayer('player1')}">{{ gameState.players.player1.profile.username }}</span> -->
       <button @click="submitHand('player1')" :disabled="!canPlayHand('player1')">Play hand</button>
@@ -129,6 +87,52 @@
           </div>
         </template>
       </div>
+    </div>
+
+    <!-- player avatars -->
+    <div id="player1-avatar">
+      <avatar
+        :name="gameState.players.player1.profile.username"
+        :is-active="isActivePlayer('player1')"
+        :is-ai="false">
+      </avatar>
+    </div>
+    <div id="player2-avatar">
+      <avatar
+        :name="gameState.players.player2.profile.username"
+        :is-active="isActivePlayer('player2')"
+        >
+      </avatar>
+      <span v-if="gameState.players.player2.isPassed" class="passed">Passed</span>
+      <span v-else class="inRound">In Round</span>
+      <span v-if="gameState.players.player2.winRank">Win Rank: {{ gameState.players.player2.winRank }}</span>
+      <span v-if="gameState.players.player2.profile.isFake && gameState.players.player2.profile.isThinking">
+        <i class="fa fa-spinner fa-pulse fa-lg fa-fw"></i>
+      </span>
+    </div>
+    <div id="player3-avatar">
+      <avatar
+        :name="gameState.players.player3.profile.username"
+        :is-active="isActivePlayer('player3')">
+      </avatar>
+      <span v-if="gameState.players.player3.isPassed" class="passed">Passed</span>
+      <span v-else class="inRound">In Round</span>
+      <span v-if="gameState.players.player3.winRank">Win Rank: {{ gameState.players.player3.winRank }}</span>
+      <span v-if="gameState.players.player3.profile.isFake && gameState.players.player3.profile.isThinking">
+        <i class="fa fa-spinner fa-pulse fa-lg fa-fw"></i>
+      </span>
+    </div>
+    <div id="player4-avatar">
+      <avatar
+        :name="gameState.players.player4.profile.username"
+        :is-active="isActivePlayer('player4')">
+      </avatar>
+      <span v-if="gameState.players.player4.isPassed" class="passed">Passed</span>
+      <span v-else class="inRound">In Round</span><br />
+      <span v-if="gameState.players.player4.winRank">Win Rank: {{ gameState.players.player4.winRank }}</span><br />
+      <span v-if="gameState.players.player4.profile.isFake && gameState.players.player4.profile.isThinking"><br />
+        <i class="fa fa-spinner fa-pulse fa-lg fa-fw"></i>
+      </span>
     </div>
   </div>
 </template>

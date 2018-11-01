@@ -2,7 +2,7 @@
   <div>
     <vue-circle
       :progress="progress"
-      :size="150"
+      :size="isAi ? 120 : 150"
       :reverse="false"
       line-cap="round"
       :fill="fill"
@@ -15,7 +15,7 @@
       @vue-circle-progress="handleProgress"
       @vue-circle-end="handleProgressEnd">
       <!-- Slot -->
-      <div class="avatar">
+      <div :style="{width: isAi ? '65px': '100px'}">
         <div :class="{active: isActive}">{{ name }}</div>
         <div v-html="require('./../assets/avatars/man-1.svg')"></div>
       </div>
@@ -43,6 +43,18 @@ export default {
     isActive: {
       type: Boolean,
       required: true
+    },
+    avatarSize: {
+      type: Boolean,
+      default () {
+        return 150
+      }
+    },
+    isAi: {
+      type: Boolean,
+      default () {
+        return true
+      }
     }
   },
 
@@ -71,13 +83,8 @@ export default {
 }
 </script>
 
-<style scoped>
-.avatar {
-  width: 100px;
-}
-
-.avatar .active {
-  color: #2ecc71;
-  font-weight: bold;
-}
+<style lang="sass" scoped>
+  .active
+    color: #2ecc71
+    font-weight: bold
 </style>
