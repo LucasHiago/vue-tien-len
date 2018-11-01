@@ -36,6 +36,42 @@
         :is-active="isActivePlayer('player1')">
       </avatar>
     </div>
+    <div id="player2-avatar">
+      <avatar
+        :name="gameState.players.player2.profile.username"
+        :is-active="isActivePlayer('player2')">
+      </avatar>
+      <span v-if="gameState.players.player2.isPassed" class="passed">Passed</span>
+      <span v-else class="inRound">In Round</span>
+      <span v-if="gameState.players.player2.winRank">Win Rank: {{ gameState.players.player2.winRank }}</span>
+      <span v-if="gameState.players.player2.profile.isFake && gameState.players.player2.profile.isThinking">
+        <i class="fa fa-spinner fa-pulse fa-lg fa-fw"></i>
+      </span>
+    </div>
+    <div id="player3-avatar">
+      <avatar
+        :name="gameState.players.player3.profile.username"
+        :is-active="isActivePlayer('player3')">
+      </avatar>
+      <span v-if="gameState.players.player3.isPassed" class="passed">Passed</span>
+      <span v-else class="inRound">In Round</span>
+      <span v-if="gameState.players.player3.winRank">Win Rank: {{ gameState.players.player3.winRank }}</span>
+      <span v-if="gameState.players.player3.profile.isFake && gameState.players.player3.profile.isThinking">
+        <i class="fa fa-spinner fa-pulse fa-lg fa-fw"></i>
+      </span>
+    </div>
+    <div id="player4-avatar">
+      <avatar
+        :name="gameState.players.player4.profile.username"
+        :is-active="isActivePlayer('player4')">
+      </avatar>
+      <span v-if="gameState.players.player4.isPassed" class="passed">Passed</span>
+      <span v-else class="inRound">In Round</span><br />
+      <span v-if="gameState.players.player4.winRank">Win Rank: {{ gameState.players.player4.winRank }}</span><br />
+      <span v-if="gameState.players.player4.profile.isFake && gameState.players.player4.profile.isThinking"><br />
+        <i class="fa fa-spinner fa-pulse fa-lg fa-fw"></i>
+      </span>
+    </div>
 
     <!-- player controls -->
     <div style="position: absolute; right: 0; bottom: 10%;">
@@ -48,22 +84,6 @@
     </div>
 
     <div id="player2" style="position: absolute; right: 18%; top: 225px;">
-      <div style="position: absolute; left: -40px; top: 33px; z-index: 2;">
-        <avatar
-          :name="gameState.players.player2.profile.username"
-          :is-active="isActivePlayer('player2')">
-        </avatar>
-
-        <!-- <button @click="submitHand('player2')" :disabled="!canPlayHand('player2')">Play hand</button>
-        <button @click="pass('player2')" :disabled="!canPass('player2')">Pass</button> -->
-        <span v-if="gameState.players.player2.isPassed" class="passed">Passed</span>
-        <span v-else class="inRound">In Round</span>
-        <span v-if="gameState.players.player2.winRank">Win Rank: {{ gameState.players.player2.winRank }}</span>
-        <span v-if="gameState.players.player2.profile.isFake && gameState.players.player2.profile.isThinking">
-          <i class="fa fa-spinner fa-pulse fa-lg fa-fw"></i>
-        </span>
-        Player 2
-      </div>
       <div class="hand">
         <template v-for="(card, index) in gameState.players.player2.cards">
           <div @click="cardClickHandler('player2', index)" :key="card.rank">
@@ -80,22 +100,6 @@
     </div>
 
     <div id="player3" style="position: absolute; left: 500px; top: 0;">
-      <div>
-        <avatar
-          :name="gameState.players.player3.profile.username"
-          :is-active="isActivePlayer('player3')">
-        </avatar>
-        <span :class="{activePlayer: isActivePlayer('player3')}">{{ gameState.players.player3.profile.username }}</span>
-        <button @click="submitHand('player3')" :disabled="!canPlayHand('player3')">Play hand</button>
-        <button @click="pass('player3')" :disabled="!canPass('player3')">Pass</button>
-        <span v-if="gameState.players.player3.isPassed" class="passed">Passed</span>
-        <span v-else class="inRound">In Round</span>
-        <span v-if="gameState.players.player3.winRank">Win Rank: {{ gameState.players.player3.winRank }}</span>
-        <span v-if="gameState.players.player3.profile.isFake && gameState.players.player3.profile.isThinking">
-          <i class="fa fa-spinner fa-pulse fa-lg fa-fw"></i>
-        </span>
-        Player 3
-      </div>
       <div class="hand">
         <template v-for="(card, index) in gameState.players.player3.cards">
           <div @click="cardClickHandler('player3', index)" :key="card.rank">
@@ -111,23 +115,7 @@
       </div>
     </div>
 
-    <div id="player4" style="position: absolute; left: 100px; top: 225px;">
-      <div style="position: relative; right: 120px;">
-        <avatar
-          :name="gameState.players.player4.profile.username"
-          :is-active="isActivePlayer('player4')">
-        </avatar>
-        <span :class="{activePlayer: isActivePlayer('player4')}">{{ gameState.players.player4.profile.username }}</span><br />
-        <button @click="submitHand('player4')" :disabled="!canPlayHand('player4')">Play hand</button><br />
-        <button @click="pass('player4')" :disabled="!canPass('player4')">Pass</button><br />
-        <span v-if="gameState.players.player4.isPassed" class="passed">Passed</span>
-        <span v-else class="inRound">In Round</span><br />
-        <span v-if="gameState.players.player4.winRank">Win Rank: {{ gameState.players.player4.winRank }}</span><br />
-        <span v-if="gameState.players.player4.profile.isFake && gameState.players.player4.profile.isThinking"><br />
-          <i class="fa fa-spinner fa-pulse fa-lg fa-fw"></i>
-        </span><br />
-        Player 4
-      </div>
+    <div id="player4" style="position: absolute; left: 166px; top: 225px;">
       <div class="hand">
         <template v-for="(card, index) in gameState.players.player4.cards">
           <div @click="cardClickHandler('player4', index)" :key="card.rank">
@@ -623,12 +611,22 @@ export default {
   width: 1200px
   height: 600px
   margin: auto
-
   #player1-avatar
     position: absolute
-    right: 0
-    top: 0px
-
+    right: 17%
+    top: 490px
+  #player2-avatar
+    position: absolute
+    right: -2%
+    top: 263px
+  #player3-avatar
+    position: absolute
+    left: 29%
+    top: 0
+  #player4-avatar
+    position: absolute
+    left: -6%
+    top: 263px
   #active-hand-container
     width: 400px
     position: relative
