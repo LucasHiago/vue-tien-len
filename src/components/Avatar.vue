@@ -26,6 +26,9 @@
 <script>
 import VueCircle from 'vue2-circle-progress'
 
+// const inActiveColor = 'rgba(0, 0, 0, .1)'
+const activeColor = '#2ecc71'
+
 export default {
   name: 'Avatar',
   components: {
@@ -46,7 +49,9 @@ export default {
   data () {
     return {
       progress: 0,
-      fill: { gradient: ['red', 'green', 'blue'] }
+      fill: {
+        color: activeColor
+      }
     }
   },
 
@@ -61,11 +66,7 @@ export default {
   },
 
   watch: {
-    isActive (val) {
-      if (!val) {
-        this.progress = 0
-      }
-    }
+    isActive (val) {}
   }
 }
 </script>
@@ -76,7 +77,7 @@ export default {
 }
 
 .avatar .active {
-  color: red;
+  color: #2ecc71;
   font-weight: bold;
 }
 </style>

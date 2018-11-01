@@ -16,22 +16,6 @@
     <!-- end active hand -->
 
     <div id="player1" style="position: absolute; left: 400px; bottom: 14%;">
-      <div style="position: absolute; left: 100px; top: -120px;">
-        <avatar
-          :name="gameState.players.player1.profile.username"
-          :is-active="isActivePlayer('player1')">
-        </avatar>
-        <span :class="{activePlayer: isActivePlayer('player1')}">{{ gameState.players.player1.profile.username }}</span>
-        <button @click="submitHand('player1')" :disabled="!canPlayHand('player1')">Play hand</button>
-        <button @click="pass('player1')" :disabled="!canPass('player1')">Pass</button>
-        <span v-if="gameState.players.player1.isPassed" class="passed">Passed</span>
-        <span v-else class="inRound">In Round</span>
-        <span v-if="gameState.players.player1.winRank">Win Rank: {{ gameState.players.player1.winRank }}</span>
-        <span v-if="gameState.players.player1.profile.isFake && gameState.players.player1.profile.isThinking">
-          <i class="fa fa-spinner fa-pulse fa-lg fa-fw"></i>
-        </span>
-        Player 1
-      </div>
       <div class="hand">
         <template v-for="(card, index) in gameState.players.player1.cards">
           <div @click="cardClickHandler('player1', index)" :key="card.rank">
@@ -46,15 +30,29 @@
         </template>
       </div>
     </div>
+    <div id="player1-avatar">
+      <avatar
+        :name="gameState.players.player1.profile.username"
+        :is-active="isActivePlayer('player1')">
+      </avatar>
+    </div>
+
+    <!-- player controls -->
+    <div style="position: absolute; right: 0; bottom: 10%;">
+      <!-- <span :class="{activePlayer: isActivePlayer('player1')}">{{ gameState.players.player1.profile.username }}</span> -->
+      <button @click="submitHand('player1')" :disabled="!canPlayHand('player1')">Play hand</button>
+      <button @click="pass('player1')" :disabled="!canPass('player1')">Pass</button>
+      <span v-if="gameState.players.player1.isPassed" class="passed">Passed</span>
+      <span v-else class="inRound">In Round</span>
+      <span v-if="gameState.players.player1.winRank">Win Rank: {{ gameState.players.player1.winRank }}</span>
+    </div>
 
     <div id="player2" style="position: absolute; right: 18%; top: 225px;">
-      <div style="position: absolute; left: 0px; bottom: 0px;">
+      <div style="position: absolute; left: -40px; top: 33px; z-index: 2;">
         <avatar
           :name="gameState.players.player2.profile.username"
           :is-active="isActivePlayer('player2')">
         </avatar>
-
-        <span :class="{activePlayer: isActivePlayer('player2')}">{{ gameState.players.player2.profile.username }}</span>
 
         <!-- <button @click="submitHand('player2')" :disabled="!canPlayHand('player2')">Play hand</button>
         <button @click="pass('player2')" :disabled="!canPass('player2')">Pass</button> -->
@@ -155,11 +153,6 @@ import Avatar from './Avatar.vue'
 import Deck from '../Classes/deck'
 import handUtils from '../utils/handUtils'
 import cardsUtils from '../utils/cardsUtils'
-
-// const GAME_ARENA_WIDTH = 1200
-const GAME_ARENA_HEIGHT = 600
-// const CARD_WIDTH = 76
-// const CARD_DELTA = 30
 
 export default {
   mounted () {
@@ -511,52 +504,6 @@ export default {
         this.gameState.players[player].cards = this.gameState.players[player].cards.slice(0, n)
       })
     },
-    getPlayerHandStyleObject (player) {
-      // approximation of length of hand with cards
-      // const halfOfHand = HAND_WIDTH / 6.5
-      // const handWidth = (13 * CARD_WIDTH) - (13 * (CARD_WIDTH - CARD_DELTA))
-      const playerControlsHeight = 60
-
-      // const isEvenPlayer = player % 2 === 0
-
-      const map = {
-        1: {
-          left: 500,
-          top: (GAME_ARENA_HEIGHT / 2) + playerControlsHeight
-        },
-        2: {
-          right: 18,
-          top: 225
-        },
-        3: {
-          left: 500,
-          top: 0
-        },
-        4: {
-          left: 100,
-          top: 225
-        }
-      }
-
-      // default is odd number players
-      // const left = isEvenPlayer ? width * (3 / 4) : (width / 2) - halfOfHand
-
-      // const top = isEvenPlayer ? height / 2 : (height / 3)
-
-      if (player === 2) {
-        return {
-          position: 'absolute', // can move to a class
-          right: `${map[player].right}%`,
-          top: `${map[player].top}px`
-        }
-      }
-
-      return {
-        position: 'absolute', // can move to a class
-        left: `${map[player].left}px`,
-        top: `${map[player].top}px`
-      }
-    },
     resetPlayersState () {
       // reset players game state
       Object.assign(this.gameState.players, this.defaultPlayersState)
@@ -669,43 +616,23 @@ export default {
 
 </script>
 
-<style scoped>
-/* h3 {
-  text-align: left
-  margin-left: 137px
-  margin-bottom: 15px
-} */
+<style lang="sass" scoped>
 
-#game-arena {
-  position: relative;
-  width: 1200px;
-  height: 600px;
-  /* border: 1px solid blue; */
-  margin: auto;
-}
+#game-arena
+  position: relative
+  width: 1200px
+  height: 600px
+  margin: auto
 
-#active-hand-container {
-  width: 400px;
-  position: relative;
-  top: 280px;
-  margin: auto;
-}
+  #player1-avatar
+    position: absolute
+    right: 0
+    top: 0px
 
-.activePlayer {
-  color: blue
-}
-
-.activePlayerContainer {
-  text-align: left;
-  margin-left: 137px;
-}
-
-.inRound {
-  color: #1BBC9B;
-}
-
-.passed {
-  color: #CF000F;
-}
+  #active-hand-container
+    width: 400px
+    position: relative
+    top: 280px
+    margin: auto
 
 </style>
