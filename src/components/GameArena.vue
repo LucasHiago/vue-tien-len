@@ -15,7 +15,7 @@
     </template>
     <!-- end active hand -->
 
-    <div id="player1" style="position: absolute; left: 400px; bottom: 14%;">
+    <div id="player1" style="position: absolute; left: 32%; bottom: 5%;">
       <div class="hand">
         <template v-for="(card, index) in gameState.players.player1.cards">
           <div @click="cardClickHandler('player1', index)" :key="card.rank">
@@ -617,8 +617,8 @@ export default {
   margin: auto
   #player1-avatar
     position: absolute
-    right: 17%
-    top: 490px
+    left: 17%
+    bottom: -17%
   #player2-avatar
     position: absolute
     right: -2%
