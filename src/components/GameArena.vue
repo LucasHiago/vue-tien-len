@@ -94,45 +94,45 @@
       <avatar
         :name="gameState.players.player1.profile.username"
         :is-active="isActivePlayer('player1')"
-        :is-ai="false">
+        :is-ai="false"
+      >
       </avatar>
     </div>
     <div id="player2-avatar">
       <avatar
         :name="gameState.players.player2.profile.username"
         :is-active="isActivePlayer('player2')"
+        :is-thinking="gameState.players.player2.profile.isThinking"
+        :player-id="2"
         >
       </avatar>
       <span v-if="gameState.players.player2.isPassed" class="passed">Passed</span>
       <span v-else class="inRound">In Round</span>
       <span v-if="gameState.players.player2.winRank">Win Rank: {{ gameState.players.player2.winRank }}</span>
-      <span v-if="gameState.players.player2.profile.isFake && gameState.players.player2.profile.isThinking">
-        <i class="fa fa-spinner fa-pulse fa-lg fa-fw"></i>
-      </span>
     </div>
     <div id="player3-avatar">
       <avatar
         :name="gameState.players.player3.profile.username"
-        :is-active="isActivePlayer('player3')">
+        :is-active="isActivePlayer('player3')"
+        :is-thinking="gameState.players.player3.profile.isThinking"
+        :player-id="3"
+        >
       </avatar>
       <span v-if="gameState.players.player3.isPassed" class="passed">Passed</span>
       <span v-else class="inRound">In Round</span>
       <span v-if="gameState.players.player3.winRank">Win Rank: {{ gameState.players.player3.winRank }}</span>
-      <span v-if="gameState.players.player3.profile.isFake && gameState.players.player3.profile.isThinking">
-        <i class="fa fa-spinner fa-pulse fa-lg fa-fw"></i>
-      </span>
     </div>
     <div id="player4-avatar">
       <avatar
         :name="gameState.players.player4.profile.username"
-        :is-active="isActivePlayer('player4')">
+        :is-active="isActivePlayer('player4')"
+        :is-thinking="gameState.players.player4.profile.isThinking"
+        :player-id="4"
+        >
       </avatar>
       <span v-if="gameState.players.player4.isPassed" class="passed">Passed</span>
       <span v-else class="inRound">In Round</span><br />
-      <span v-if="gameState.players.player4.winRank">Win Rank: {{ gameState.players.player4.winRank }}</span><br />
-      <span v-if="gameState.players.player4.profile.isFake && gameState.players.player4.profile.isThinking"><br />
-        <i class="fa fa-spinner fa-pulse fa-lg fa-fw"></i>
-      </span>
+      <span v-if="gameState.players.player4.winRank">Win Rank: {{ gameState.players.player4.winRank }}</span>
     </div>
   </div>
 </template>
@@ -146,7 +146,15 @@ import Deck from '../Classes/deck'
 import handUtils from '../utils/handUtils'
 import cardsUtils from '../utils/cardsUtils'
 
+const LATENCY_TURN = 4000
+const LATENCY_DECISION = 500
+
 export default {
+  components: {
+    Card,
+    Avatar
+  },
+
   mounted () {
     // fetch fake users from data store queue
     this.getUsers().then(() => {
@@ -318,9 +326,6 @@ export default {
     aiController (curAIplayer, isFirstTurn) {
       // TODO: add loaders to make illusion that AI is thinking
       this.gameState.players[curAIplayer].profile.isThinking = true
-
-      const LATENCY_TURN = 4000
-      const LATENCY_DECISION = 500
 
       // const curAIplayerUsername = this.gameState.players[curAIplayer].profile.username
       const playerCards = _.cloneDeep(this.gameState.players[curAIplayer].cards)
@@ -500,11 +505,6 @@ export default {
       // reset players game state
       Object.assign(this.gameState.players, this.defaultPlayersState)
     }
-  },
-
-  components: {
-    Card,
-    Avatar
   },
 
   computed: {

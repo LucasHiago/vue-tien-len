@@ -1,6 +1,6 @@
 <template>
   <div>
-    <vue-circle
+    <vue-circle :ref="`player${playerId}Avatar`"
       :progress="progress"
       :size="isAi ? 120 : 150"
       :reverse="false"
@@ -12,6 +12,7 @@
       insert-mode="append"
       :thickness="5"
       :show-percent="false"
+      :animation="{ duration: 5000, easing: 'circleProgressEasing' }"
       @vue-circle-progress="handleProgress"
       @vue-circle-end="handleProgressEnd">
       <!-- Slot -->
@@ -74,6 +75,16 @@ export default {
       default () {
         return avatarMap[random(1, 9)]
       }
+    },
+    isThinking: {
+      type: Boolean,
+      required: false
+    },
+    playerId: {
+      type: Number,
+      default () {
+        return 1
+      }
     }
   },
 
@@ -88,16 +99,23 @@ export default {
 
   methods: {
     handleProgress (event, progress, stepValue) {
-      console.log(stepValue)
+      // console.log(stepValue)
     },
     handleProgressEnd (event) {
       console.log('Circle progress end')
-      console.log('event', event)
+      // console.log('event', event)
     }
   },
 
   watch: {
-    isActive (val) {}
+    isThinking (val) {
+      if (val) {
+        if (this.playerId !== 1) {
+          const refsKey = `player${this.playerId}Avatar`
+          this.$refs[refsKey].updateProgress(100)
+        }
+      }
+    }
   }
 }
 </script>
