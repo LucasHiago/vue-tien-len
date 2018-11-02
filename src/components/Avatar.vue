@@ -28,8 +28,8 @@
 import VueCircle from 'vue2-circle-progress'
 import { random } from 'lodash'
 
-// const inActiveColor = 'rgba(0, 0, 0, .1)'
-const activeColor = '#2ecc71'
+const inActiveFill = 'rgba(0, 0, 0, .1)'
+const activeFill = '#2ecc71'
 
 const avatarMap = {
   1: 'man-1',
@@ -88,16 +88,38 @@ export default {
     }
   },
 
+  computed: {
+    refsKey () {
+      return `player${this.playerId}Avatar`
+    }
+  },
+
   data () {
     return {
       progress: 0,
       fill: {
-        color: activeColor
+        color: activeFill
       }
     }
   },
 
   methods: {
+    renderPlayerThinking () {
+      if (this.playerId !== 1) {
+        const ref = this.$refs[this.refsKey]
+        ref.updateFill(activeFill)
+        ref.updateProgress(100)
+      }
+    },
+
+    renderPlayerDefaultState () {
+      if (this.playerId !== 1) {
+        const ref = this.$refs[this.refsKey]
+        ref.updateProgress(0)
+        ref.updateFill(inActiveFill)
+      }
+    },
+
     handleProgress (event, progress, stepValue) {
       // console.log(stepValue)
     },
@@ -111,8 +133,14 @@ export default {
     isThinking (val) {
       if (val) {
         if (this.playerId !== 1) {
-          const refsKey = `player${this.playerId}Avatar`
-          this.$refs[refsKey].updateProgress(100)
+          this.renderPlayerThinking()
+        }
+      }
+    },
+    isActive (val) {
+      if (!val) {
+        if (this.playerId !== 1) {
+          this.renderPlayerDefaultState()
         }
       }
     }
