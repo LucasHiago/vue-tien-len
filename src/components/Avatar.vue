@@ -17,7 +17,10 @@
       @vue-circle-end="handleProgressEnd">
       <!-- Slot -->
       <div :style="{width: isAi ? '65px': '100px'}">
-        <div :class="{active: isActive}">{{ name }}</div>
+        <div :class="{
+          active: isActive,
+          flashit: isActive
+          }">{{ name }}</div>
         <div v-html="require(`./../assets/avatars/${this.avatarImage}.svg`)"></div>
       </div>
     </vue-circle>
@@ -152,4 +155,22 @@ export default {
   .active
     color: #2ecc71
     font-weight: bold
+
+  .flashit
+    -webkit-animation: flash linear 1s infinite
+    animation: flash linear 1s infinite
+  @-webkit-keyframes flash
+    0%
+      opacity: 1
+    50%
+      opacity: .1
+    100%
+      opacity: 1
+  @keyframes flash
+    0%
+      opacity: 1
+    50%
+      opacity: .1
+    100%
+      opacity: 1
 </style>

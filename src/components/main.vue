@@ -6,6 +6,7 @@
       </template>
       <template v-else>
         <button @click="play()">Play</button>
+        <div class="flashit"></div>
       </template>
     </div>
 
@@ -61,6 +62,25 @@ export default {
 #game-controllers-container {
   position: absolute;
   left: 0px;
+}
+
+/* Flash class and keyframe animation */
+.flashit{
+  background-color: red;
+  width: 50px;
+  height: 50px;
+  -webkit-animation: flash linear 1s infinite;
+  animation: flash linear 1s infinite;
+}
+@-webkit-keyframes flash {
+  0% { opacity: 1; }
+  50% { opacity: .1; }
+  100% { opacity: 1; }
+}
+@keyframes flash {
+  0% { opacity: 1; }
+  50% { opacity: .1; }
+  100% { opacity: 1; }
 }
 
 </style>
