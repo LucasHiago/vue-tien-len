@@ -6,8 +6,22 @@
     <template v-else>
       <div id="main-screen-container">
         <div class="title">13<span>Vietnamese Poker</span></div>
-        <button @click="play()">Play</button>
-        <button>How to play</button>
+        <div class="link">
+          <code>A pure <a href="https://github.com/dinhtq/vue-tien-len">Vue project</a> with a simple Ai.</code>
+        </div>
+        <div class="controls-container">
+          <button @click="play()" type="button" class="btn btn-primary btn-lg btn3d">
+            <span class="glyphicon glyphicon-play"></span> Play</button>
+          <br/>
+          <button type="button" class="btn btn-info btn-sm btn3d">
+            <span class="glyphicon glyphicon-info-sign"></span> How to play</button>
+        </div>
+        <div class="cards-container">
+          <card :card-map-key="12"></card>
+          <card :card-map-key="25"></card>
+          <card :card-map-key="38"></card>
+          <card :card-map-key="51"></card>
+        </div>
       </div>
     </template>
 
@@ -19,6 +33,7 @@
 
 <script>
 import GameArena from './GameArena.vue'
+import Card from './Card.vue'
 // const CARD_WIDTH = 76;
 // const HAND_WIDTH = CARD_WIDTH * 13;
 
@@ -26,7 +41,8 @@ export default {
   name: 'Main',
 
   components: {
-    GameArena
+    GameArena,
+    Card
   },
 
   data () {
@@ -42,7 +58,9 @@ export default {
 
   methods: {
     play () {
-      this.gameStart = true
+      setTimeout(() => {
+        this.gameStart = true
+      }, 1000)
     },
 
     playAgain () {
@@ -68,7 +86,6 @@ export default {
     min-width: 50%
     height: 200px
     margin: auto
-
     .title
       font-size: 7em
       font-weight: bold
@@ -77,6 +94,23 @@ export default {
         font-weight: normal
         font-size: .5em
         font-style: italic
+    .link
+      font-size: 1.5em
+    .controls-container
+      margin: 50px
+      button
+        width: 200px
+    .cards-container
+      position: relative
+      width: 180px
+      margin: auto
+      margin-top: 50px
+      div:nth-child(2)
+        left: 35px
+      div:nth-child(3)
+        left: 70px
+      div:nth-child(4)
+        left: 105px
   #footer
     position: absolute
     bottom: 0
@@ -85,7 +119,7 @@ export default {
     text-align: left
     padding: 5px 20px
 
-    a
-      text-decoration: none
-      color: #3498db
+a
+  text-decoration: none
+  color: #3498db
 </style>

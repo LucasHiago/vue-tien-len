@@ -21,7 +21,7 @@ export default {
     },
     cardHandIndex: {
       type: Number,
-      required: true
+      required: false
     },
     isSelected: {
       type: Boolean,
