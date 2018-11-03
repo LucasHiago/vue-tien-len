@@ -97,6 +97,10 @@
         :is-ai="false"
       >
       </avatar>
+      <span v-if="gameState.players.player1.isPassed" class="passed">Passed</span>
+      <span v-else-if="gameState.active.playerId === 'player1'">Leading Round</span>
+      <span v-else class="inRound">In Round</span>
+      <span v-if="gameState.players.player1.winRank">Win Rank: {{ gameState.players.player1.winRank }}</span>
     </div>
     <div id="player2-avatar">
       <avatar
@@ -107,6 +111,7 @@
         >
       </avatar>
       <span v-if="gameState.players.player2.isPassed" class="passed">Passed</span>
+      <span v-else-if="gameState.active.playerId === 'player2'">Leading Round</span>
       <span v-else class="inRound">In Round</span>
       <span v-if="gameState.players.player2.winRank">Win Rank: {{ gameState.players.player2.winRank }}</span>
     </div>
@@ -119,6 +124,7 @@
         >
       </avatar>
       <span v-if="gameState.players.player3.isPassed" class="passed">Passed</span>
+      <span v-else-if="gameState.active.playerId === 'player3'" class="leadingRound">Leading Round</span>
       <span v-else class="inRound">In Round</span>
       <span v-if="gameState.players.player3.winRank">Win Rank: {{ gameState.players.player3.winRank }}</span>
     </div>
@@ -131,6 +137,7 @@
         >
       </avatar>
       <span v-if="gameState.players.player4.isPassed" class="passed">Passed</span>
+      <span v-else-if="gameState.active.playerId === 'player4'">Leading Round</span>
       <span v-else class="inRound">In Round</span><br />
       <span v-if="gameState.players.player4.winRank">Win Rank: {{ gameState.players.player4.winRank }}</span>
     </div>
@@ -636,5 +643,14 @@ export default {
     position: relative
     top: 280px
     margin: auto
+  .passed
+    color: #e74c3c
+    font-weight: bold
+  .inRound
+    color: #2ecc71
+    font-weight: bold
+  .leadingRound
+    color: #2980b9
+    font-weight: bold
 
 </style>
