@@ -1,19 +1,19 @@
 <template>
-  <div class="hello">
-    <div id="game-controllers-container">
-      <template v-if="gameStart">
-        <button @click="playAgain()">Play Again</button>
-      </template>
-      <template v-else>
-        <button @click="play()">Play</button>
-        <div class="flashit"></div>
-      </template>
-    </div>
-
+  <div id="main">
     <template v-if="gameStart">
-        <game-arena></game-arena>
+      <game-arena v-if="gameStart"></game-arena>
+    </template>
+    <template v-else>
+      <div id="main-screen-container">
+        <div class="title">13<span>Vietnamese Poker</span></div>
+        <button @click="play()">Play</button>
+        <button>How to play</button>
+      </div>
     </template>
 
+    <div id="footer">
+      Created by <a href="www.jasondinh.me">Jason Dinh</a>
+    </div>
   </div>
 </template>
 
@@ -58,29 +58,34 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-#game-controllers-container {
-  position: absolute;
-  left: 0px;
-}
+<style scoped lang="sass">
+#main
+  width: 100%
+  height: 100%
+  #main-screen-container
+    position: relative
+    top: 10%
+    min-width: 50%
+    height: 200px
+    margin: auto
 
-/* Flash class and keyframe animation */
-.flashit{
-  background-color: red;
-  width: 50px;
-  height: 50px;
-  -webkit-animation: flash linear 1s infinite;
-  animation: flash linear 1s infinite;
-}
-@-webkit-keyframes flash {
-  0% { opacity: 1; }
-  50% { opacity: .1; }
-  100% { opacity: 1; }
-}
-@keyframes flash {
-  0% { opacity: 1; }
-  50% { opacity: .1; }
-  100% { opacity: 1; }
-}
+    .title
+      font-size: 7em
+      font-weight: bold
+      margin-bottom: 5px
+      span
+        font-weight: normal
+        font-size: .5em
+        font-style: italic
+  #footer
+    position: absolute
+    bottom: 0
+    width: 100%
+    background-color: #ecf0f1
+    text-align: left
+    padding: 5px 20px
 
+    a
+      text-decoration: none
+      color: #3498db
 </style>
