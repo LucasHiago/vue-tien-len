@@ -3,9 +3,9 @@
     <!-- active hands area -->
     <template v-if="gameState.active.hand.length > 0">
       <div id="active-hand-container">
-        <div class="activePlayerContainer">
+        <!-- <div class="activePlayerContainer">
           {{ gameState.active.playerId }}
-        </div>
+        </div> -->
         <div class="hand">
           <div v-for="(card, index) in gameState.active.hand" :key="card.rank">
             <card :cardMapKey="parseInt(card.cardKey)" :card-hand-index="index"></card>
@@ -15,19 +15,7 @@
     </template>
     <!-- end active hand -->
 
-    <div id="player1" :style="getPlayerHandStyleObject(1)">
-      <h3 style="position: relative; top: 200px;">
-        <span :class="{activePlayer: isActivePlayer('player1')}">{{ gameState.players.player1.profile.username }}</span>
-        <button @click="submitHand('player1')" :disabled="!canPlayHand('player1')">Play hand</button>
-        <button @click="pass('player1')" :disabled="!canPass('player1')">Pass</button>
-        <span v-if="gameState.players.player1.isPassed" class="passed">Passed</span>
-        <span v-else class="inRound">In Round</span>
-        <span v-if="gameState.players.player1.winRank">Win Rank: {{ gameState.players.player1.winRank }}</span>
-        <span v-if="gameState.players.player1.profile.isFake && gameState.players.player1.profile.isThinking">
-          <i class="fa fa-spinner fa-pulse fa-lg fa-fw"></i>
-        </span>
-        Player 1
-      </h3>
+    <div id="player1" style="position: absolute; left: 32%; bottom: 5%;">
       <div class="hand">
         <template v-for="(card, index) in gameState.players.player1.cards">
           <div @click="cardClickHandler('player1', index)" :key="card.rank">
@@ -35,26 +23,25 @@
               :cardMapKey="parseInt(card.cardKey)"
               :is-selected="card.isSelected"
               :card-hand-index="index"
-              :player-id="1">
+              :player-id="1"
+              :player-profile="gameState.players.player1.profile">
             </card>
           </div>
         </template>
       </div>
     </div>
 
-    <div id="player2" :style="getPlayerHandStyleObject(2)">
-      <h3 style="position: relative; left: 87px; bottom: 110px;">
-        <span :class="{activePlayer: isActivePlayer('player2')}">{{ gameState.players.player2.profile.username }}</span>
-        <button @click="submitHand('player2')" :disabled="!canPlayHand('player2')">Play hand</button>
-        <button @click="pass('player2')" :disabled="!canPass('player2')">Pass</button>
-        <span v-if="gameState.players.player2.isPassed" class="passed">Passed</span>
-        <span v-else class="inRound">In Round</span>
-        <span v-if="gameState.players.player2.winRank">Win Rank: {{ gameState.players.player2.winRank }}</span>
-        <span v-if="gameState.players.player2.profile.isFake && gameState.players.player2.profile.isThinking">
-          <i class="fa fa-spinner fa-pulse fa-lg fa-fw"></i>
-        </span>
-        Player 2
-      </h3>
+    <!-- player 1 controls -->
+    <div style="position: absolute; right: 0; bottom: 10%;">
+      <!-- <span :class="{activePlayer: isActivePlayer('player1')}">{{ gameState.players.player1.profile.username }}</span> -->
+      <button @click="submitHand('player1')" :disabled="!canPlayHand('player1')">Play hand</button>
+      <button @click="pass('player1')" :disabled="!canPass('player1')">Pass</button>
+      <span v-if="gameState.players.player1.isPassed" class="passed">Passed</span>
+      <span v-else class="inRound">In Round</span>
+      <span v-if="gameState.players.player1.winRank">Win Rank: {{ gameState.players.player1.winRank }}</span>
+    </div>
+
+    <div id="player2" style="position: absolute; right: 18%; top: 225px;">
       <div class="hand">
         <template v-for="(card, index) in gameState.players.player2.cards">
           <div @click="cardClickHandler('player2', index)" :key="card.rank">
@@ -62,26 +49,15 @@
               :cardMapKey="parseInt(card.cardKey)"
               :is-selected="card.isSelected"
               :card-hand-index="index"
-              :player-id="2">
+              :player-id="2"
+              :player-profile="gameState.players.player2.profile">
             </card>
           </div>
         </template>
       </div>
     </div>
 
-    <div id="player3" :style="getPlayerHandStyleObject(3)">
-      <h3>
-        <span :class="{activePlayer: isActivePlayer('player3')}">{{ gameState.players.player3.profile.username }}</span>
-        <button @click="submitHand('player3')" :disabled="!canPlayHand('player3')">Play hand</button>
-        <button @click="pass('player3')" :disabled="!canPass('player3')">Pass</button>
-        <span v-if="gameState.players.player3.isPassed" class="passed">Passed</span>
-        <span v-else class="inRound">In Round</span>
-        <span v-if="gameState.players.player3.winRank">Win Rank: {{ gameState.players.player3.winRank }}</span>
-        <span v-if="gameState.players.player3.profile.isFake && gameState.players.player3.profile.isThinking">
-          <i class="fa fa-spinner fa-pulse fa-lg fa-fw"></i>
-        </span>
-        Player 3
-      </h3>
+    <div id="player3" style="position: absolute; left: 500px; top: 0;">
       <div class="hand">
         <template v-for="(card, index) in gameState.players.player3.cards">
           <div @click="cardClickHandler('player3', index)" :key="card.rank">
@@ -89,26 +65,15 @@
               :cardMapKey="parseInt(card.cardKey)"
               :is-selected="card.isSelected"
               :card-hand-index="index"
-              :player-id="3">
+              :player-id="3"
+              :player-profile="gameState.players.player3.profile">
             </card>
           </div>
         </template>
       </div>
     </div>
 
-    <div id="player4" :style="getPlayerHandStyleObject(4)">
-      <div style="position: relative; right: 120px;">
-        <span :class="{activePlayer: isActivePlayer('player4')}">{{ gameState.players.player4.profile.username }}</span><br />
-        <button @click="submitHand('player4')" :disabled="!canPlayHand('player4')">Play hand</button><br />
-        <button @click="pass('player4')" :disabled="!canPass('player4')">Pass</button><br />
-        <span v-if="gameState.players.player4.isPassed" class="passed">Passed</span>
-        <span v-else class="inRound">In Round</span><br />
-        <span v-if="gameState.players.player4.winRank">Win Rank: {{ gameState.players.player4.winRank }}</span><br />
-        <span v-if="gameState.players.player4.profile.isFake && gameState.players.player4.profile.isThinking"><br />
-          <i class="fa fa-spinner fa-pulse fa-lg fa-fw"></i>
-        </span><br />
-        Player 4
-      </div>
+    <div id="player4" style="position: absolute; left: 166px; top: 225px;">
       <div class="hand">
         <template v-for="(card, index) in gameState.players.player4.cards">
           <div @click="cardClickHandler('player4', index)" :key="card.rank">
@@ -116,11 +81,65 @@
               :cardMapKey="parseInt(card.cardKey)"
               :is-selected="card.isSelected"
               :card-hand-index="index"
-              :player-id="4">
+              :player-id="4"
+              :player-profile="gameState.players.player4.profile">
             </card>
           </div>
         </template>
       </div>
+    </div>
+
+    <!-- player avatars -->
+    <div id="player1-avatar">
+      <avatar
+        :name="gameState.players.player1.profile.username"
+        :is-active="isActivePlayer('player1')"
+        :is-ai="false"
+      >
+      </avatar>
+      <span v-if="gameState.players.player1.isPassed" class="passed">Passed</span>
+      <span v-else-if="gameState.active.playerId === 'player1'">Leading Round</span>
+      <span v-else class="inRound">In Round</span>
+      <span v-if="gameState.players.player1.winRank">Win Rank: {{ gameState.players.player1.winRank }}</span>
+    </div>
+    <div id="player2-avatar">
+      <avatar
+        :name="gameState.players.player2.profile.username"
+        :is-active="isActivePlayer('player2')"
+        :is-thinking="gameState.players.player2.profile.isThinking"
+        :player-id="2"
+        >
+      </avatar>
+      <span v-if="gameState.players.player2.isPassed" class="passed">Passed</span>
+      <span v-else-if="gameState.active.playerId === 'player2'">Leading Round</span>
+      <span v-else class="inRound">In Round</span>
+      <span v-if="gameState.players.player2.winRank">Win Rank: {{ gameState.players.player2.winRank }}</span>
+    </div>
+    <div id="player3-avatar">
+      <avatar
+        :name="gameState.players.player3.profile.username"
+        :is-active="isActivePlayer('player3')"
+        :is-thinking="gameState.players.player3.profile.isThinking"
+        :player-id="3"
+        >
+      </avatar>
+      <span v-if="gameState.players.player3.isPassed" class="passed">Passed</span>
+      <span v-else-if="gameState.active.playerId === 'player3'" class="leadingRound">Leading Round</span>
+      <span v-else class="inRound">In Round</span>
+      <span v-if="gameState.players.player3.winRank">Win Rank: {{ gameState.players.player3.winRank }}</span>
+    </div>
+    <div id="player4-avatar">
+      <avatar
+        :name="gameState.players.player4.profile.username"
+        :is-active="isActivePlayer('player4')"
+        :is-thinking="gameState.players.player4.profile.isThinking"
+        :player-id="4"
+        >
+      </avatar>
+      <span v-if="gameState.players.player4.isPassed" class="passed">Passed</span>
+      <span v-else-if="gameState.active.playerId === 'player4'">Leading Round</span>
+      <span v-else class="inRound">In Round</span><br />
+      <span v-if="gameState.players.player4.winRank">Win Rank: {{ gameState.players.player4.winRank }}</span>
     </div>
   </div>
 </template>
@@ -129,16 +148,20 @@
 import _ from 'lodash'
 import { mapActions, mapGetters } from 'vuex'
 import Card from './Card.vue'
+import Avatar from './Avatar.vue'
 import Deck from '../Classes/deck'
 import handUtils from '../utils/handUtils'
 import cardsUtils from '../utils/cardsUtils'
 
-const GAME_ARENA_WIDTH = 1200
-const GAME_ARENA_HEIGHT = 600
-const CARD_WIDTH = 76
-const CARD_DELTA = 30
+const LATENCY_TURN = 4000
+const LATENCY_DECISION = 500
 
 export default {
+  components: {
+    Card,
+    Avatar
+  },
+
   mounted () {
     // fetch fake users from data store queue
     this.getUsers().then(() => {
@@ -311,9 +334,6 @@ export default {
       // TODO: add loaders to make illusion that AI is thinking
       this.gameState.players[curAIplayer].profile.isThinking = true
 
-      const LATENCY_TURN = 4000
-      const LATENCY_DECISION = 500
-
       // const curAIplayerUsername = this.gameState.players[curAIplayer].profile.username
       const playerCards = _.cloneDeep(this.gameState.players[curAIplayer].cards)
       // determine AI player selected hand
@@ -404,6 +424,7 @@ export default {
         // check if game is over -> if second to last place has already been assigned
         const isGameOver = this.winRank === 4 || false
         if (isGameOver) {
+          console.log('**************GAME OVER!************')
           players[nextActivePlayer].winRank = this.winRank
           // disable players area
           this.freezePlayersArea()
@@ -487,48 +508,10 @@ export default {
         this.gameState.players[player].cards = this.gameState.players[player].cards.slice(0, n)
       })
     },
-    getPlayerHandStyleObject (player) {
-      // approximation of length of hand with cards
-      // const halfOfHand = HAND_WIDTH / 6.5
-      const handWidth = (13 * CARD_WIDTH) - (13 * (CARD_WIDTH - CARD_DELTA))
-      const playerControlsHeight = 60
-
-      // const isEvenPlayer = player % 2 === 0
-
-      const map = {
-        1: {
-          left: (GAME_ARENA_WIDTH - handWidth) / 2,
-          top: (GAME_ARENA_HEIGHT / 2) + playerControlsHeight
-        },
-        2: {
-          left: GAME_ARENA_WIDTH * (7 / 8),
-          top: handWidth + 12
-        },
-        3: {
-          left: (GAME_ARENA_WIDTH - handWidth) / 2,
-          top: 0
-        },
-        4: {
-          left: GAME_ARENA_WIDTH / 8,
-          top: 100
-        }
-      }
-
-      // default is odd number players
-      // const left = isEvenPlayer ? width * (3 / 4) : (width / 2) - halfOfHand
-
-      // const top = isEvenPlayer ? height / 2 : (height / 3)
-
-      return {
-        position: 'absolute', // can move to a class
-        left: `${map[player].left}px`,
-        top: `${map[player].top}px`
-      }
+    resetPlayersState () {
+      // reset players game state
+      Object.assign(this.gameState.players, this.defaultPlayersState)
     }
-  },
-
-  components: {
-    Card
   },
 
   computed: {
@@ -562,6 +545,51 @@ export default {
       })
 
       return otherPlayersStillInRound
+    },
+
+    defaultPlayersState () {
+      return {
+        player1: {
+          cards: this.gameState.players.player1.cards,
+          isTurn: this.gameState.players.player1.isTurn,
+          isFirstTurn: false,
+          selectedHand: [],
+          canPlayHand: false, // result of evaulating selectedHand,
+          isPassed: false,
+          winRank: this.gameState.players.player1.winRank || undefined,
+          profile: this.gameState.players.player1.profile || false
+        },
+        player2: {
+          cards: this.gameState.players.player2.cards,
+          isTurn: this.gameState.players.player2.isTurn,
+          isFirstTurn: false,
+          selectedHand: [],
+          canPlayHand: false, // result of evaulating selectedHand
+          isPassed: false,
+          winRank: this.gameState.players.player2.winRank || undefined,
+          profile: this.gameState.players.player2.profile || false
+        },
+        player3: {
+          cards: this.gameState.players.player3.cards,
+          isTurn: this.gameState.players.player3.isTurn,
+          isFirstTurn: false,
+          selectedHand: [],
+          canPlayHand: false, // result of evaulating selectedHand
+          isPassed: false,
+          winRank: this.gameState.players.player3.winRank || undefined,
+          profile: this.gameState.players.player3.profile || false
+        },
+        player4: {
+          cards: this.gameState.players.player4.cards,
+          isTurn: this.gameState.players.player4.isTurn,
+          isFirstTurn: false,
+          selectedHand: [],
+          canPlayHand: false, // result of evaulating selectedHand
+          isPassed: false,
+          winRank: this.gameState.players.player4.winRank || undefined,
+          profile: this.gameState.players.player4.profile || false
+        }
+      }
     }
   },
 
@@ -587,45 +615,42 @@ export default {
 
 </script>
 
-<style scoped>
-/* h3 {
-  text-align: left
-  margin-left: 137px
-  margin-bottom: 15px
-} */
+<style lang="sass" scoped>
 
-#game-arena {
-  position: relative;
-  width: 1200px;
-  height: 600px;
-  /* border: 1px solid blue; */
-  margin: auto;
-}
-
-#active-hand-container {
-  width: 400px;
-  position: relative;
-  /* left: 450px; */
-  top: 215px;
-  border: 1px solid blue;
-  margin: auto;
-}
-
-.activePlayer {
-  color: blue
-}
-
-.activePlayerContainer {
-  text-align: left;
-  margin-left: 137px;
-}
-
-.inRound {
-  color: #1BBC9B;
-}
-
-.passed {
-  color: #CF000F;
-}
+#game-arena
+  position: relative
+  width: 1200px
+  height: 600px
+  margin: auto
+  #player1-avatar
+    position: absolute
+    left: 17%
+    bottom: -17%
+  #player2-avatar
+    position: absolute
+    right: -2%
+    top: 263px
+  #player3-avatar
+    position: absolute
+    left: 29%
+    top: 0
+  #player4-avatar
+    position: absolute
+    left: -6%
+    top: 263px
+  #active-hand-container
+    width: 400px
+    position: relative
+    top: 280px
+    margin: auto
+  .passed
+    color: #e74c3c
+    font-weight: bold
+  .inRound
+    color: #2ecc71
+    font-weight: bold
+  .leadingRound
+    color: #2980b9
+    font-weight: bold
 
 </style>

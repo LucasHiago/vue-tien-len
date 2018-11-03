@@ -13,12 +13,12 @@ const mockUsers = [
   },
   {
     userId: '200',
-    username: 'TallMan344',
+    username: 'jesus344',
     isFake: true
   },
   {
     userId: '300',
-    username: 'QueenBee2',
+    username: 'aQueen2',
     isFake: true
   },
   {

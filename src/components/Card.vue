@@ -1,7 +1,12 @@
 <template>
   <div class="card-container" :style="styleObj">
-    <div v-html="require(`./../assets/faces/${svgFile}`)">
-    </div>
+    <template v-if="playerId && playerProfile.isFake">
+      <img width="76px" src="./../assets/back.png" />
+    </template>
+    <template v-else>
+      <div v-html="require(`./../assets/faces/${svgFile}`)">
+      </div>
+    </template>
   </div>
 </template>
 
@@ -16,7 +21,7 @@ export default {
     },
     cardHandIndex: {
       type: Number,
-      required: true
+      required: false
     },
     isSelected: {
       type: Boolean,
@@ -25,6 +30,10 @@ export default {
     },
     playerId: {
       type: Number,
+      required: false
+    },
+    playerProfile: {
+      type: Object,
       required: false
     }
   },
@@ -40,6 +49,7 @@ export default {
     styleObj () {
       // return player hand styles
       if (this.playerId) {
+        const fakePlayerSingleCardDelta = 10
         const isEvenPLayer = this.playerId % 2 === 0
 
         const oddPlayerDelta = 30
@@ -56,7 +66,7 @@ export default {
 
         if (isEvenPLayer) {
           const evenLayoutPosition = {
-            top: `${(this.cardHandIndex * evenPlayerDelta)}px`,
+            top: `${(this.cardHandIndex * fakePlayerSingleCardDelta)}px`,
             transform: `rotate(${rotateDeg}deg)`
           }
 
@@ -71,7 +81,7 @@ export default {
 
         // odd players cards
         const oddLayoutPosition = {
-          left: `${this.cardHandIndex * oddPlayerDelta}px`,
+          left: this.playerId === 1 ? `${this.cardHandIndex * oddPlayerDelta}px` : `${this.cardHandIndex * fakePlayerSingleCardDelta}px`,
           transform: `rotate(${rotateDeg}deg)`
         }
 
